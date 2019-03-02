@@ -1,3 +1,5 @@
+# Facebook DataLoader
+
 ## 简介
 [DataLoader][1] 是facebook推出的一款通用工具，可为传统应用层与持久层之间提供一款*缓存*和*批处理*的操作。JS、Java、Ruby、Go等主流语言都有开源三方库支持。尤其在Graphql兴起后，DataLoader被广泛地应用于解决[N+1查询问题][4]。
 
