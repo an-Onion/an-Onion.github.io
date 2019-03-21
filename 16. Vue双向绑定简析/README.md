@@ -279,6 +279,21 @@ class Dep {
 
 ![workflow][6]
 
+1. Observer劫持Vue.data
+
+2. Vue挂载模版方法——watcher
+
+3. 调用watcher并初始化Viewer
+
+4. 由于数据劫持，watcher自动触发Vue getter，并调取Dep.depend
+
+5. watcher通过Dep.target成功订阅Dep
+
+6. 触发Vue setter操作，setter将消息通知到Dep
+
+7. Dep将消息发布至订阅者watcher
+
+8. Viewer因watcher调用而更新
 
  ## 小结
 
