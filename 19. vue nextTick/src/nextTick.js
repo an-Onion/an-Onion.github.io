@@ -11,14 +11,10 @@ let timerFunc = () => {
     Promise.resolve().then(flushCallbacks)
 }
 
-function nextTick (cb, ctx) {
+module.exports = function nextTick (cb, ctx) {
     let _resolve
     callbacks.push(() => {
-        if (cb) {
-            cb.call(ctx)
-        } else if (_resolve) {
-            _resolve(ctx)
-        }
+        cb ? cb.call(ctx) : _resolve(ctx)
     })
 
     if (!pending) {
@@ -32,19 +28,3 @@ function nextTick (cb, ctx) {
         })
     }
 }
-
-nextTick().then( () => {
-    console.log('Onion')
-})
-
-nextTick(() => {
-    console.log('Hello')
-})
-
-nextTick().then( () => {
-    console.log('Garlic')
-})
-
-nextTick(() => {
-    console.log('World')
-})
