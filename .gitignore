@@ -1,0 +1,15 @@
+
+# dependencies
+node_modules
+
+# logs
+npm-debug.log
+*.log
+package-lock.json
+
+
+
+# IDEA
+.idea
+*.iml
+

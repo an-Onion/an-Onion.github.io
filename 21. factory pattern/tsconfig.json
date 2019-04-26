@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "commonjs",
+    "target": "es6",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "lib": [
+      "es6",
+      "dom",
+      "es2015",
+      "esnext.asynciterable"
+    ],
+    "types": ["node"]
+  }
+}
