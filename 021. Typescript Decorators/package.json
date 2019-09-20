@@ -1,0 +1,13 @@
+{
+  "name": "typescript-decorator",
+  "version": "1.0.0",
+  "scripts": {
+    "@class": "ts-node src/ClassDecorator.ts",
+    "@method": "ts-node src/MethodDecorator.ts"
+  },
+  "dependencies": {
+    "ts-node": "^8.1.0",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.5"
+  }
+}

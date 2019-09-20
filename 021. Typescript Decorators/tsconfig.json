@@ -3,7 +3,7 @@
     "outDir": "./dist",
     "module": "commonjs",
     "target": "es6",
-    "allowJs": true,
+    "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
@@ -12,7 +12,6 @@
       "dom",
       "es2015",
       "esnext.asynciterable"
-    ],
-    "types": ["node"]
+    ]
   }
 }
