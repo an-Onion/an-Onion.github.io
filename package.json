@@ -1,0 +1,21 @@
+{
+  "name": "strategy-pattern",
+  "version": "1.0.0",
+  "scripts": {
+    "lint-md": "lint-md ./ --fix"
+  },
+  "dependencies": {
+    "ts-node": "^8.4.1"
+  },
+  "devDependencies": {
+    "husky": "^3.0.5",
+    "lint-md-cli": "^0.1.1",
+    "tslint": "^5.20.0",
+    "typescript": "^3.5.2"
+  },
+  "husky": {
+    "hooks": {
+        "pre-commit": "yarn lint-md"
+    }
+}
+}

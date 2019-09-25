@@ -3,6 +3,7 @@
     "outDir": "./dist",
     "module": "commonjs",
     "target": "es6",
+    "experimentalDecorators": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,

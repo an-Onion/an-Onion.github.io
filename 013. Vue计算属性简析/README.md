@@ -1,9 +1,9 @@
-# Vue计算属性简析
+# Vue 计算属性简析
 
 ## Vue Computed
 
-Vue开发人员必然使用过计算属性（Computed Properties）：你可以像绑定data属性一样在模板中绑定计算属性；计算属性一般依赖一个或多个data属性，并返回它们复杂逻辑下的状态；当这些依赖属性变更时，模版中绑定的计算属性也会随之更新。那问题来了，vue是怎么实现这个机制的呢？
-我看了一篇外文是讲解computed实现的，还挺有趣。源码太过复杂这里就不展开了，我想用一个简单的实例介绍一下它的工作原理。
+Vue 开发人员必然使用过计算属性（Computed Properties）：你可以像绑定 data 属性一样在模板中绑定计算属性；计算属性一般依赖一个或多个 data 属性，并返回它们复杂逻辑下的状态；当这些依赖属性变更时，模版中绑定的计算属性也会随之更新。那问题来了，vue 是怎么实现这个机制的呢？
+我看了一篇外文是讲解 computed 实现的，还挺有趣。源码太过复杂这里就不展开了，我想用一个简单的实例介绍一下它的工作原理。
 
 ```javascript
 let gift = new Vue({
@@ -21,7 +21,7 @@ let gift = new Vue({
 
 ## [Object.defineProperty][1]
 
-首先回忆一下某JS原生api——`Object.defineProperty(obj, prop, descriptor)`。
+首先回忆一下某 JS 原生 api——`Object.defineProperty(obj, prop, descriptor)`。
 
 > 这个方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。
 
@@ -43,11 +43,11 @@ Object.defineProperty(obj, 'val', {
 console.log(obj.val); // 1024
 ```
 
-该方法允许精确添加或修改对象的属性。`get`是其中的一个描述符，它会给该属性提供 getter 的方法。当访问该属性时，该方法会被执行。在如上代码里，尽管`val`看着像`obj`的一个属性，但在调用时内部事实上运行的是一个get方法。
+该方法允许精确添加或修改对象的属性。`get`是其中的一个描述符，它会给该属性提供 getter 的方法。当访问该属性时，该方法会被执行。在如上代码里，尽管`val`看着像`obj`的一个属性，但在调用时内部事实上运行的是一个 get 方法。
 
-## data属性
+## data 属性
 
-VUE里有就一套构造函数，它可以将一个普通的对象构造为一个可观察的对象。VUE利用的就是`Object.defineProperty`。以data属性为例，这些属性被调用或修改时，会触发的是一系列的get和set方法。这些对象被称为**Reactive Property**。下面写了一个简单的函数`defineReactive(obj, key, val)`来模拟构造data **Reactive Property**的过程。
+VUE 里有就一套构造函数，它可以将一个普通的对象构造为一个可观察的对象。VUE 利用的就是`Object.defineProperty`。以 data 属性为例，这些属性被调用或修改时，会触发的是一系列的 get 和 set 方法。这些对象被称为**Reactive Property**。下面写了一个简单的函数`defineReactive(obj, key, val)`来模拟构造 data **Reactive Property**的过程。
 
 ```javascript
 function defineReactive(obj, key, val) {
@@ -68,9 +68,9 @@ gift.price = 1025;
 console.log(gift.price); // 1025
 ```
 
-## Computed方法
+## Computed 方法
 
-接着我们再写一个`defineComputed(obj, key, computeFunc, updateCallback)`来模拟computed方法里的构造实现。
+接着我们再写一个`defineComputed(obj, key, computeFunc, updateCallback)`来模拟 computed 方法里的构造实现。
 
 ```javascript
 function defineComputed (obj, key, computeFunc, updateCallback) {
@@ -97,14 +97,14 @@ gift.price = 1025;
 console.log(gift.status) // Smile
 ```
 
-嗯，很直白！当price变化后，status的结果也随之变更。到此为止我们已经可以大体理解data数据和computed方法之间是如何关联的了。
+嗯，很直白！当 price 变化后，status 的结果也随之变更。到此为止我们已经可以大体理解 data 数据和 computed 方法之间是如何关联的了。
 
-## Update发布
+## Update 发布
 
-那如何实现改变data属性，自动更新模版中绑定的计算属性呢？
+那如何实现改变 data 属性，自动更新模版中绑定的计算属性呢？
 前面`defineComputed (obj, key, computeFunc, updateCallback)`留了一个参数`updateCallback`还未使用，我想用它来模拟一下自动更新模版这个操作。
 
-这里先定义一个全局的中介者用于暂存update方法：
+这里先定义一个全局的中介者用于暂存 update 方法：
 
 ```javascript
 let Mediator = { 
@@ -135,7 +135,7 @@ function defineComputed (obj, key, computeFunc, updateCallback) {
 }
 ```
 
-上述代码的第十行`computeFunc.call(obj)`在这里的作用其实是注册监听，具体可见如下代码第六和第七行。理解起来也不难，`computeFunc.call(obj)`最终会调用如下data里关联的的`get`方法。这时中介者就起作用了，我们将Mediator.target引用的update方法存入listeners。这样每次对data的相关property赋值时，都会触发这一系列关联的update方法了。
+上述代码的第十行`computeFunc.call(obj)`在这里的作用其实是注册监听，具体可见如下代码第六和第七行。理解起来也不难，`computeFunc.call(obj)`最终会调用如下 data 里关联的的`get`方法。这时中介者就起作用了，我们将 Mediator.target 引用的 update 方法存入 listeners。这样每次对 data 的相关 property 赋值时，都会触发这一系列关联的 update 方法了。
 
 ```javascript
 function defineReactive(obj, key, val) {
@@ -160,7 +160,7 @@ function defineReactive(obj, key, val) {
 
 ## 复盘
 
-最后我们再看一下方法调用。如下所示，通过修改gift的price就可以自动打印出status结果了。
+最后我们再看一下方法调用。如下所示，通过修改 gift 的 price 就可以自动打印出 status 结果了。
 
 ```javascript
 let gift = {};
@@ -184,17 +184,17 @@ gift.price = 250; // Cry
 
 我们再来复盘一下整个过程
 
-1. 构造data属性为Reactive Property （defineReactive）
+1. 构造 data 属性为 Reactive Property （defineReactive）
 
-2. 构造computed方法，并在相关联的data Property里注册update方法 （defineComputed）
+2. 构造 computed 方法，并在相关联的 data Property 里注册 update 方法 （defineComputed）
 
-3. 为data的Property赋值，并自动更新相关联的update方法
+3. 为 data 的 Property 赋值，并自动更新相关联的 update 方法
 
 我把完整的代码贴到了最后，有兴趣的同学可以自己运行一下。
 
 ## 小结
 
-VUE.js已然成为业内最主流的框架之一，不得不说它的用户体验很友好、学习曲线也不高，几个月下来也可以把玩框架了。不过，使用框架最后很容易变成做填空题，技术增长也会遇到瓶颈；当遭遇框架之外的难题时便一筹莫展了。我自己也深陷瓶颈之中，希望能夯实一下基础知识，尽力突破这一层难关吧。共勉！
+VUE.js 已然成为业内最主流的框架之一，不得不说它的用户体验很友好、学习曲线也不高，几个月下来也可以把玩框架了。不过，使用框架最后很容易变成做填空题，技术增长也会遇到瓶颈；当遭遇框架之外的难题时便一筹莫展了。我自己也深陷瓶颈之中，希望能夯实一下基础知识，尽力突破这一层难关吧。共勉！
 
 
 [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty

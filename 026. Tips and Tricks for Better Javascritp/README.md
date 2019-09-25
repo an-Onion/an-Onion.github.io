@@ -1,6 +1,6 @@
 ## Tips and Tricks for Better JavaScript
 
-经常code review，我发现JS newbie很容易写出一堆冗长的代码。今天就列几个比较常见的“解决之道”，看看如何减少JS里的条件判断。
+经常 code review，我发现 JS newbie 很容易写出一堆冗长的代码。今天就列几个比较常见的“解决之道”，看看如何减少 JS 里的条件判断。
 
 ## 提前返回，少用`if...else`
 
@@ -24,7 +24,7 @@ function func(){
 }
 ```
 
-这种嵌套的特点就是else里的代码块很小，但是由于不得不做的分支语句导致多层嵌套。动动脑筋，怎样精简一下呢？在if里做`非`判断，提前return else分支。
+这种嵌套的特点就是 else 里的代码块很小，但是由于不得不做的分支语句导致多层嵌套。动动脑筋，怎样精简一下呢？在 if 里做`非`判断，提前 return else 分支。
 
 ```javascript
 function func(){
@@ -40,7 +40,7 @@ function func(){
 }
 ```
 
-## forEach优化
+## forEach 优化
 
 遍历的时候也经常产生大量的嵌套，如下代码所示，我们先对数组元素做一次合法性校验，通过后再做一次新的操作，最后把操作结果追加到新数组里。
 
@@ -56,7 +56,7 @@ const func = (arr) => {
 }
 ```
 
-仔细观察这就是一个filter加map的过程。我们不妨试试函数式编程：
+仔细观察这就是一个 filter 加 map 的过程。我们不妨试试函数式编程：
 
 ```javascript
 const func = (arr) => {
@@ -68,7 +68,7 @@ const func = (arr) => {
 
 ## 多条件，用`Array.includes`
 
-再举个例子，某个页面需要检验输入type是否合法。我收到过一个MR曾经是这么写的。
+再举个例子，某个页面需要检验输入 type 是否合法。我收到过一个 MR 曾经是这么写的。
 
 ```javascript
 const init(type) {
@@ -80,7 +80,7 @@ const init(type) {
 }
 ```
 
-如果合法的类型只有两种，代码其实也没啥问题。只是一般的业务很容易有后续的延展。今后将合法类型增加到10种的话，上述代码里将是一大长串的if判断。这种代码可读性极差，我们不如转换一下思想，把非法类型储到数组里，用`Array.includes`来帮你完成冗长的判断。之后每增加一种新的类型，只需在数组后追加新字符串就行了。
+如果合法的类型只有两种，代码其实也没啥问题。只是一般的业务很容易有后续的延展。今后将合法类型增加到 10 种的话，上述代码里将是一大长串的 if 判断。这种代码可读性极差，我们不如转换一下思想，把非法类型储到数组里，用`Array.includes`来帮你完成冗长的判断。之后每增加一种新的类型，只需在数组后追加新字符串就行了。
 
 ```javascript
 const init(type) {
@@ -92,7 +92,7 @@ const init(type) {
 }
 ```
 
-## 使用object索引
+## 使用 object 索引
 
 类似的情况也出现在三元表达式里:
 
@@ -112,7 +112,7 @@ const format = this.$i18n.locale === 'en' ?
      'yyyy年m月d日' : 'yyyy/m/d');
 ```
 
-比较合适的写法就是使用object键索引，这样当语言业务扩展后，只需要在`localeFormats`后追加新格式就行了。
+比较合适的写法就是使用 object 键索引，这样当语言业务扩展后，只需要在`localeFormats`后追加新格式就行了。
 
 ```javascript
 const localeFormats = {
@@ -124,9 +124,9 @@ const localeFormats = {
 const format = localeFormats[this.$i18n.locale];
 ```
 
-## 尽量少用swith
+## 尽量少用 swith
 
-长Switch也及其难看。
+长 Switch 也及其难看。
 
 ```javascript
 export function(type) {
@@ -142,7 +142,7 @@ export function(type) {
     }
 }
 ```
-我记得OOP设计模式里提到过：尽量使用多态和继承代替Switch结构。JS里倒不必非得往这方面想，用Object或是Map索引来代替Switch也是极好滴！
+我记得 OOP 设计模式里提到过：尽量使用多态和继承代替 Switch 结构。JS 里倒不必非得往这方面想，用 Object 或是 Map 索引来代替 Switch 也是极好滴！
 
 ```javascript
 const arr = [
@@ -160,7 +160,7 @@ export function(type) {
 
 ## Optional Chaining
 
-Optional Chaining（以下简称OC）是我极力推荐的一个语法糖。我写过一期[《Javascript Optional Chaining》][1]具体介绍它的用法，有兴趣的小伙伴可以看一看，这里稍微点一下。比如我们想获取地址里的街道信息，但是并不确定地址本身是否存在，因此只能在获取街道前，事先判断一下地址合法性，一般我们会这么写：
+Optional Chaining（以下简称 OC）是我极力推荐的一个语法糖。我写过一期[《Javascript Optional Chaining》][1]具体介绍它的用法，有兴趣的小伙伴可以看一看，这里稍微点一下。比如我们想获取地址里的街道信息，但是并不确定地址本身是否存在，因此只能在获取街道前，事先判断一下地址合法性，一般我们会这么写：
 
 ```javascript
 if( address ) {
@@ -178,7 +178,7 @@ if( basicInfo ) {
     }
 }
 ```
-上面的代码我已经觉得很丑陋了，再多个几层真是没法看了。不过不用担心，有了OC一切迎刃而解。（虽然OC还在ECMAScript stage2，但是大家可以用babel尝鲜；babel会自动把如下源码转义成上面的形式）
+上面的代码我已经觉得很丑陋了，再多个几层真是没法看了。不过不用担心，有了 OC 一切迎刃而解。（虽然 OC 还在 ECMAScript stage2，但是大家可以用 babel 尝鲜；babel 会自动把如下源码转义成上面的形式）
 
 ```javascript
 var street = basicInfo?.address?.street;

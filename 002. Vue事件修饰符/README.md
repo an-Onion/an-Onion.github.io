@@ -1,15 +1,15 @@
-# VUE事件修饰符
+# VUE 事件修饰符
 
 ## 简介
 
-在原生DOM绑定事件的年代，我们经常会使用到e.preventDefault() 或 e.stopPropagation()等操作。
+在原生 DOM 绑定事件的年代，我们经常会使用到 e.preventDefault() 或 e.stopPropagation()等操作。
 ```javascript
 document.getElementById('menu').onclick = function(e) {
   e.preventDefault();
   //...
 }
 ```
-Vue.js 为了简化这种常见需求，为v-on提供了一个叫[Event Modifiers][1] (事件修饰符)的语法糖。vue2共提供了五个事件修饰符：
+Vue.js 为了简化这种常见需求，为 v-on 提供了一个叫[Event Modifiers][1] (事件修饰符)的语法糖。vue2 共提供了五个事件修饰符：
 * ***.stop*** 阻止事件向上冒泡，等价于添加`event.stopPropagation()`
 * ***.prevent*** 阻止元素发生默认的行为，等价于添加`event.preventDefault()`
 * ***.capture*** 在捕获阶段触发监听函数
@@ -20,7 +20,7 @@ Vue.js 为了简化这种常见需求，为v-on提供了一个叫[Event Modifier
 ## 事件传播
 
 
-W3C的DOM标准中，一次事件包含三个步骤：
+W3C 的 DOM 标准中，一次事件包含三个步骤：
 > 捕获 -> 到达目标 -> 冒泡
 
 举个简单的[例子][2]，当点击`Inner`标签时，事件传播顺序是 `Outer` -> `Middle` -> `Inner` -> `Inner` -> `Middle` -> `Outer`。
@@ -74,7 +74,7 @@ export default {
 
 ## 事件监听
 
-`v-on`监听DOM事件，本质上是调用了[`addEventListener`][3]
+`v-on`监听 DOM 事件，本质上是调用了[`addEventListener`][3]
 
 ```javascript
 /**
@@ -85,7 +85,7 @@ export default {
 addEventListener(type, listener, useCapture=false)
 ```
 
-默认的`v-on:click="listener"` (`@click` 为`v-on:click`语法糖), 等价于`addEventListener('click', listener)`。所以一般的v-on监听只在冒泡阶段才触发。若想在捕获阶段触发事件必须加上`.capture`修饰符。
+默认的`v-on:click="listener"` (`@click` 为`v-on:click`语法糖), 等价于`addEventListener('click', listener)`。所以一般的 v-on 监听只在冒泡阶段才触发。若想在捕获阶段触发事件必须加上`.capture`修饰符。
 
 **注意：**`v-on:click.capture`只在捕获阶段触发，不会在冒泡阶段触发。要想两个阶段都触发，只能写两套：
 ```vue
@@ -116,7 +116,7 @@ listener: function (e) {
     }
 ```
 
-给`<section @click.prevent="listener">`加上`.prevent`修饰符阻止`<a>`标签的默认跳转行为。当点击`<a>`元素时，事件向DOM树上层冒泡，被`<section>`元素接受，然后触发listener。这样，仅添加一个listener到父级元素，就可以实现代理了。
+给`<section @click.prevent="listener">`加上`.prevent`修饰符阻止`<a>`标签的默认跳转行为。当点击`<a>`元素时，事件向 DOM 树上层冒泡，被`<section>`元素接受，然后触发 listener。这样，仅添加一个 listener 到父级元素，就可以实现代理了。
 
 ## 其他
 
@@ -135,14 +135,14 @@ listener: function (e) {
 addEventListener(type, listener ,
        {capture: Boolean, passive: Boolean, once: Boolean});
 ```
-`.capture` `.once` `.passive`本质上就是给上述三个Boolean值赋true。
+`.capture` `.once` `.passive`本质上就是给上述三个 Boolean 值赋 true。
 
-`.self`是vue自带的语法糖，表示事件由本身触发，不是来自子节点。顺带提一下，使用修饰符时顺序很重要，在某些场景中:
+`.self`是 vue 自带的语法糖，表示事件由本身触发，不是来自子节点。顺带提一下，使用修饰符时顺序很重要，在某些场景中:
 > 用`v-on:click.prevent.self`会阻止所有的点击，而`v-on:click.self.prevent`只会阻止对元素自身的点击。
 
 #### 小结
 
-今天通过vue的事件修饰符，简单回顾了一下浏览器的事件机制。以react，angular，vue为代表的前端框架极大地提升了工程师的开发体验，但是学完框架不去了解冒泡、捕获、传播、委托等基础知识，当需要解决更细节的问题时就略显颟顸了。
+今天通过 vue 的事件修饰符，简单回顾了一下浏览器的事件机制。以 react，angular，vue 为代表的前端框架极大地提升了工程师的开发体验，但是学完框架不去了解冒泡、捕获、传播、委托等基础知识，当需要解决更细节的问题时就略显颟顸了。
 
 
 

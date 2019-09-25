@@ -13,7 +13,7 @@ Java `@annotation` 常常运用于面向切片编程（[AOP][1]）——利用�
 
 ## Decorator 简介
 
-TS 很早就在语法里加入了 Decorator 的概念，和 Java 类似，也是一个 `@expression` 标签。只不过 Decorator 在[tc39][2]里迟迟没有离开过 Stage 2，TS也不敢轻举妄动。（TS 声称兼容 ECMAScript，早些年过早推出实验性功能，结果被 ECMAScript 坑了）。所以想尝鲜的话，还得现在 `tsconfig.json` 里添加如下内容：
+TS 很早就在语法里加入了 Decorator 的概念，和 Java 类似，也是一个 `@expression` 标签。只不过 Decorator 在[tc39][2]里迟迟没有离开过 Stage 2，TS 也不敢轻举妄动。（TS 声称兼容 ECMAScript，早些年过早推出实验性功能，结果被 ECMAScript 坑了）。所以想尝鲜的话，还得现在 `tsconfig.json` 里添加如下内容：
 
 ```json
 {
@@ -65,7 +65,7 @@ class Onion {
 type ConstructorTpye = new(name: string) => Onion;
 ```
 
-接着，我们再看看类修饰器在 TS 里的定义：是一个`参数`为函数、`返回`为函数（或void）的函数。（有点绕！）
+接着，我们再看看类修饰器在 TS 里的定义：是一个`参数`为函数、`返回`为函数（或 void）的函数。（有点绕！）
 
 ```Typescript
 declare type ClassDecorator = <T extends Function>(target: T) => T | void
@@ -126,7 +126,7 @@ function colorDecorator(color: string) {
 }
 ```
 
-在TS里我们的实现就是一个高阶函数——`colorDecorator('red')` 返回的就是一个 ClassDecorator 函数。上述代码，我们通过修饰器工厂给类添加了一个新的公共属性—— `color`，并对其赋值。
+在 TS 里我们的实现就是一个高阶函数——`colorDecorator('red')` 返回的就是一个 ClassDecorator 函数。上述代码，我们通过修饰器工厂给类添加了一个新的公共属性—— `color`，并对其赋值。
 
 ```Typescript
 @colorDecorator('red')
@@ -201,11 +201,11 @@ const fullName = emp.getFullName(); // Onion Garlic
 
 ## Others
 
-剩下还有三种Decorator，它们比较简单，我就快速过一下了：
+剩下还有三种 Decorator，它们比较简单，我就快速过一下了：
 
 * Accessor Decorator:
 
-  它就是作用在`getter`和`setter`上的修饰器，类型和 Method Decorator 一模一样，一般就是修改一下对象的PropertyDescriptor
+  它就是作用在`getter`和`setter`上的修饰器，类型和 Method Decorator 一模一样，一般就是修改一下对象的 PropertyDescriptor
 
 * Property Decorator
 
@@ -225,7 +225,7 @@ const fullName = emp.getFullName(); // Onion Garlic
 
 ## 小结
 
-这期介绍了一下 TS 修饰器的使用方式。Decorator 与 java 的 `@annotion` 非常相似，就是利用内省（introspection）机制，在运行时观察、修改被修饰对象的一种 function。它目前还处于实验阶段，我看了一下[tc39提案][2]，它的语法就与TS大相径庭——有一个叫 `decorator` 的语法申明；因此现阶段的实现很可能在之后有巨大的转向。不过，修饰器在各类TS框架中已被广泛应用，如vue3、nestjs等等，大家也应该紧跟时代潮流尽早接触这类新兴的技术实现。
+这期介绍了一下 TS 修饰器的使用方式。Decorator 与 java 的 `@annotion` 非常相似，就是利用内省（introspection）机制，在运行时观察、修改被修饰对象的一种 function。它目前还处于实验阶段，我看了一下[tc39 提案][2]，它的语法就与 TS 大相径庭——有一个叫 `decorator` 的语法申明；因此现阶段的实现很可能在之后有巨大的转向。不过，修饰器在各类 TS 框架中已被广泛应用，如 vue3、nestjs 等等，大家也应该紧跟时代潮流尽早接触这类新兴的技术实现。
 
 ```javascript
 // tc39 demo
