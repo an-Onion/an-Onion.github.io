@@ -93,8 +93,13 @@ app.use((req, res, next) => {
 Express 常年保持 Node 后端框架 No.1 的地位，下图是 2018 年的趋势分布。预计数年内这个趋势不会有太大的变化。我经历过 Java Spring 的开发，记得刚入职的时候被 Spring 各种配置恶心许久，至今心有余悸；现在能得闲做 express 开发，真是太庆幸了。（希望不要拉仇恨）
 * ![2018 Javascript Back-end Frameworks][0]
 
+## 相关文章
+
+[《Express Middleware (续)》][5]
+
 [0]: https://upload-images.jianshu.io/upload_images/14368237-7e6380633c0bb2f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240
 [1]: https://upload-images.jianshu.io/upload_images/14368237-73f01ea9de15ab27.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240
 [2]: https://github.com/expressjs/compression
 [3]: https://github.com/expressjs/body-parser
 [4]: https://www.jianshu.com/p/11fdd3508b10
+[5]: https://www.jianshu.com/p/9a7792ae5f77
