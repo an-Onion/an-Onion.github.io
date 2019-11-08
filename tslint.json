@@ -3,7 +3,9 @@
     "extends": [
         "tslint:recommended"
     ],
-    "jsRules": {},
+    "jsRules": {
+      "no-console": false
+    },
     "rules": {
         "object-literal-sort-keys": false,
         "quotemark": [true, "single", "avoid-escape", "avoid-template"],

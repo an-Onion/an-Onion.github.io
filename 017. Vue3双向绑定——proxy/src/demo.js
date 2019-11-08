@@ -1,7 +1,7 @@
-const Vue = require('./vue')
+const Vue = require("./vue");
 
 /* Step 1 */
-let watcher = function () {
+let watcher = function() {
     const total = this.price * this.quantity;
     console.log(`total = ${total}`);
 };

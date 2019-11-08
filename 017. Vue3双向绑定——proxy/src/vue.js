@@ -6,12 +6,12 @@ class Dep {
         this.subscribers = [];
     }
     depend() {
-        if( Dep.target && !this.subscribers.includes(Dep.target) ){
+        if ( Dep.target && !this.subscribers.includes(Dep.target) ) {
             this.subscribers.push(Dep.target);
         }
     }
     notify() {
-        this.subscribers.forEach(sub => sub())
+        this.subscribers.forEach(sub => sub());
     }
 }
 
@@ -24,8 +24,9 @@ class Observer {
         let deps = new Map();
 
         function depReflect(prop, func) {
-            if( !deps.has(prop) )
+            if ( !deps.has(prop) ) {
                 deps.set(prop, new Dep());
+            }
             const dep = deps.get(prop);
 
             return func.call(dep);
@@ -39,8 +40,8 @@ class Observer {
             set(obj, prop, newVal) {
                 Reflect.set(obj, prop, newVal);
                 depReflect(prop, Dep.prototype.notify);
-            }
-        })
+            },
+        });
     }
 }
 
@@ -56,15 +57,15 @@ class Vue {
         Dep.target = null;
     }
 
-    proxy (key) {
+    proxy(key) {
         Object.defineProperty(this, key, {
-            get () {
+            get() {
                 return Reflect.get(this.$data, key);
             },
-            set (newVal) {
-                Reflect.set(this.$data, key, newVal)
-            }
-        })
+            set(newVal) {
+                Reflect.set(this.$data, key, newVal);
+            },
+        });
     }
 }
 

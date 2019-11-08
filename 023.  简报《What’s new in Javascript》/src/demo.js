@@ -1,6 +1,6 @@
 function memoryUsage() {
     const used = process.memoryUsage().heapUsed;
-    console.log( Math.round(used / 1024 / 1024) + 'M' );
+    console.log( Math.round(used / 1024 / 1024) + "M" );
 }
 
 global.gc();

@@ -6,20 +6,20 @@ class Dep {
         this.subscribers = [];
     }
     depend() {
-        if( Dep.target && !this.subscribers.includes(Dep.target) ){
+        if ( Dep.target && !this.subscribers.includes(Dep.target) ) {
             this.subscribers.push(Dep.target);
         }
     }
     notify() {
-        this.subscribers.forEach(sub => sub())
+        this.subscribers.forEach(sub => sub());
     }
 }
 
 Dep.target = null;
 
 class Observer {
-    constructor (data) {
-        Object.keys(data).forEach( Observer.defineReactive.bind(null, data) )
+    constructor(data) {
+        Object.keys(data).forEach( Observer.defineReactive.bind(null, data) );
     }
 
     static defineReactive(obj, key) {
@@ -27,15 +27,15 @@ class Observer {
         const dep = new Dep();
 
         Object.defineProperty(obj, key, {
-            get () {
+            get() {
                 dep.depend();
                 return val;
             },
-            set (newVal) {
+            set(newVal) {
                 val = newVal;
                 dep.notify();
-            }
-        })
+            },
+        });
 
     }
 }
@@ -44,7 +44,7 @@ class Vue {
     constructor({data}) {
         this.data = data();
         Object.keys(this.data).forEach( this.proxy.bind(this) );
-        new Observer(this.data);
+        this.observer = new Observer(this.data);
     }
 
     $mount(watcher) {
@@ -53,15 +53,15 @@ class Vue {
         Dep.target = null;
     }
 
-    proxy (key) {
+    proxy(key) {
         Object.defineProperty(this, key, {
-            get () {
+            get() {
                 return Reflect.get(this.data, key);
             },
-            set (newVal) {
-                Reflect.set(this.data, key, newVal)
-            }
-        })
+            set(newVal) {
+                Reflect.set(this.data, key, newVal);
+            },
+        });
     }
 }
 

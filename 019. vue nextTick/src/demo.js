@@ -1,17 +1,17 @@
-const nextTick = require('./nextTick')
+const nextTick = require("./nextTick");
 
 nextTick().then( () => {
-    console.log('Onion')
-})
+    console.log("Onion");
+});
 
 nextTick(() => {
-    console.log('Hello')
-})
+    console.log("Hello");
+});
 
 nextTick().then( () => {
-    console.log('Garlic')
-})
+    console.log("Garlic");
+});
 
 nextTick(() => {
-    console.log('World')
-})
+    console.log("World");
+});

@@ -1,30 +1,30 @@
-const callbacks = []
-let pending = false
+const callbacks = [];
+let pending = false;
 
-function flushCallbacks () {
+function flushCallbacks() {
 
-    pending = false
-    callbacks.forEach( cb => cb() )
+    pending = false;
+    callbacks.forEach( cb => cb() );
 }
 
 let timerFunc = () => {
-    Promise.resolve().then(flushCallbacks)
-}
+    Promise.resolve().then(flushCallbacks);
+};
 
-module.exports = function nextTick (cb, ctx) {
-    let _resolve
+module.exports = function nextTick(cb, ctx) {
+    let res;
     callbacks.push(() => {
-        cb ? cb.call(ctx) : _resolve(ctx)
-    })
+        cb ? cb.call(ctx) : res(ctx);
+    });
 
     if (!pending) {
-        pending = true
-        timerFunc()
+        pending = true;
+        timerFunc();
     }
 
     if (!cb) {
         return new Promise((resolve) => {
-            _resolve = resolve
-        })
+          res = resolve;
+        });
     }
-}
+};

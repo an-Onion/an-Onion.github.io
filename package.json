@@ -2,7 +2,8 @@
   "name": "my-weekly-blog",
   "version": "1.0.0",
   "scripts": {
-    "lint-md": "lint-md ./ --fix"
+    "lint-md": "lint-md ./ --fix",
+    "ts-lint": "tslint --project . --fix"
   },
   "dependencies": {
     "express": "^4.17.1",
