@@ -106,9 +106,9 @@ const dateFormat = (dateTime) => {
 我们现阶段多语言只有`en`和`zh`，上述代码自然不是问题，但是也难保哪天会支持日语——`ja`。这时候再写成下面这类代码就很搞笑了：
 
 ```javascript
-const format = this.$i18n.locale === 'en' ? 
-'mmm d, yyyy' : 
-(this.$i18n.locale === 'zh' ? 
+const format = this.$i18n.locale === 'en' ?
+'mmm d, yyyy' :
+(this.$i18n.locale === 'zh' ?
      'yyyy年m月d日' : 'yyyy/m/d');
 ```
 
