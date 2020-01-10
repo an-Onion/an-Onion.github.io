@@ -102,7 +102,7 @@ export default {
 
 上面提到过，Vue2 原始的懒加载有个天然的弱项：并不能监测异步组件内的异步操作，如 api 调用。`<Suspense>`怎么做的呢？
 
-它提供了一个叫 createResource 工厂方法创建资源管理器——`this.$rm`。如下代码中，资源管理器的作用就是异步读取数据——`this.$rm.read(params)`；`<Suspense>`组件就会知道该组件正在异步调用api，并且会在调用结束后隐藏`Loading`；最后将异步调用的结果——`$rm.$result`——响应式地渲染到组件里。
+它提供了一个叫 createResource 工厂方法创建资源管理器——`this.$rm`。如下代码中，资源管理器的作用就是异步读取数据——`this.$rm.read(params)`；`<Suspense>`组件就会知道该组件正在异步调用 api，并且会在调用结束后隐藏`Loading`；最后将异步调用的结果——`$rm.$result`——响应式地渲染到组件里。
 
 
 ```html
