@@ -221,7 +221,7 @@ const start = async () => {
 
 ## 小结
 
-今天回顾了一下`async/await`在循环语句里的使用方法，在普通的 for-loop 里，所有的await都是串行调用的，可以放心使用，包括 while、for-in、for-of 等等；但是在有 callback 的 array 方法，如 forEach、map、filter、reduce 等等，最好就别使用 await 了。当然最优解还是 `Promise.all`，无论从质量上还是效率上都是不二选择。
+今天回顾了一下`async/await`在循环语句里的使用方法，在普通的 for-loop 里，所有的 await 都是串行调用的，可以放心使用，包括 while、for-in、for-of 等等；但是在有 callback 的 array 方法，如 forEach、map、filter、reduce 等等，最好就别使用 await 了。当然最优解还是 `Promise.all`，无论从质量上还是效率上都是不二选择。
 
 ## 相关
 

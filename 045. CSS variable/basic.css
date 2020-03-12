@@ -1,0 +1,20 @@
+:root {
+  --red: #ff6f69;
+}
+
+body {
+  --pink: #f7f;
+  --green: #7f7;
+}
+
+header {
+  color: var(--red);
+}
+
+footer {
+  color: var(--red);
+}
+
+.dialog {
+  --dialog-color: green;
+}
