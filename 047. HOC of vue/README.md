@@ -147,7 +147,7 @@ export default {
 
 1. mounted 钩子里方法一模一样，重构时直接提到 hoc 里即可
 
-2. data 钩子里的`content`都是通过`DataSource`里的get方法初始化数据的，我们把这类方法抽象为`getData(DataSource)`，也先提到 hoc 里。至于`getData`方法，我们可以在构造 hoc 时，把该方法通过参数传进来
+2. data 钩子里的`content`都是通过`DataSource`里的 get 方法初始化数据的，我们把这类方法抽象为`getData(DataSource)`，也先提到 hoc 里。至于`getData`方法，我们可以在构造 hoc 时，把该方法通过参数传进来
 
 3. methods 钩子里的 handleChange 道理同 data
 
@@ -195,7 +195,7 @@ export default {
 
 ## Further
 
-经Hoc重构后，Commments 和 Post 的所有方法都被提取出来了，你可以把各自的`<script>`给删了，并照常使用。但是，纯 template 的 vue 文件会很奇怪：无缘无故绑定了一个`{{ content }}`数据, lint 会报错，单元测试也很难写：
+经 Hoc 重构后，Commments 和 Post 的所有方法都被提取出来了，你可以把各自的`<script>`给删了，并照常使用。但是，纯 template 的 vue 文件会很奇怪：无缘无故绑定了一个`{{ content }}`数据, lint 会报错，单元测试也很难写：
 
 ```html
 <!-- Post.vue -->
@@ -249,7 +249,7 @@ export default (component, getData) => {
 };
 ```
 
-父组件不用动。这样，一个简单的HOC就完工了。重构倒是不难。
+父组件不用动。这样，一个简单的 HOC 就完工了。重构倒是不难。
 
 ## 小结
 
