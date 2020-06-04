@@ -3,6 +3,8 @@
         "bugfix",
         "gitlab",
         "stylelint",
-        "vuex"
+        "vuex",
+        "todos",
+        "miragejs"
     ]
 }
