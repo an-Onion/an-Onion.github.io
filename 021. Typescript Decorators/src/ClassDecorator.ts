@@ -1,14 +1,14 @@
 
-type ConstructorTpye = new(name: string) => Onion;
+type ConstructorType = new(name: string) => Onion;
 
-function overrideName(constructor: ConstructorTpye) {
+function overrideName(constructor: ConstructorType) {
   return class extends constructor {
-    public name: string = 'override';
+    public name = 'override';
   };
 }
 
 function colorDecorator(color: string) {
-  return (constructor: ConstructorTpye ) =>
+  return (constructor: ConstructorType ) =>
     (class extends constructor {
       public color: string = color;
     });

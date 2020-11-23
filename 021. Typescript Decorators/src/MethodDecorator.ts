@@ -2,7 +2,7 @@
 // propertyName === "getFullName"
 // descriptor === Object.getOwnPropertyDescriptor(Employee.prototype, "getFullName")
 export function log(
-  target: object,
+  target: Record<string,string>,
   propertyName: string,
   descriptor: PropertyDescriptor): void {
 
@@ -21,7 +21,7 @@ export function log(
   };
 }
 
-class Persion {
+class Person {
 
   constructor(
       private firstName: string,
@@ -35,5 +35,5 @@ class Persion {
 
 }
 
-const emp: Persion = new Persion('Onion', 'Garlic');
+const emp: Person = new Person('Onion', 'Garlic');
 emp.getFullName();
