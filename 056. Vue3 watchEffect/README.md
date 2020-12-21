@@ -144,7 +144,7 @@ import { ref, watchEffect } from "vue";
 
 export default {
   setup() {
-    const count = ref(1);
+    const count = ref(0);
     const effect = () => console.log(count.value);
     watchEffect(effect);
 
@@ -155,7 +155,7 @@ export default {
 };
 ```
 
-如上代码会打印出`0`和`1`，`0`是出于 Vue 响应式设计，在响应式元素（`count`）依赖收集阶段会运行一次 `effect` 函数；`0`是来自 `setTimeout` 里对 `count` 修改的操作。
+如上代码会打印出`0`和`1`，`0`是出于 Vue 响应式设计，在响应式元素（`count`）依赖收集阶段会运行一次 `effect` 函数；`1`是来自 `setTimeout` 里对 `count` 修改的操作。
 
 ### 清除副作用（onInvalidate ）
 
