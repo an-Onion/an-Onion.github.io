@@ -195,7 +195,7 @@ export const Content = styled('div', {
   }
 })`
   width: 300px;
-  color: ${{color} => color}
+  color: ${({color}) => color}
 `;
 ```
 
