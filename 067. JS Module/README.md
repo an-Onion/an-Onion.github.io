@@ -134,7 +134,7 @@ export function sayHi(user) {
 
 ### 阶段性小结
 
-再简单总结一下import和export的使用方法：
+再简单总结一下 import 和 export 的使用方法：
 
 - import 有四种形式:
 
