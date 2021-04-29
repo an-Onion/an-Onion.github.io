@@ -6,6 +6,11 @@
     "lint-md": "lint-md ./ --fix",
     "tslint": "eslint . --ext .ts"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/an-Onion/an-Onion.github.io.git"
+  },
+  "homepage": "https://an-onion.github.io/",
   "dependencies": {
     "@types/express": "^4.17.9",
     "awilix": "^4.2.7",
