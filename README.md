@@ -77,3 +77,4 @@ Hello 大家好，我是 an Onion，这是我的个人网站，很高兴你来�
 * [068. JS operator new](./068.%20JS%20operator%20new)
 * [069. 绞杀者模式](./069.%20绞杀者模式)
 * [070. UML Use Case Diagram](./070.%20UML%20usecase)
+* [071. UML Sequence Diagram](./071.%20UML%20Sequence%20Diagram)
