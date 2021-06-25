@@ -80,3 +80,4 @@ Hello 大家好，我是 an Onion，这是我的个人网站，很高兴你来�
 * [071. UML Sequence Diagram](./071.%20UML%20Sequence%20Diagram)
 * [072. 大泥球架构](./072.%20大泥球架构)
 * [073. Secure JS](./073.%20Secure%20JS)
+* [074. Security Headers](./074.%20Security%20Headers)

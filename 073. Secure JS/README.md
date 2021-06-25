@@ -56,10 +56,16 @@
 ></script>
 ```
 
-同理，nonce 也是一个预设的值，与 http 头里的 CSP 做校验，防止那些被串改过的 script 标签执行脚本。
+同理，nonce 也是一个校验值，与 Integrity 区别是：
+
+- Integrity：常用与静态托管的资源，如托管于 AWS S3 上的 spa 服务，通俗来说 Integrity 就是一个写死了的 hash 值
+
+- nonce：最常见于服务端渲染生成的内联脚本，当然也可以是动态加载的 JS 文件；通常，它会与服务器返回的 http 头里的 CSP 做校验，防止那些被串改过的 script 标签执行脚本。相对 Integrity 来说，nonce 是一个动态生成的 hash 值。
 
 ```html
-<script nonce="nonce-EfNBf03nceIOAn39fn389h3sdfa" src="./hello.js"></script>
+<script nonce="nonce-EfNBf03nceIOAn39fn389h3sdfa">
+  console.log("Hello world");
+</script>
 ```
 
 ## Trusted Types
