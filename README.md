@@ -81,3 +81,5 @@ Hello 大家好，我是 an Onion，这是我的个人网站，很高兴你来�
 * [072. 大泥球架构](./072.%20大泥球架构)
 * [073. Secure JS](./073.%20Secure%20JS)
 * [074. Security Headers](./074.%20Security%20Headers)
+* [075. Store JWT](./075.%20Store%20JWT)
+* [076. Debug in Chrome DevTool](./076.%20Debug%20in%20Chrome%20DevTool)
