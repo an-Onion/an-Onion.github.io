@@ -1,0 +1,19 @@
+# https://prettier.io/docs/en/options
+
+useTabs: false
+tabWidth: 2
+printWidth: 80
+semi: true
+singleQuote: false
+quoteProps: consistent
+jsxSingleQuote: false
+trailingComma: all
+bracketSpacing: true
+bracketSameLine: true
+arrowParens: always
+proseWrap: preserve
+htmlWhitespaceSensitivity: css
+vueIndentScriptAndStyle: true
+endOfLine: lf
+embeddedLanguageFormatting: auto
+singleAttributePerLine: false

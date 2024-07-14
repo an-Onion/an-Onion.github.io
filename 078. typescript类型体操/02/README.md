@@ -40,3 +40,6 @@ type B = NumberToString<A>;
 * in：运算符，遍历右侧的联合类型的每一个成员。
 * [K in keyof T]: string：表示遍历类型 T 的每一个属性，将属性值都转成 string 类型。
 
+
+
+[1]: https://dev.to/tomoy/three-ways-of-using-extends-in-typescript-3dld
