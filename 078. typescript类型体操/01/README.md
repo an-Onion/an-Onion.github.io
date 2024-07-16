@@ -1,14 +1,14 @@
 # TS 类型体操(热身)
 
-如今，绝大多数前端开发者现在都已经接触过 Typescript。在和同僚一起学习的过程中，我发现他们虽然在使用 Typescript，但永远止步于*冒号后面加上一个 type*；以至于号称熟料使用 ts 几年过后，依旧处于新手村阶段。因此，我计划写一系列文章，来帮助大家深入理解 Typescript 的原理和类型系统。
+如今，绝大多数前端开发者现在都已经接触过 Typescript。在和同僚一起学习的过程中，我发现他们虽然在使用 Typescript，但永远止步于*冒号后面加上一个 type*；以至于不少人号称熟练使用 ts 几年过后，依旧处于新手村阶段。因此，我计划写一份有关类型系列的文章，来帮助大家深入理解 Typescript 的原理和一些高级操作。
 
 ## [type challenges][0]
 
-type-challenges 是一个开源项目，提供了大量的类型体操题目，用于训练和提升 TypeScript 类型系统的能力。这些题目涵盖了各种常见的类型操作，如条件类型、联合类型、交叉类型、映射类型等。通过完成这些题目，你可以深入理解 TypeScript 类型系统的原理，并掌握各种类型操作的使用方法。我们本系列就从[type challenges][0]开始，通过一系列的训练题，逐步掌握 ts 类型系统的各种技巧。
+一切开始前，先介绍 type-challenges 这个开源项目——俗称类型体操。它的提供一系列*从入门到放弃*的练习题来训练和提升 TypeScript 类型系统的能力。这些题目涵盖了各种常见的类型操作，如条件类型、联合类型、交叉类型、映射类型等。通过完成这些题目，你可以深入理解 TypeScript 类型系统的原理，并掌握各种类型操作的使用方法。我们本系列就从[type challenges][0]开始，借助一系列的训练题，逐步掌握 ts 类型系统的各种原理和技巧。
 
 ## warm up
 
-类型体操的开始是一道热身题。这里稍微提一下， `Expect` 和 `Equal` 是 type-challenges 提供的辅助类型，用于测试类型是否正确。你就暂且当作 jest 里的 `expect` 和 `toEqual` 吧。只不过这里的 `Expect` 和 `Equal` 是用来比较类型（抽象）的；而 jest 的 `expect` 和 `toEqual` 是通常用于比较值（具体）的。
+类型体操的开始是一道[热身题][6]。如下所示：
 
 ```ts
 type HelloWorld = any;
@@ -16,7 +16,9 @@ type HelloWorld = any;
 type test = Expect<Equal<HelloWorld, string>>;
 ```
 
-这道题的考点是“起别名”，答案如下：
+这里稍微提一下， `Expect` 和 `Equal` 是 type-challenges 提供的辅助类型，用于测试类型是否正确。你就暂且当作 jest 里的 `expect` 和 `toEqual` 吧。只不过这里的 `Expect` 和 `Equal` 是用来比较类型（抽象）的；而 jest 的 `expect` 和 `toEqual` 是通常用于比较值（具体）的。
+
+这道题的考点是“起别名”，答案很简单：
 
 ```ts
 type HelloWorld = string;
@@ -30,11 +32,13 @@ const b: HelloWorld = a;
 const c: string = b;
 ```
 
-有趣的是，我曾跟一些 Java 程序员讨论过 Typescript 中的类型别名，他们对这种概念非常陌生。或许是由于工作习惯的原因，很难理解两个不同名字的类型（或抽象）可以完全等价。同样地，我在学习 Typescript 初期，即便是多年的 js 开发，也犯过类似的错误；不过随着对类型的熟练掌握，我逐渐想明白了类型和值的关系，有点类似于虚数和实数的关系。在 ts 系统里, 任何定义 `const val: y = x` 都可以类比为复数 `val = x + y*i` 的形式，其中`x`是具体的值，而 `y*i` 是类型，用于约束 `val` 操作。想明白了这点，就可以得出，我们可以在实轴上能进行数据操作，自然也可以在虚轴上进行特定的操作。而这个虚数轴上的操作就是我们的类型体操了。
+有趣的是，我曾跟一些 Java 程序员讨论过 Typescript 中的类型别名，他们对这种概念非常陌生。或许是由于工作习惯的原因，很难理解两个不同名字的类型（或抽象）可以完全等价。同样地，我在学习 Typescript 初期，即便是多年的 js 开发，也犯过类似的错误；不过随着对类型的熟练掌握，我逐渐想明白了类型和值的关系，它们有点类似于虚数和实数的关系。在 ts 系统里, 任何定义 `const val: y = x` 都可以类比为复数 `val = x + y*i` 的形式：其中`x`是具体的值；而 `y*i` 是类型，用于约束 `val` 操作。在生产和工程中，虚数有点类似于辅助线，它帮助快速计算过程，但时最后的答案里虚数`i`却能被削掉。同理，类型别名也只是一种辅助工具，它帮助我们更好地理解类型，但在运行时，类型又不会实际产生作用。
+
+同样地，我们既可以在实轴上能进行数据操作，也可以在虚轴上进行特定的操作。类比虚数轴上的操作，也就是我们我们可以在纯抽象的 type 上进行类型体操了。
 
 ![complex number][3]
 
-OK，这里可能需要点数学背景。不过，现阶段不理解也无关紧要。每个人都可以通过特定的抽象训练，实现对类型的深入理解，并最终吃透常规的类型系统。之后的文章中，我也会举各种 type challenges 的例子，逐步讲解抽象方面的知识点。
+OK，这里可能需要点数学背景。不过，现阶段不理解也无妨。每个人都可以通过特定的抽象训练，实现对类型的深入理解，并最终吃透常规的类型系统。之后的文章中，我也会举各种 type challenges 的例子，逐步讲解抽象方面的知识点。
 
 ## utility types
 
@@ -65,7 +69,7 @@ type Record<K extends keyof any, T> = {
 };
 ```
 
-这段代码表明 `Record` 通过类型映射将属性键映射到属性值，从而创建了一个新的对象类型。至于这里的`[P in K]`是什么意思呢？这也是 ts 的知识点，我们会在下一篇文章中再一一介绍，这里赞不展开了。
+这段代码表明 `Record` 通过类型映射将属性键映射到属性值，从而创建了一个新的对象类型。至于这里的`[P in K]`是什么意思呢？这也是 ts 的知识点，我们会在下一篇文章中再一一介绍，这里暂不展开了。
 
 ## type mapping
 
@@ -99,13 +103,16 @@ type NumberToString<T> = {
 
 上文中`HelloWorld`和`Record`的实现正是我们 ts 类型体操要训练的代码。这些知识主要在官方文档的[types-from-types][2]这一章节里介绍。但是这个章节的内容相对抽象，而市面上似乎也没有太多的资料介绍；因此也就有了我一开始的想法，通过一些特定的练习题，来帮助大家理解 typescript 的类型系统。
 
-本文作为本系列的导读篇，不再深入解释更细节的知识点。在接下来的系列文章中，我们会碰到各式各样的训练题，然后再一一展开。希望通过这些介绍，能够帮助大家更深入地理解 TypeScript 的类型系统，从而写出更加健壮、安全的代码。敬请期待。
+本文作为本系列的导读篇，不再深入解释更细节的知识点。在接下来的周更系列文章中，我们会碰到各式各样的训练题，然后再一一展开。希望通过这些介绍，能够帮助大家更深入地理解 TypeScript 的类型系统，从而写出更加健壮、安全的代码。敬请期待。
 
 ## 参考
 
 - [type challenges][0]
 - [types-from-types][1]
 - [TypeScript Utility Types][2]
+- [我的日常训练][7]
+
+文章同步发布于[an-Onion 的 Github](https://github.com/an-Onion/my-weekly)。码字不易，欢迎点赞。
 
 [0]: https://github.com/type-challenges/type-challenges
 [1]: https://www.typescriptlang.org/docs/handbook/2/types-from-types.html
@@ -113,3 +120,5 @@ type NumberToString<T> = {
 [3]: ../img/complex.png
 [4]: https://www.typescriptlang.org/docs/handbook/utility-types.html
 [5]: https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#mapping-modifiers
+[6]: https://github.com/type-challenges/type-challenges/blob/main/questions/00013-warm-hello-world/README.md
+[7]: https://github.com/an-Onion/type-challenges
