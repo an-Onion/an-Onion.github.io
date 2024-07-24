@@ -71,16 +71,85 @@ $$
 
 ![solution arch.][1]
 
+## 代码修改
 
-### 回滚方案
+我们需要对现有的前端代码进行简单的修改，即将翻译内容（e.g. en.json）从同步引入，改成异步加载。
 
-### 可选的方案:
+- AS-IS
 
-| 方案 | 优点 | 缺点 |
-| --- | --- | --- |
-| 方案 A：寄生在现有的 admin 服务中 | 1. 无需支付额外的服务器成本，成本只有每月$50 的网络费用； 2. 可以利用现成的 auth 服务鉴权 | 后续推广到其他组织的服务需要另起炉灶 |
-| 方案 B：重新搭建一套新的服务 | 完全独立的服务，可扩展性较强，不会对遗产代码造成负面影响 | 1. 需要从头搭建服务，开发成本相对较高；2. 服务器规格需符合公司备灾原则，所以至少需要 6 台 EC2， 大约每月$800 |
-| 方案 C：使用 lambda 架构 | lambda 架构按需收费，非常适合我们这样的低频服务，成本每月$10 | 1. 启动速度较慢；2. 当服务遇到非正常流量访问时（如 DR 测试），服务器费用会激增 |
+```js
+import messagesInFrench from "./message/en.json";
+import messagesInChinese from "./message/zh.json";
+
+function App() {
+  const messages = locale === "en" ? messagesInEnglish : messagesInChinese;
+
+  return <IntlProvider messages={messages}>...</IntlProvider>;
+}
+```
+
+- TO BE
+
+```js
+function App() {
+  const [message, setMessage] = useState({});
+
+  useEffect(() => {
+    // async import translation based on locale
+    fetch(`./message/${locale}.json`).then(setMessage);
+  }, [locale]);
+
+  return <IntlProvider messages={message}>...</IntlProvider>;
+}
+```
+
+### 构建
+
+我们通过 [SHA-256 哈希算法][3]，对 en.json 生成 contenthash 。它根据文件内容计算哈希值，确保当文件内容发生变化时，生成的哈希值也会改变。我们只需要在构建工具 webpack 中，添加简单的配置，即可以在前端工程构建时生成 contenthash，例如：
+
+
+```js
+output: {
+  filename: '[contenthash]/[name].json',
+}
+```
+
+这样可以确保相同的内容始终拥有相同的哈希值，而不同的内容则会生成不同的哈希值。
+
+### Long-term 修改
+
+我们部门前端 i8n 工具相对简单，基本用采用的是 react-intl 框架。Long term 的 solution 是，开发阶段甚至不需要保留 en.json 文件，直接将英语写入代码中：
+
+```js
+export function List(props) {
+  const { formatMessage } = useIntl()
+  return (
+    <header>
+      {formatMessage({ defaultMessage="Hello World" })}
+    </header>
+  )
+}
+```
+
+在 CI 阶段利用 [formatjs][2] 将代码中的英语提取出来，生成 en.json 文件，再进行后续的翻译工作。这样可以进一步提升开发体验。
+
+## 风险评估
+
+### 可选的方案
+
+| 方案                              | 优点                                                                                      | 缺点                                                                                                         |
+| --------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| 方案 A：寄生在现有的 admin 服务中 | 1. 无需支付额外的服务器成本，成本只有每月$50 的网络费用； 2. 可以利用现成的 auth 服务鉴权 | 后续推广到其他组织的服务需要另起炉灶                                                                         |
+
+## 风险评估
+
+### 可选的方案
+
+| 方案                              | 优点                                                                                      | 缺点                                                                                                         |
+| --------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| 方案 A：寄生在现有的 admin 服务中 | 1. 无需支付额外的服务器成本，成本只有每月$50 的网络费用； 2. 可以利用现成的 auth 服务鉴权 | 后续推广到其他组织的服务需要另起炉灶                                                                         |
+| 方案 B：重新搭建一套新的服务      | 完全独立的服务，可扩展性较强，不会对遗产代码造成负面影响                                  | 1. 需要从头搭建服务，开发成本相对较高；2. 服务器规格需符合公司备灾原则，所以至少需要 6 台 EC2， 大约每月$800 |
+| 方案 C：使用 lambda 架构          | lambda 架构按需收费，非常适合我们这样的低频服务，成本每月$10                              | 1. 启动速度较慢；2. 当服务遇到非正常流量访问时（如 DR 测试），服务器费用会激增                               |
 
 ## 验证问题解决的指标
 
@@ -90,3 +159,5 @@ $$
 
 [0]: ./img/legacy.drawio.png
 [1]: ./img/solution.drawio.png
+[2]: https://formatjs.io/docs/getting-started/message-extraction
+[3]: https://en.wikipedia.org/wiki/SHA-2#SHA-256
