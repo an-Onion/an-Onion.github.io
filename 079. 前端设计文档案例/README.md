@@ -71,7 +71,7 @@ $$
 
 ![solution arch.][1]
 
-## 代码修改
+## 核心代码
 
 我们需要对现有的前端代码进行简单的修改，即将翻译内容（e.g. en.json）从同步引入，改成异步加载。
 
@@ -82,9 +82,9 @@ import messagesInFrench from "./message/en.json";
 import messagesInChinese from "./message/zh.json";
 
 function App() {
-  const messages = locale === "en" ? messagesInEnglish : messagesInChinese;
+  const message = locale === "en" ? messagesInEnglish : messagesInChinese;
 
-  return <IntlProvider messages={messages}>...</IntlProvider>;
+  return <IntlProvider messages={message}>...</IntlProvider>;
 }
 ```
 
@@ -105,18 +105,17 @@ function App() {
 
 ### 构建
 
-我们通过 [SHA-256 哈希算法][3]，对 en.json 生成 contenthash 。它根据文件内容计算哈希值，确保当文件内容发生变化时，生成的哈希值也会改变。我们只需要在构建工具 webpack 中，添加简单的配置，即可以在前端工程构建时生成 contenthash，例如：
+我们可通过 [SHA-256 哈希算法][3]，对 en.json 生成 contenthash 。它根据文件内容计算哈希值，当文件内容发生变化时，才生成的改变哈希值。
 
+这样可以确保相同的内容生成相同的哈希值，并始终映射到同样的 S3 路径上；反之，不同的内容则会生成不同的哈希值，而不同版本的内容不会互相干扰。
 
-```js
-output: {
-  filename: '[contenthash]/[name].json',
-}
-```
+![CI][5]
 
-这样可以确保相同的内容始终拥有相同的哈希值，而不同的内容则会生成不同的哈希值。
+### 版本控制
 
-### Long-term 修改
+![version][4]
+
+### 进一步改造计划
 
 我们部门前端 i8n 工具相对简单，基本用采用的是 react-intl 框架。Long term 的 solution 是，开发阶段甚至不需要保留 en.json 文件，直接将英语写入代码中：
 
@@ -133,17 +132,10 @@ export function List(props) {
 
 在 CI 阶段利用 [formatjs][2] 将代码中的英语提取出来，生成 en.json 文件，再进行后续的翻译工作。这样可以进一步提升开发体验。
 
-## 风险评估
-
-### 可选的方案
-
-| 方案                              | 优点                                                                                      | 缺点                                                                                                         |
-| --------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| 方案 A：寄生在现有的 admin 服务中 | 1. 无需支付额外的服务器成本，成本只有每月$50 的网络费用； 2. 可以利用现成的 auth 服务鉴权 | 后续推广到其他组织的服务需要另起炉灶                                                                         |
 
 ## 风险评估
 
-### 可选的方案
+### 可选的服务器选型
 
 | 方案                              | 优点                                                                                      | 缺点                                                                                                         |
 | --------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
@@ -161,3 +153,5 @@ export function List(props) {
 [1]: ./img/solution.drawio.png
 [2]: https://formatjs.io/docs/getting-started/message-extraction
 [3]: https://en.wikipedia.org/wiki/SHA-2#SHA-256
+[4]: ./img/version.drawio.png
+[5]: ./img/CI.drawio.png
