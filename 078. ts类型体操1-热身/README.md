@@ -117,7 +117,7 @@ type NumberToString<T> = {
 [0]: https://github.com/type-challenges/type-challenges
 [1]: https://www.typescriptlang.org/docs/handbook/2/types-from-types.html
 [2]: https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type
-[3]: ../img/complex.png
+[3]: ./img/complex.png
 [4]: https://www.typescriptlang.org/docs/handbook/utility-types.html
 [5]: https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#mapping-modifiers
 [6]: https://github.com/type-challenges/type-challenges/blob/main/questions/00013-warm-hello-world/README.md
