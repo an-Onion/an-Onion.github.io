@@ -1,14 +1,15 @@
 {
   "cSpell.words": [
-    "RDBMS",
-    "onupgradeneeded",
-    "Kanban",
     "awilix",
     "bugfix",
     "drawio",
     "gitlab",
+    "Kanban",
+    "keyof",
     "miragejs",
     "multirepo",
+    "onupgradeneeded",
+    "RDBMS",
     "stylelint",
     "todos",
     "vuex"

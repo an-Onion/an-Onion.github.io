@@ -7,6 +7,8 @@ type partial<T> = {
   [P in keyof T]?: T[P];
 };
 
-type pd = partial<demo>;
+type pd = Partial<demo>;
 
 type K = keyof any;
+
+type C = Exclude<'a' | 'b',  'a' | 'c'> // 'b'
