@@ -2,17 +2,17 @@
 
 书接上文。在上一节中，我们学习了 8 个最常用的内置工具类型。这些工具类型都是对现有类型进行“变形”的工具，它们可以改变类型的结构，但不会改变类型本身的值。这些内置工具类型，本质上就是类型系统中的“函数”，它们接受[范型][0]作为参数，返回一个新的类型。
 
-这一节，我们继续学习内置工具类型，主要集中学习[infer][4]相关的几个内置工具：
+这一节，我们继续学习内置工具类型，主要集中学习[infer][4]相关的几个内置工具.
 
 ## `Parameters<T>`：获取函数类型 T 的返回参数列表
 
-如下例所示，以元祖形式返回函数参数列表：
+TypeScript 中的 infer 作为关键字用于补充条件类型。注意，它不能在 extends 子句之外使用。在条件类型内部使用 infer 可以声明一个类型变量，以便在条件类型的 extends 子句中动态捕获类型。我们以内置的 TypeScript Parameters 工具为例。它接受一个函数类型，以元祖形式返回函数参数列表的类型：
 
 ```ts
 type T1 = Parameters<(s: string, n: string) => void>; // [string, number]
 ```
 
-实现用到了我们基础语法篇里提到的`infer`；在这里，我们使用 `infer P` 来推断函数参数的类型，并将其赋值给 `P`。
+在这里，我们可以使用 `infer P` 来动态推断函数参数的类型，并将其赋值给 `P`。
 
 ```ts
 type Parameters<T extends (...args: any) => any> = T extends (
@@ -144,11 +144,99 @@ type InstanceType<T extends abstract new (...args: any) => any> =
 
 - `ThisType<T>`：非推理类型位置的标记
 
-  早古的设计：没啥用，就是个 this 的标记位，等于空接口，一笔带过了。
+  早古的设计：就是个 this 的标记位，必须启用 noImplicitThis 标志才能使用它。实现就是个空借口，一笔带过了。
 
   ```ts
   interface ThisType<T> = {};
   ```
+
+  但是 type challenge 中，倒是有一到 hard 题——[Simple Vue][6]是关于这个工具类型的。题目大体是这样的：
+
+  > 实现类似 Vue 的类型支持的简化版本。它应该正确地推断出 data 、computed 和 methods 内部的 this 类型。
+
+  熟悉 Vue 的朋友应该知道：
+
+  - data 是一个简单的函数，它返回一个提供上下文 this 的对象，但是你无法在 data 中获取其他的计算属性或方法。
+
+  - computed 是将 this 作为上下文的函数的对象，进行一些计算并返回结果。在上下文中应暴露计算出的值而不是函数。
+
+  - methods 是函数的对象，其上下文也为 this。函数中可以访问 data，computed 以及其他 methods 中的暴露的字段。 computed 与 methods 的不同之处在于 methods 在上下文中按原样暴露为函数。
+
+  所以这题的意图是让我们要实现一个叫 SimpleVue 的函数类型，使得下面这个片段不显示 ts 类型错误。（注： `// @ts-expect-error` 是用来标记该处是预计会抛错的。在下例里，SimpleVue 的 data 函数里，`this.firstname`不能合法存在。）
+
+  ```ts
+  SimpleVue({
+    data() {
+      // @ts-expect-error
+      this.firstname;
+      // @ts-expect-error
+      this.getRandom();
+      // @ts-expect-error
+      this.data();
+
+      return {
+        firstname: 'Type',
+        lastname: 'Challenges',
+        amount: 10,
+      };
+    },
+    computed: {
+      fullname() {
+        return `${this.firstname} ${this.lastname}`;
+      },
+    },
+    methods: {
+      getRandom() {
+        return Math.random();
+      },
+      hi() {
+        alert(this.amount);
+        alert(this.fullname.toLowerCase());
+        alert(this.getRandom());
+      },
+      test() {
+        const fullname = this.fullname;
+        const cases: [Expect<Equal<typeof fullname, string>>] = [] as any;
+      },
+    },
+  });
+  ```
+
+  [我的实现][7]是这样的：
+
+  ```ts
+  declare function SimpleVue<D, C, M>(options: {
+    data: (this: void) => D;
+    computed: C & ThisType<D>;
+    methods: M & ThisType<D & ComputedHelper<C> & M>;
+  }): any;
+
+  type ComputedHelper<T> = {
+    [K in keyof T]: T[K] extends (...args: any[]) => infer R ? R : never;
+  };
+  ```
+
+  我们逐行解释一下：
+
+  - `declare function SimpleVue<D, C, M>(options: { ... })`: 我们声明函数 `SimpleVue`，它接受一个叫 option 的对象作为入参；这里我们定义了三个范型参数 `D`、`C` 和 `M`，分别代表 `data`、`computed` 和 `methods` 的类型。这三个范型参数在 `options` 对象中都有用到。
+  - Options 对象的类型是 `{data: ..., computed: ..., methods: ...}`，其中：
+    - `data: (this: void) => D;`: `data` 类型是一个函数，它的 `this` 类型是 `void`，返回值类型是 `D`。`this: void`意味着 `data` 函数内不能访问 `this` 对象——`this.firstname`会报错。
+    - `computed: C & ThisType<D>;`: `computed` 属性是一个对象，它的类型是 `C`；后面的`& ThisType<D>`的意思是： 该对象内部使用的 `this` 类型是 `D`。这意味着 `computed` 对象中的函数可以访问 `data` 对象中的属性—— `this.firstname`和 `this.lastname` 不会抛错。
+    - `methods: M & ThisType<D & ComputedHelper<C> & M>;`: `methods` 属性是一个对象，它的类型是 `M`；而`& ThisType<D & ComputedHelper<C> & M>`的意思是：该对象内部使用的 `this` 类型是 `D & ComputedHelper<C> & M`（ `ComputedHelper<C>` 等会儿解释）。这意味着 `methods` 对象中的函数可以访问 `data` 对象中的属性，也可以访问 `computed` 对象中的属性，还可以访问 `methods` 对象中的其他函数。
+  - `ComputedHelper<C>` 是我们自定义的一个类型“函数”，帮助提取 computed 里的函数返回类型，使得 methods 里能使用`this.fullname` 而不是 `this.fullname()`。它的效果如下：
+
+    ```ts
+    type computed = {
+      fullname: () => string;
+    };
+
+    type computedHelper = ComputedHelper<computed>;
+    //  computedHelper = {
+    //    fullname: string
+    //  }
+    ```
+
+  试了一下 hard 题，感觉如何。现在的主流框架都是由这样的 ts 类型写成的。大家可以想象一下，如果你要参与一个现代 js 框架的开发，类型体操 hard 水平是必备技能。
 
 ## 小结
 
@@ -162,3 +250,5 @@ type InstanceType<T extends abstract new (...args: any) => any> =
 [3]: https://github.com/microsoft/TypeScript/pull/49119
 [4]: https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types
 [5]: https://www.typescriptlang.org/docs/handbook/2/functions.html#declaring-this-in-a-function
+[6]: https://github.com/type-challenges/type-challenges/blob/main/questions/00006-hard-simple-vue/README.md
+[7]: https://github.com/an-Onion/type-challenges/blob/main/src/00006-hard-simple-vue.ts
