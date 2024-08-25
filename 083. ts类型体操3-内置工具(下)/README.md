@@ -10,7 +10,7 @@
 type NonNullable<T> = T extends null | undefined ? never : T;
 ```
 
-不记得 extends 关键字的可以回顾一下《ts 类型体操之内置工具类型（下）》的内容。extends 实际执行时是对联合类型`T`里的每一个元素分别进行条件判断。所以 NonNullable 通常也是用于联合类型操作，剔除联合类型中的 null 和 undefined：
+不记得 extends 关键字的可以回顾一下《ts 类型体操之内置工具类型（上）》的内容。extends 实际执行时是对联合类型`T`里的每一个元素分别进行条件判断。所以 NonNullable 通常也是用于联合类型操作，剔除联合类型中的 null 和 undefined：
 
 ```ts
 type T0 = NonNullable<string | number | undefined>; // string | number
@@ -45,9 +45,9 @@ type T1 = Awaited<Promise<Promise<number>>>; // number
 type T2 = Awaited<boolean | Promise<number>>; // number | boolean
 ```
 
-Awaited “方法”还是优点难度的：
+Awaited “方法”还是有点难度的：
 
-- 该类型需要支持递归：它需要将嵌套的将 Promise 的类型展开，直到得到 Promise 的最终返回值类型。
+- 该类型需要支持递归：它需要将嵌套的 Promise 的类型展开，直至得到 Promise 的最终返回值类型。
 - 递归的结束条件是：对非 PromiseLike 的类型（没有 then 方法的对象类型）返回 never。
 
 如下是 Awaited 的原始版本：
@@ -69,10 +69,10 @@ type Awaited<T> = T extends null | undefined
 
 - `T extends null | undefined`：如果 T 是 null 或者 undefined，则直接返回 T。这个判断是为了处理非严格模式下，null 和 undefined 的情况。在严格模式下，null 和 undefined 不能作为合法的 Promise。
 - `T extends object & { then(onfulfilled: infer F, ...args: infer _): any }`：这行很长，中心思想是：如果 T 是一个对象，并且该对象具有 then 方法，那么我们就可以认为它是一个 PromiseLike 类型。这里我们用到了`infer`关键字，它表示在类型推导过程中，将 then 方法的第一个参数类型提取出来，赋值给 F。若 T 不是 PromiseLike 类型，则直接返回 T。
-- `F extends (value: infer V, ...args: infer _) => any`：如果 then 方法的第一个参数是函数类型，那么我们就可以认为它是一个 Promise。我们再次用到了`infer`关键字，将 then 方法的第一个参数的类型提取出来，赋值给 V。若 F 不是函数类型，则不是一个合法的 Promise，直接返回 never。
+- `F extends (value: infer V, ...args: infer _) => any`：F 由上一步推断得到，如果 then 方法的第一个参数是函数类型，那么我们就可以认为它是一个 Promise。我们再次用到了`infer`关键字，将 then 方法的第一个参数的类型提取出来，赋值给 V。若 F 不是函数类型，则不是一个合法的 Promise，直接返回 never。
 - `Awaited<V>`：递归地展开 V，直到 V 不再是 PromiseLike 类型为止。
 
-原始版本可以看得懂，但是太麻烦了。我们自己写 type challenge 的时候可以用下面一个简化版代替：
+原始版本虽然能看得懂，但是太麻烦了。我们自实现 type challenge 这道 [MyAwaited][4] 的时候可以用下面一个简化版代替：
 
 ```ts
 type Awaited<T> = T extends PromiseLike<infer R> ? Awaited<R> : T;
@@ -106,16 +106,14 @@ type Awaited<T> = T extends PromiseLike<infer R> ? Awaited<R> : T;
 
 ## `NoInfer<Type>`
 
-`NoInfer<Type>`：可用于防止 TypeScript 从泛型函数内部推断类型。它是一个固有类型，没有更底层的实现：
+`NoInfer<Type>`：用于防止 TypeScript 从泛型函数内部推断类型。它是一个固有类型，没有更底层的实现：
 
 ```ts
 // lib.es5.d.ts
 type NoInfer<T> = intrinsic;
 ```
 
-它是 TypeScript 5.4 刚推出的一个内置类型，所以我们正好看看如何在某些情况下使用它来改进 TypeScript 的推理行为。
-
-入下例所示：通常的情况下编译器是可以从函数入惨里推断出 result 类型是`'hello'`
+它是 TypeScript 5.4 刚推出的一个内置类型，所以我们正好看看如何在某些情况下使用它来改进 TypeScript 的推理行为。如下例所示：通常的情况下编译器是可以从函数入惨里推断出 result 类型是 `'hello'`
 
 ```ts
 const returnWhatIPassedIn = <T>(value: T) => value;
@@ -131,7 +129,7 @@ const returnWhatIPassedIn = <T>(value: NoInfer<T>) => value;
 const result = returnWhatIPassedIn('hello'); //const result: unknown
 ```
 
-我们需要明确提供的类型才能获得 returnWhatIPassedIn 所需的返回类型：
+我们需要明确提供范型才能获得 returnWhatIPassedIn 的返回类型：
 
 ```ts
 const result = returnWhatIPassedIn<'hello'>('hello');
@@ -147,7 +145,7 @@ declare function createFSM<TState extends string>(config: {
 }): TState;
 ```
 
-请注意，TypeScript 可以从两个可能的地方推断类型：initial 和 states。如下所示：example 的类型推断为`"not-allowed" | "open" | "closed"`。显然，我们只希望 `"open" | "closed"`这两种类型，而`initial = "not-allowed"`应该抛错。
+请注意，TypeScript 可以从两个可能的地方推断类型：initial 和 states。如下所示：example 的类型推断为`"not-allowed" | "open" | "closed"`。显然，正确的类型推断应该是状态机只有 `"open" | "closed"` 这两种类型，而 `initial = "not-allowed"` 要抛错。
 
 ```ts
 const example = createFSM({
@@ -166,7 +164,7 @@ declare function createFSM<TState extends string>(config: {
 }): TState;
 ```
 
-现在，当我们调用时 createFSM 时，TypeScript 将仅从 TState 中进行推断 states。并给 initial 的负值抛出一个类型检查错误 —— `Type '"not-allowed"' is not assignable to type '"open" | "closed"'`：
+现在，当我们调用时 createFSM 时，TypeScript 将仅从 states 推断 TState 类型；并给 initial 的赋值抛出一个类型检查错误 —— `Type '"not-allowed"' is not assignable to type '"open" | "closed"'`：
 
 ```ts
 createFSM({
@@ -175,11 +173,11 @@ createFSM({
 });
 ```
 
-我们可以使用 NoInfer 来控制 TypeScript 从泛型函数内部推断类型的位置。当有多个运行时参数，每个参数都引用相同的类型参数时，这会很有用。
+我们使用 NoInfer 控制 TypeScript 从泛型函数内部推断类型的位置。当有多个运行时参数，每个参数都引用相同的类型参数时，这会很有用。
 
 ## Intrinsic String Manipulation Types （字符串操作类型）
 
-最后，我们再列一下四个固有的字符串操作类型：
+最后，我们再列一下另外四个固有的字符串操作类型：
 
 - `Uppercase<S>`：将字符串中的每个字符转换为大写。
 - `Lowercase<S>`：将字符串中的每个字符转换为小写。
@@ -220,9 +218,9 @@ type KebabCase<S extends string> = S extends `${infer F}${infer R}`
 
 我们再逐行解释一下上面的实现：
 
-1. S extends \`\${infer F}\$\{infer R\}\`：我们使用模板字符串类型来拆分字符串，将字符串 `S` 分解为第一个字符 `F` 和剩余部分 `R`。
-2. `R extends Uncapitalize<R>`：我们检查剩余部分 `R` 是否已经是小写开头。如果是，我们直接将第一个字符 `F` 转换为小写，并递归调用 `KebabCase` 处理剩余部分 `R`。如果不是，我们也将第一个字符 `F` 转换为小写，并在后面添加一个连字符 `-`，然后递归调用 `KebabCase` 处理剩余部分 `R`。
-3. `S`：如果字符串 `S` 已经是空字符串——`S extends ...`判否，我们直接返回它。
+1. S extends \`\${infer F}\$\{infer R\}\`：我们使用模板字符串类型来拆分`S`，将字符串 `S` 分解为第一个字符 `F` 和剩余部分 `R`。
+2. `R extends Uncapitalize<R>`：我们检查剩余部分 `R` 是否是小写开头：如果是，我们直接将第一个字符 `F` 转换为小写，并递归调用 `KebabCase` 处理剩余部分 `R`；如果不是，我们也将第一个字符 `F` 转换为小写，并在后面添加一个连字符 `-`。然后递归调用 `KebabCase` 处理剩余部分 `R`。
+3. `S`：如果字符串 `S` 已经是空字符串——`S extends ...`判否，我们直接返回它本身。
 
 通过这种方式，我们完成了这道中等难度的题目。
 
@@ -237,3 +235,4 @@ type KebabCase<S extends string> = S extends `${infer F}${infer R}`
 [1]: https://en.wikipedia.org/wiki/Duck_typing
 [2]: https://github.com/type-challenges/type-challenges/blob/main/questions/00612-medium-kebabcase/README.md
 [3]: https://github.com/microsoft/TypeScript/pull/49119
+[4]: https://github.com/type-challenges/type-challenges/blob/main/questions/00189-easy-awaited/README.md
