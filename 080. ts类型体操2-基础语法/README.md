@@ -55,7 +55,7 @@ interface Vehicle {
 }
 
 interface Car extends Vehicle {
-  power: "gas" | "electricity";
+  power: 'gas' | 'electricity';
 }
 ```
 
@@ -68,7 +68,7 @@ interface Car extends Vehicle {
 还是回到 ts 类型系统里，例如，如果你想从对象的属性中获取值，你可能会写下以下代码：
 
 ```ts
-const testObj = { x: 10, y: "Hello", z: true };
+const testObj = { x: 10, y: 'Hello', z: true };
 
 function getProperty<T>(obj: T, key: keyof T) {
   return obj[key];
@@ -78,10 +78,10 @@ function getProperty<T>(obj: T, key: keyof T) {
 虽然上面这段代码里给 key 加了个 `keyof T`的约束，但是还是不够严谨，让我们看一下 `getProperty`函数的调用：
 
 ```ts
-const xValue = getProperty(testObj, "x");
+const xValue = getProperty(testObj, 'x');
 // const xValue: string | number | boolean
 
-const yValue = getProperty(testObj, "y");
+const yValue = getProperty(testObj, 'y');
 // const yValue: string | number | boolean
 ```
 
@@ -92,10 +92,10 @@ function getProperty<T, K extends keyof T>(obj: T, key: K) {
   return obj[key];
 }
 
-const xValue = getProperty(testObj, "x");
+const xValue = getProperty(testObj, 'x');
 // const xValue: number
 
-const yValue = getProperty(testObj, "y");
+const yValue = getProperty(testObj, 'y');
 // const yValue: string
 ```
 
@@ -103,14 +103,14 @@ const yValue = getProperty(testObj, "y");
 
 范型约束在类型体操中通常用于判定 `@ts-expect-error`，类似于预期抛错的单测，大约一半的题目会用到。
 
-3. 条件类型
+3. 条件判断
 
 type 运算中没有 `if` 关键词；我们做条件判断时，只能依赖三元运算：`T extends U ? X : Y`。如下所示：
 
 ```ts
 type IsString<T> = T extends string ? true : false;
 
-type x = IsString<"hello">; // type x = true
+type x = IsString<'hello'>; // type x = true
 type y = IsString<number>; // type y = false
 type z = IsString<string>; // type z = true
 ```
@@ -128,7 +128,7 @@ type z = IsString<string>; // type z = true
 类型系统里最直接获得整数结果的方法就是获得元祖（tuple）的长度，比如：
 
 ```ts
-type Length<T extends any[]> = T["length"];
+type Length<T extends any[]> = T['length'];
 type five = Length<[1, 2, 3, 4, 5]>; // 5
 ```
 
@@ -139,14 +139,14 @@ _p.s._ 读取类型的属性用的方括号语法，这个和 JS 有共通之处
 ```ts
 type Tuple = [1, 2];
 
-type Len = Tuple["length"]; // Len = 2
+type Len = Tuple['length']; // Len = 2
 type Idx = Tuple[0]; // Idx = 1
 ```
 
 那么，假如需要实现整数相加呢？本质上就是通过拼接两个元祖来来得到它们的总长度：
 
 ```ts
-type Add<A extends any[], B extends any[]> = [...A, ...B]["length"];
+type Add<A extends any[], B extends any[]> = [...A, ...B]['length'];
 
 type Test = Add<[1, 2, 3], [4, 5, 6]>; // 6
 ```
@@ -164,8 +164,8 @@ Typescript 类型系统里还有一个反常规的特性：就是没有 for 循�
 递归的思路很简单，就是将问题拆解成更小的子问题，然后通过递归调用自身来解决问题。比如，实现一个整数加一的递归函数：
 
 ```ts
-type addOne<T extends number, R extends any[] = []> = R["length"] extends T
-  ? [...R, 1]["length"]
+type addOne<T extends number, R extends any[] = []> = R['length'] extends T
+  ? [...R, 1]['length']
   : addOne<T, [...R, 1]>;
 
 type Test2 = addOne<5>; // 6
