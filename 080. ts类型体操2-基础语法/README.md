@@ -42,6 +42,14 @@ type B = NumberToString<A>;
 - `in`：运算符，遍历右侧的联合类型的每一个成员。
 - `[K in keyof T]`: string：表示遍历类型 T 的每一个属性，将属性值都转成 string 类型。
 
+对于类型映射，其实还有一个考点：如果这个类型是一个基本（primitives）类型，会发生什么呢？
+
+```ts
+type primitivesType = NumberToString<string>; // string
+```
+
+答案是：基本类型会被原样返回。这个知识点很有用，我们会在之后的递推题里面反复用到，这里暂且略过。
+
 ## extends 关键词<a id='2'></a>
 
 这里科普一下 extends 相关的八股文，extends 有三种基本用法：

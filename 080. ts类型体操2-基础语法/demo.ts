@@ -17,3 +17,10 @@ type Test2 = addOne<5> // 6
 type Last<T extends any[]> = T extends [...infer R, infer L] ? L : never
 
 type Test3 = Last<[1, 2, 3]> // 3
+
+
+type NumberToString<T> = {
+    [K in keyof T]: string;
+  };
+
+type Test4 = NumberToString<string | number> // {a:string,b:string}
