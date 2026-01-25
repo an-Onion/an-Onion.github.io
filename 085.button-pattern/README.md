@@ -73,13 +73,76 @@ WAI-ARIA 规范支持三种类型的按钮，每种类型都有其特定的用�
 
 **角色声明**是基础要求。按钮元素的 role 属性应设置为 [button][1]，向辅助技术表明这是一个按钮组件。对于使用 button 这样的原生 HTML 元素，浏览器会自动处理角色声明，无需开发者手动添加。
 
+示例：使用 div 元素模拟按钮时需要添加 role="button"：
+
+```html
+<div
+  role="button"
+  tabindex="0"
+  onclick="handleClick()">
+  提交
+</div>
+```
+
 **可访问名称**是按钮最重要的可访问性特征之一。按钮必须有可访问的名称，这个名称可以通过多种方式提供：按钮内部的文本内容是最常见的来源；在某些情况下，可以使用 [aria-labelledby][2] 引用页面上的其他元素作为标签；或者使用 [aria-label][3] 直接提供标签文本。屏幕阅读器用户主要依赖这个名称来理解按钮的功能。
+
+示例 1：使用 aria-labelledby 引用其他元素作为标签：
+
+```html
+<h2 id="save-heading">保存设置</h2>
+<button
+  role="button"
+  aria-labelledby="save-heading">
+  图标
+</button>
+```
+
+示例 2：使用 aria-label 直接提供标签文本：
+
+```html
+<button
+  aria-label="关闭对话框"
+  onclick="closeDialog()">
+  ×
+</button>
+```
 
 **描述信息**可以通过 [aria-describedby][4] 属性关联。如果页面上存在对按钮功能的详细描述说明，应将描述元素的 ID 赋给这个属性，辅助技术会在播报按钮名称后继续播报描述内容。
 
+示例：使用 aria-describedby 提供详细描述：
+
+```html
+<button aria-describedby="delete-warning">删除</button>
+<p id="delete-warning">此操作无法撤销，将永久删除所选数据。</p>
+```
+
 **禁用状态**需要正确使用 [aria-disabled][5] 属性。当按钮的关联操作不可用时，应设置 aria-disabled="true"。这个属性向辅助技术传达按钮当前处于禁用状态，用户无法与之交互。需要注意的是，对于原生 HTML button 元素，应使用 disabled 属性而非 aria-disabled。
 
+示例：使用 aria-disabled 禁用非原生按钮：
+
+```html
+<div
+  role="button"
+  tabindex="-1"
+  aria-disabled="true"
+  aria-label="保存">
+  保存
+</div>
+```
+
 **切换状态**使用 [aria-pressed][6] 属性来传达，这个属性只用于实现为切换按钮的组件。属性值应为 true（按下状态）、false（未按下状态）或 mixed（部分选中状态，用于三态树节点等场景）。
+
+示例：使用 aria-pressed 实现切换按钮：
+
+```html
+<button
+  type="button"
+  aria-pressed="false"
+  id="toggleBtn"
+  onclick="toggleState()">
+  夜间模式
+</button>
+```
 
 ## 五、按钮与链接的区别
 
@@ -93,9 +156,9 @@ WAI-ARIA 规范支持三种类型的按钮，每种类型都有其特定的用�
 
 ## 六、其他示例
 
-以下是几种常见按钮场景的实现示例，展示了如何正确应用 Button Pattern 规范。
+以下是一个常见按钮场景的实现示例——打开对话框的按钮，展示了如何正确应用 Button Pattern 规范。
 
-### 6.1 打开对话框的按钮
+使用 HTML 原生 `<dialog>` 元素配合按钮实现对话框功能：
 
 ```html
 <button
@@ -105,34 +168,30 @@ WAI-ARIA 规范支持三种类型的按钮，每种类型都有其特定的用�
   id="openDialog">
   设置...
 </button>
-```
 
-当按钮会打开对话框时，使用省略号提示用户后面还有额外交互。aria-haspopup 表明按钮会弹出内容，aria-expanded 用于传达弹出内容的当前状态。
-
-### 6.2 自定义按钮实现
-
-有时由于设计需求需要使用非 button 元素（如 div 或 span）实现按钮，这时需要手动添加必要的 ARIA 属性和键盘支持：
-
-```html
-<div
-  role="button"
-  tabindex="0"
-  aria-label="删除"
-  id="deleteBtn">
-  删除
-</div>
+<dialog id="settingsDialog">
+  <form method="dialog">
+    <label> <input type="checkbox" /> 启用通知 </label>
+    <button value="confirm">确定</button>
+  </form>
+</dialog>
 
 <script>
-  deleteBtn.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      this.click();
-    }
+  const dialog = document.getElementById('settingsDialog');
+  const openBtn = document.getElementById('openDialog');
+
+  openBtn.addEventListener('click', () => {
+    dialog.showModal();
+    openBtn.setAttribute('aria-expanded', 'true');
+  });
+
+  dialog.addEventListener('close', () => {
+    openBtn.setAttribute('aria-expanded', 'false');
   });
 </script>
 ```
 
-使用 role="button" 将元素暴露为按钮，使用 tabindex="0" 使其可通过键盘聚焦，监听键盘事件并触发点击操作。需要注意的是，还应添加适当的 aria-disabled 支持和处理。
+当按钮会打开对话框时，使用省略号提示用户后面还有额外交互。[aria-haspopup][7] 表明按钮会弹出内容，[aria-expanded][8] 用于传达弹出内容的当前状态。
 
 ## 七、CSS 伪类与交互样式
 
@@ -233,12 +292,11 @@ CSS 本身无法直接检测组合键，但可以通过 JavaScript 增强体验�
 | 组合键      | 效果           | 触发元素                          |
 | ----------- | -------------- | --------------------------------- |
 | Tab + Space | 聚焦并激活按钮 | `<button>`                        |
-| Tab + Enter | 聚焦并触发按钮 | `<a href>`、`<div role="button">` |
+| Tab + Enter | 聚焦并触发按钮 | `<button>`、`<div role="button">` |
 
 **原生 HTML 按钮的行为：**
 
 - `<button>`：Tab 聚焦后按 Space/Enter 都会触发点击
-- `<a href="#">`：Tab 聚焦后按 Enter 触发点击，Space 触发链接跳转
 - `<div role="button">`：需要额外 JS 处理 Space 键
 
 ## 八、总结
@@ -249,8 +307,6 @@ CSS 本身无法直接检测组合键，但可以通过 JavaScript 增强体验�
 
 WAI-ARIA Button Pattern 为我们提供了清晰的指导方针，将这些规范内化为开发习惯，能够帮助我们创建更加包容和易用的 Web 应用。每一个正确实现的按钮组件，都是构建无障碍网络环境的重要一步。
 
-## 参考链接
-
 [0]: https://www.w3.org/WAI/ARIA/apg/patterns/button/
 [1]: https://www.w3.org/TR/wai-aria-1.2/#button
 [2]: https://www.w3.org/TR/wai-aria-1.2/#aria-labelledby
@@ -258,3 +314,5 @@ WAI-ARIA Button Pattern 为我们提供了清晰的指导方针，将这些规�
 [4]: https://www.w3.org/TR/wai-aria-1.2/#aria-describedby
 [5]: https://www.w3.org/TR/wai-aria-1.2/#aria-disabled
 [6]: https://www.w3.org/TR/wai-aria-1.2/#aria-pressed
+[7]: https://www.w3.org/TR/wai-aria-1.2/#aria-haspopup
+[8]: https://www.w3.org/TR/wai-aria-1.2/#aria-expanded

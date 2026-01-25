@@ -16,69 +16,120 @@
     <section class="space-y-8">
       <article class="card bg-base-200 shadow-lg">
         <header class="card-body">
-          <h2 class="card-title text-xl text-secondary">6.1 提交表单的普通按钮</h2>
+          <h2 class="card-title text-xl text-secondary">普通按钮</h2>
           <div class="flex gap-2 mb-3 mt-4">
-            <button class="btn btn-primary">提交表单</button>
+            <button class="btn btn-primary" type="submit">提交表单</button>
           </div>
-          <div class="mockup-code w-full">
-            <pre><code>&lt;button type="submit"&gt;提交表单&lt;/button&gt;</code></pre>
-          </div>
+          <pre class="mockup-code w-full"><code>&lt;button type="submit"&gt;提交表单&lt;/button&gt;</code></pre>
         </header>
       </article>
 
       <article class="card bg-base-200 shadow-lg">
         <header class="card-body">
-          <h2 class="card-title text-xl text-secondary">6.2 打开对话框的按钮</h2>
+          <h2 class="card-title text-xl text-secondary">切换按钮</h2>
+          <p class="text-base-content/70 mb-2">通过 aria-pressed 属性传达状态</p>
+          <div class="flex gap-2 mb-3 mt-4">
+            <button class="btn btn-accent" id="muteButton" aria-pressed="false">静音</button>
+          </div>
+          <pre class="mockup-code w-full"><code>&lt;button
+  type="button"
+  aria-pressed="false"
+  id="muteButton"&gt;
+  静音
+&lt;/button&gt;</code></pre>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">菜单按钮</h2>
+          <p class="text-base-content/70 mb-2">通过 aria-haspopup 属性标识为菜单按钮</p>
+          <div class="flex gap-2 mb-3 mt-4">
+            <button class="btn btn-secondary" id="fileMenu" aria-haspopup="menu">文件</button>
+          </div>
+          <pre class="mockup-code w-full"><code>&lt;button
+  type="button"
+  aria-haspopup="menu"
+  id="fileMenu"&gt;
+  文件
+&lt;/button&gt;</code></pre>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">打开对话框的按钮</h2>
           <p class="text-base-content/70 mb-2">省略号提示用户后面还有额外交互</p>
           <div class="flex gap-2 mb-3 mt-4">
-            <button class="btn btn-secondary" id="openDialog">设置...</button>
+            <button class="btn btn-secondary" id="openDialog" aria-haspopup="dialog" aria-expanded="false">设置...</button>
           </div>
-          <div class="mockup-code w-full">
-            <pre><code>&lt;button
+          <pre class="mockup-code w-full"><code>&lt;button
   type="button"
   aria-haspopup="dialog"
   aria-expanded="false"
   id="openDialog"&gt;
   设置...
 &lt;/button&gt;</code></pre>
-          </div>
         </header>
       </article>
 
       <article class="card bg-base-200 shadow-lg">
         <header class="card-body">
-          <h2 class="card-title text-xl text-secondary">6.3 切换按钮状态</h2>
-          <p class="text-base-content/70 mb-2">通过 aria-pressed 属性传达状态</p>
+          <h2 class="card-title text-xl text-secondary">使用 aria-label</h2>
+          <p class="text-base-content/70 mb-2">为图标按钮提供可访问名称</p>
           <div class="flex gap-2 mb-3 mt-4">
-            <button class="btn btn-accent" id="muteButton" aria-pressed="false">静音</button>
+            <button class="btn btn-ghost btn-circle" aria-label="关闭对话框">×</button>
           </div>
-          <div class="mockup-code w-full">
-            <pre><code>&lt;button
-  type="button"
-  aria-pressed="false"
-  id="muteButton"&gt;
-  静音
-&lt;/button&gt;</code></pre>
-          </div>
+          <pre class="mockup-code w-full"><code>&lt;button aria-label="关闭对话框"&gt;×&lt;/button&gt;</code></pre>
         </header>
       </article>
 
       <article class="card bg-base-200 shadow-lg">
         <header class="card-body">
-          <h2 class="card-title text-xl text-secondary">6.4 自定义按钮实现</h2>
-          <p class="text-base-content/70 mb-2">使用非 button 元素实现，需手动添加 ARIA 和键盘支持</p>
+          <h2 class="card-title text-xl text-secondary">使用 aria-describedby</h2>
+          <p class="text-base-content/70 mb-2">提供详细的操作描述</p>
           <div class="flex gap-2 mb-3 mt-4">
-            <button class="btn btn-error" role="button" tabindex="0">删除</button>
+            <button class="btn btn-error" aria-describedby="delete-warning">删除</button>
           </div>
-          <div class="mockup-code w-full">
-            <pre><code>&lt;div
-  role="button"
-  tabindex="0"
-  aria-label="删除"
-  id="deleteBtn"&gt;
-  删除
-&lt;/div&gt;</code></pre>
+          <p class="text-sm text-base-content/60" id="delete-warning">此操作无法撤销，将永久删除所选数据。</p>
+          <pre class="mockup-code w-full"><code>&lt;button aria-describedby="delete-warning"&gt;删除&lt;/button&gt;
+&lt;p id="delete-warning"&gt;此操作无法撤销...&lt;/p&gt;</code></pre>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">禁用状态</h2>
+          <p class="text-base-content/70 mb-2">原生 button 使用 disabled，自定义按钮使用 aria-disabled</p>
+          <div class="flex gap-2 mb-3 mt-4">
+            <button class="btn btn-disabled" disabled>原生按钮（已禁用）</button>
+            <div class="btn btn-disabled" role="button" tabindex="-1" aria-disabled="true">自定义按钮</div>
           </div>
+          <pre class="mockup-code w-full"><code>&lt;!-- 原生 button --&gt;
+&lt;button disabled&gt;已禁用&lt;/button&gt;
+
+&lt;!-- 自定义按钮 --&gt;
+&lt;div role="button" tabindex="-1" aria-disabled="true"&gt;已禁用&lt;/div&gt;</code></pre>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">自定义按钮实现</h2>
+          <p class="text-base-content/70 mb-2">使用非 button 元素实现，需添加 role、tabindex 和键盘支持</p>
+          <div class="flex gap-2 mb-3 mt-4">
+            <button class="btn btn-warning" role="button" tabindex="0" id="deleteBtn">删除</button>
+          </div>
+          <pre class="mockup-code w-full"><code>&lt;div role="button" tabindex="0" aria-label="删除"&gt;删除&lt;/div&gt;
+
+&lt;script&gt;
+  deleteBtn.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      this.click();
+    }
+  });
+&lt;/script&gt;</code></pre>
         </header>
       </article>
     </section>
@@ -88,6 +139,26 @@
     </footer>
   </main>
 
+  <dialog id="settingsDialog" class="modal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg">设置</h3>
+      <div class="py-4">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" class="checkbox checkbox-primary" />
+          <span>启用通知</span>
+        </label>
+      </div>
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn">确定</button>
+        </form>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
+
   <script>
     const muteButton = document.getElementById('muteButton');
     if (muteButton) {
@@ -95,6 +166,28 @@
         const isPressed = this.getAttribute('aria-pressed') === 'true';
         this.setAttribute('aria-pressed', !isPressed);
         this.classList.toggle('btn-active', !isPressed);
+      });
+    }
+
+    const openDialog = document.getElementById('openDialog');
+    const dialog = document.getElementById('settingsDialog');
+    if (openDialog && dialog) {
+      openDialog.addEventListener('click', () => {
+        dialog.showModal();
+        openDialog.setAttribute('aria-expanded', 'true');
+      });
+      dialog.addEventListener('close', () => {
+        openDialog.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    const deleteBtn = document.getElementById('deleteBtn');
+    if (deleteBtn) {
+      deleteBtn.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.click();
+        }
       });
     }
   </script>
