@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Button Pattern 示例</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-base-100 min-h-screen">
+  <main class="container mx-auto px-4 py-8 max-w-4xl">
+    <header>
+      <h1 class="text-4xl font-bold text-primary mb-8">Button Pattern 示例</h1>
+    </header>
+
+    <section class="space-y-8">
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">6.1 提交表单的普通按钮</h2>
+          <div class="flex gap-2 mb-3 mt-4">
+            <button class="btn btn-primary">提交表单</button>
+          </div>
+          <div class="mockup-code w-full">
+            <pre><code>&lt;button type="submit"&gt;提交表单&lt;/button&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">6.2 打开对话框的按钮</h2>
+          <p class="text-base-content/70 mb-2">省略号提示用户后面还有额外交互</p>
+          <div class="flex gap-2 mb-3 mt-4">
+            <button class="btn btn-secondary" id="openDialog">设置...</button>
+          </div>
+          <div class="mockup-code w-full">
+            <pre><code>&lt;button
+  type="button"
+  aria-haspopup="dialog"
+  aria-expanded="false"
+  id="openDialog"&gt;
+  设置...
+&lt;/button&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">6.3 切换按钮状态</h2>
+          <p class="text-base-content/70 mb-2">通过 aria-pressed 属性传达状态</p>
+          <div class="flex gap-2 mb-3 mt-4">
+            <button class="btn btn-accent" id="muteButton" aria-pressed="false">静音</button>
+          </div>
+          <div class="mockup-code w-full">
+            <pre><code>&lt;button
+  type="button"
+  aria-pressed="false"
+  id="muteButton"&gt;
+  静音
+&lt;/button&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">6.4 自定义按钮实现</h2>
+          <p class="text-base-content/70 mb-2">使用非 button 元素实现，需手动添加 ARIA 和键盘支持</p>
+          <div class="flex gap-2 mb-3 mt-4">
+            <button class="btn btn-error" role="button" tabindex="0">删除</button>
+          </div>
+          <div class="mockup-code w-full">
+            <pre><code>&lt;div
+  role="button"
+  tabindex="0"
+  aria-label="删除"
+  id="deleteBtn"&gt;
+  删除
+&lt;/div&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+    </section>
+
+    <footer class="text-center text-base-content/60 text-sm mt-8 pb-4">
+      <p>参考：<a href="https://www.w3.org/WAI/ARIA/apg/patterns/button/" class="link link-primary" target="_blank">W3C WAI-ARIA Button Pattern</a></p>
+    </footer>
+  </main>
+
+  <script>
+    const muteButton = document.getElementById('muteButton');
+    if (muteButton) {
+      muteButton.addEventListener('click', function () {
+        const isPressed = this.getAttribute('aria-pressed') === 'true';
+        this.setAttribute('aria-pressed', !isPressed);
+        this.classList.toggle('btn-active', !isPressed);
+      });
+    }
+  </script>
+</body>
+</html>
