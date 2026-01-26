@@ -1,0 +1,222 @@
+<!doctype html>
+<html
+  lang="zh-CN"
+  data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <title>Link Pattern 示例</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="bg-base-100 min-h-screen">
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+      <header>
+        <h1 class="text-4xl font-bold text-primary mb-8">Link Pattern 示例</h1>
+      </header>
+
+      <section class="space-y-8">
+        <article class="card bg-base-200 shadow-lg">
+          <header class="card-body">
+            <h2 class="card-title text-xl text-secondary">原生链接</h2>
+            <p class="text-base-content/70 mb-2">优先使用原生 a 元素</p>
+            <div class="flex gap-2 mb-3 mt-4">
+              <a
+                href="https://www.w3.org/"
+                target="_blank"
+                class="link link-primary"
+                >访问 W3C 网站</a
+              >
+            </div>
+            <pre
+              class="mockup-code w-full"><code>&lt;a href="https://www.w3.org/" target="_blank"&gt;访问 W3C 网站&lt;/a&gt;</code></pre>
+          </header>
+        </article>
+
+        <article class="card bg-base-200 shadow-lg">
+          <header class="card-body">
+            <h2 class="card-title text-xl text-secondary">
+              使用 span 元素作为链接
+            </h2>
+            <p class="text-base-content/70 mb-2">
+              需要添加 role="link" 和 tabindex="0"
+            </p>
+            <div class="flex gap-2 mb-3 mt-4">
+              <span
+                class="link link-secondary cursor-pointer"
+                role="link"
+                tabindex="0"
+                onclick="goToLink('https://www.w3.org/')"
+                onkeydown="handleKeydown(event, 'https://www.w3.org/')">
+                W3C 网站（span）
+              </span>
+            </div>
+            <pre class="mockup-code w-full"><code>&lt;span
+  role="link"
+  tabindex="0"
+  onclick="goToLink('https://w3.org/')"
+  onkeydown="goToLink(event, 'https://w3.org/')"&gt;
+  W3C 网站
+&lt;/span&gt;</code></pre>
+          </header>
+        </article>
+
+        <article class="card bg-base-200 shadow-lg">
+          <header class="card-body">
+            <h2 class="card-title text-xl text-secondary">
+              使用 img 元素作为链接
+            </h2>
+            <p class="text-base-content/70 mb-2">通过 alt 属性提供可访问名称</p>
+            <div class="flex gap-2 mb-3 mt-4">
+              <img
+                src="https://www.w3.org/WAI/WAI/logo/img/wai-logo.png"
+                alt="W3C 网站"
+                class="h-12 cursor-pointer"
+                role="link"
+                tabindex="0"
+                onclick="goToLink('https://www.w3.org/')"
+                onkeydown="handleKeydown(event, 'https://www.w3.org/')" />
+            </div>
+            <pre class="mockup-code w-full"><code>&lt;img
+  src="logo.png"
+  alt="W3C 网站"
+  role="link"
+  tabindex="0"
+  onclick="goToLink('https://w3.org/')"
+  onkeydown="goToLink(event, 'https://w3.org/')" /&gt;</code></pre>
+          </header>
+        </article>
+
+        <article class="card bg-base-200 shadow-lg">
+          <header class="card-body">
+            <h2 class="card-title text-xl text-secondary">使用 aria-label</h2>
+            <p class="text-base-content/70 mb-2">
+              为图标或纯装饰元素提供可访问名称
+            </p>
+            <div class="flex gap-2 mb-3 mt-4">
+              <span
+                class="text-3xl cursor-pointer"
+                role="link"
+                tabindex="0"
+                aria-label="访问 W3C 网站"
+                onclick="goToLink('https://www.w3.org/')"
+                onkeydown="handleKeydown(event, 'https://www.w3.org/')"
+                >🔗</span
+              >
+            </div>
+            <pre class="mockup-code w-full"><code>&lt;span
+  role="link"
+  tabindex="0"
+  aria-label="访问 W3C 网站"
+  onclick="goToLink('https://w3.org/')"
+  onkeydown="goToLink(event, 'https://w3.org/')"&gt;
+  🔗
+&lt;/span&gt;</code></pre>
+          </header>
+        </article>
+
+        <article class="card bg-base-200 shadow-lg">
+          <header class="card-body">
+            <h2 class="card-title text-xl text-secondary">链接与按钮对比</h2>
+            <p class="text-base-content/70 mb-2">两者功能和使用场景不同</p>
+            <div class="flex flex-wrap gap-3 mb-3 mt-4 items-center">
+              <a
+                href="https://www.w3.org/"
+                target="_blank"
+                class="btn btn-primary"
+                >链接：导航到页面</a
+              >
+              <button class="btn btn-secondary">按钮：触发动作</button>
+            </div>
+            <pre class="mockup-code w-full"><code>&lt;!-- 链接：导航 --&gt;
+&lt;a href="/page"&gt;前往新页面&lt;/a&gt;
+
+&lt;!-- 按钮：执行动作 --&gt;
+&lt;button&gt;提交表单&lt;/button&gt;</code></pre>
+          </header>
+        </article>
+
+        <article class="card bg-base-200 shadow-lg">
+          <header class="card-body">
+            <h2 class="card-title text-xl text-secondary">自定义链接样式</h2>
+            <p class="text-base-content/70 mb-2">使用 CSS 模拟链接样式的按钮</p>
+            <div class="flex gap-2 mb-3 mt-4">
+              <span
+                class="link-styled"
+                role="link"
+                tabindex="0"
+                onclick="goToLink('https://www.w3.org/')"
+                onkeydown="handleKeydown(event, 'https://www.w3.org/')">
+                自定义样式链接
+              </span>
+            </div>
+            <pre class="mockup-code w-full"><code>&lt;span
+  role="link"
+  tabindex="0"
+  class="link-styled"
+  onclick="goToLink('https://w3.org/')"
+  onkeydown="goToLink(event, 'https://w3.org/')"&gt;
+  自定义样式链接
+&lt;/span&gt;</code></pre>
+          </header>
+        </article>
+      </section>
+
+      <footer class="text-center text-base-content/60 text-sm mt-8 pb-4">
+        <p>
+          参考：<a
+            href="https://www.w3.org/WAI/ARIA/apg/patterns/link/"
+            class="link link-primary"
+            target="_blank"
+            >W3C WAI-ARIA Link Pattern</a
+          >
+        </p>
+      </footer>
+    </main>
+
+    <script>
+      function goToLink(url) {
+        window.open(url, '_blank');
+      }
+
+      function handleKeydown(event, url) {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          goToLink(url);
+        }
+      }
+
+      document.querySelectorAll('[role="link"]').forEach((el) => {
+        el.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            this.click();
+          }
+        });
+      });
+    </script>
+
+    <style>
+      .link-styled {
+        color: oklch(from theme('colors.primary') 0.8 0.2);
+        text-decoration: underline;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition: opacity 0.2s;
+      }
+      .link-styled:hover {
+        opacity: 0.8;
+      }
+      .link-styled:focus {
+        outline: 2px solid oklch(from theme('colors.primary') 0.8 0.2);
+        outline-offset: 2px;
+      }
+    </style>
+  </body>
+</html>
