@@ -6,7 +6,7 @@
 
 链接是一个允许用户导航到另一个页面、页面位置或其他资源的界面组件。链接的本质是**超文本引用**，它告诉用户**这里有你可能感兴趣的另一个资源**。与按钮执行动作不同，链接的作用是导航，这是两者最本质的区别。
 
-在实际开发中，浏览器为原生 HTML 链接提供了丰富的功能支持，例如在新窗口中打开目标页面、将目标 URL 复制到系统剪贴板等。因此，**应尽可能使用 HTML a 元素创建链接**[0]。
+在实际开发中，浏览器为原生 HTML 链接提供了丰富的功能支持，例如在新窗口中打开目标页面、将目标 URL 复制到系统剪贴板等。因此，**应尽可能使用 HTML a 元素创建链接**。
 
 ## 二、何时需要自定义链接实现
 
@@ -24,11 +24,18 @@
 
 **回车键**是激活链接的主要方式。当用户按下回车键时，链接被触发执行导航操作。
 
+**上下文菜单**（可选）：按 `Shift + F10` 键可以打开链接的上下文菜单，提供复制链接地址、在新窗口中打开等选项。
+
+| 操作系统 | 打开上下文菜单             |
+| -------- | -------------------------- |
+| Windows  | `Shift + F10` 或 `Menu` 键 |
+| macOS    | `Control + 点击`           |
+
 ## 四、WAI-ARIA 角色、状态和属性
 
 正确使用 WAI-ARIA 属性是构建无障碍链接组件的技术基础。
 
-**角色声明**是基础要求。非 a 元素的链接需要将 role 属性设置为 link[1]，向辅助技术表明这是一个链接组件。
+**角色声明**是基础要求。非 a 元素的链接需要将 role 属性设置为 [link][1]，向辅助技术表明这是一个链接组件。
 
 示例：使用 span 元素模拟链接：
 
@@ -42,7 +49,7 @@
 </span>
 ```
 
-**可访问名称**是链接最重要的可访问性特征之一。链接必须有可访问的名称，可以通过元素文本内容、aria-label[2] 或 alt 属性提供。
+**可访问名称**是链接最重要的可访问性特征之一。链接必须有可访问的名称，可以通过元素文本内容、[aria-label][2] 或 alt 属性提供。
 
 示例 1：使用 img 元素作为链接时，通过 alt 属性提供可访问名称：
 
@@ -65,10 +72,12 @@
   class="text-link"
   onclick="goToLink(event, 'https://example.com/')"
   onkeydown="goToLink(event, 'https://example.com/')"
-  aria-label="访问示例网站"></span>
+  aria-label="访问示例网站"
+  >🔗</span
+>
 ```
 
-**焦点管理**需要使用 tabindex="0"[3]，将链接元素包含在页面 Tab 序列中，使其可通过键盘聚焦。
+**焦点管理**需要使用 [tabindex="0"][3]，将链接元素包含在页面 Tab 序列中，使其可通过键盘聚焦。
 
 ## 五、完整示例
 
@@ -100,7 +109,9 @@
   class="link-styled"
   onclick="goToLink(event, 'https://w3.org/')"
   onkeydown="goToLink(event, 'https://w3.org/')"
-  aria-label="W3C 网站"></span>
+  aria-label="W3C 网站"
+  >🔗</span
+>
 
 <script>
   function goToLink(event, url) {
@@ -172,16 +183,37 @@ a,
   cursor: pointer;
 }
 
-a:focus,
-[role='link']:focus {
+/* 焦点状态：仅对键盘 Tab 导航显示焦点框，鼠标点击时不显示 */
+a:focus-visible,
+[role='link']:focus-visible {
   outline: 2px solid #0066cc;
   outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* 悬停状态：加深颜色并加粗下划线，提供鼠标交互反馈 */
+a:hover,
+[role='link']:hover {
+  color: #004499;
+  text-decoration-thickness: 2px;
+}
+
+/* 已访问状态：使用紫色标识用户已访问的链接 */
+a:visited,
+[role='link']:visited {
+  color: #551a8b;
+}
+
+/* 激活状态：点击瞬间的颜色变化 */
+a:active,
+[role='link']:active {
+  color: #ff0000;
 }
 ```
 
 ### 6.4 避免过度使用 ARIA
 
-WAI-ARIA 有一条重要原则：**没有 ARIA 比糟糕的 ARIA 更好**[4]。在某些情况下，错误使用 ARIA 可能会导致比不使用更糟糕的可访问性体验。只有在确实需要时才使用自定义链接实现。
+WAI-ARIA 有一条重要原则：[**没有 ARIA 比糟糕的 ARIA 更好**][4]。在某些情况下，错误使用 ARIA 可能会导致比不使用更糟糕的可访问性体验。只有在确实需要时才使用自定义链接实现。
 
 ## 七、链接与按钮的区别
 
@@ -192,7 +224,7 @@ WAI-ARIA 有一条重要原则：**没有 ARIA 比糟糕的 ARIA 更好**[4]。�
 | 功能      | 导航到其他资源     | 触发动作                            |
 | HTML 元素 | `<a>`              | `<button>`、`<input type="button">` |
 | 键盘激活  | Enter              | Space、Enter                        |
-| role 属性 | 无需设置（原生）   | 无需设置（原生）                    |
+| role 属性 | link               | button                              |
 | 典型用途  | 页面跳转、锚点导航 | 提交表单、打开对话框                |
 
 ## 八、总结
@@ -200,8 +232,6 @@ WAI-ARIA 有一条重要原则：**没有 ARIA 比糟糕的 ARIA 更好**[4]。�
 构建无障碍的链接组件需要关注多个层面的细节。从语义化角度，应优先使用原生 HTML a 元素；从键盘交互角度，必须支持回车键激活；从 ARIA 属性角度，需要正确使用 role="link" 和可访问名称。
 
 WAI-ARIA Link Pattern 为我们提供了清晰的指导方针，遵循这些规范能够帮助我们创建更加包容和易用的 Web 应用。每一个正确实现的链接组件，都是构建无障碍网络环境的重要一步。
-
-## 参考链接
 
 [0]: https://www.w3.org/WAI/ARIA/apg/patterns/link/
 [1]: https://www.w3.org/TR/wai-aria-1.2/#link
