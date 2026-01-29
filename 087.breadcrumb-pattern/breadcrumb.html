@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breadcrumb Pattern 示例 - daisyUI</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-base-100 min-h-screen">
+  <main class="container mx-auto px-4 py-8 max-w-4xl">
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold text-primary mb-4">Breadcrumb Pattern 示例</h1>
+      <p class="text-base-content/70">使用 daisyUI 组件库构建无障碍面包屑导航</p>
+    </header>
+
+    <section class="space-y-8">
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">基础面包屑导航</h2>
+          <p class="text-base-content/70 mb-2">使用 nav 元素包裹，aria-label 标记导航区域</p>
+          <nav aria-label="面包屑导航" class="breadcrumbs text-sm">
+            <ul>
+              <li><a href="/">首页</a></li>
+              <li><a href="/products/">产品</a></li>
+              <li aria-current="page">笔记本电脑</li>
+            </ul>
+          </nav>
+          <div class="mockup-code w-full mt-4">
+            <pre><code>&lt;nav aria-label="面包屑导航"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="/"&gt;首页&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/products/"&gt;产品&lt;/a&gt;&lt;/li&gt;
+    &lt;li aria-current="page"&gt;笔记本电脑&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">带分隔符的面包屑导航</h2>
+          <p class="text-base-content/70 mb-2">daisyUI 自动添加分隔符，使用 aria-hidden 隐藏辅助技术</p>
+          <nav class="breadcrumbs text-sm">
+            <ul>
+              <li><a>Home</a></li>
+              <li><a>Documents</a></li>
+              <li>Add Document</li>
+            </ul>
+          </nav>
+          <div class="mockup-code w-full mt-4">
+            <pre><code>&lt;nav aria-label="面包屑导航"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="/"&gt;首页&lt;/a&gt;&lt;/li&gt;
+    &lt;li aria-hidden="true"&gt;/&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/docs/"&gt;文档&lt;/a&gt;&lt;/li&gt;
+    &lt;li aria-hidden="true"&gt;/&lt;/li&gt;
+    &lt;li aria-current="page"&gt;快速入门&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">带图标的面包屑导航</h2>
+          <p class="text-base-content/70 mb-2">为每个导航项添加 SVG 图标增强可识别性</p>
+          <nav aria-label="面包屑导航" class="breadcrumbs text-sm">
+            <ul>
+              <li>
+                <a href="/">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                  </svg>
+                  首页
+                </a>
+              </li>
+              <li>
+                <a href="/shop/">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                  </svg>
+                  商店
+                </a>
+              </li>
+              <li>
+                <span class="inline-flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-4 w-4 stroke-current">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                  </svg>
+                  商品详情
+                </span>
+              </li>
+            </ul>
+          </nav>
+          <div class="mockup-code w-full mt-4">
+            <pre><code>&lt;nav aria-label="面包屑导航"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;
+      &lt;a href="/"&gt;
+        &lt;svg class="h-4 w-4 stroke-current"&gt;...&lt;/svg&gt;
+        首页
+      &lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;a href="/shop/"&gt;
+        &lt;svg class="h-4 w-4 stroke-current"&gt;...&lt;/svg&gt;
+        商店
+      &lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li aria-current="page"&gt;
+      &lt;span class="inline-flex items-center gap-2"&gt;
+        &lt;svg class="h-4 w-4 stroke-current"&gt;...&lt;/svg&gt;
+        商品详情
+      &lt;/span&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">电商网站产品页面包屑导航</h2>
+          <p class="text-base-content/70 mb-2">典型的电商场景，展示从首页到产品详情的完整路径</p>
+          <nav aria-label="商品位置" class="breadcrumbs">
+            <ul>
+              <li><a href="https://www.example.com/">首页</a></li>
+              <li><a href="https://www.example.com/electronics/">家用电器</a></li>
+              <li><a href="https://www.example.com/electronics/kitchen/">厨房电器</a></li>
+              <li><a href="https://www.example.com/electronics/kitchen/coffee/">咖啡机</a></li>
+              <li aria-current="page">全自动咖啡机 X2000</li>
+            </ul>
+          </nav>
+          <div class="mockup-code w-full mt-4">
+            <pre><code>&lt;nav aria-label="商品位置" class="breadcrumbs"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="https://www.example.com/"&gt;首页&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="https://www.example.com/electronics/"&gt;家用电器&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="https://www.example.com/electronics/kitchen/"&gt;厨房电器&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="https://www.example.com/electronics/kitchen/coffee/"&gt;咖啡机&lt;/a&gt;&lt;/li&gt;
+    &lt;li aria-current="page"&gt;全自动咖啡机 X2000&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">超长文本自动滚动</h2>
+          <p class="text-base-content/70 mb-2">设置 max-width 容器，内容过长时自动显示滚动条</p>
+          <nav aria-label="面包屑导航" class="breadcrumbs max-w-xs text-sm">
+            <ul>
+              <li>这是一个非常非常长的文本 1</li>
+              <li>这是一个非常非常长的文本 2</li>
+              <li>这是一个非常非常长的文本 3</li>
+              <li>这是一个非常非常长的文本 4</li>
+              <li>这是一个非常非常长的文本 5</li>
+            </ul>
+          </nav>
+          <div class="mockup-code w-full mt-4">
+            <pre><code>&lt;nav aria-label="面包屑导航" class="breadcrumbs max-w-xs"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;这是非常非常长的文本 1&lt;/li&gt;
+    &lt;li&gt;这是非常非常长的文本 2&lt;/li&gt;
+    &lt;li&gt;这是非常非常长的文本 3&lt;/li&gt;
+    &lt;li&gt;这是非常非常长的文本 4&lt;/li&gt;
+    &lt;li&gt;这是非常非常长的文本 5&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+    </section>
+
+    <footer class="mt-12 text-center text-base-content/60 text-sm">
+      <p>基于 <a href="https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/" class="link link-primary" target="_blank">WAI-ARIA Breadcrumb Pattern</a> 规范</p>
+      <p>样式由 <a href="https://daisyui.com/components/breadcrumbs/" class="link link-primary" target="_blank">daisyUI</a> 提供</p>
+    </footer>
+  </main>
+</body>
+</html>
