@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alert Pattern 示例 - daisyUI</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-base-100 min-h-screen">
+  <main class="container mx-auto px-4 py-8 max-w-4xl">
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold text-primary mb-4">Alert Pattern 示例</h1>
+      <p class="text-base-content/70">使用 daisyUI 组件库构建无障碍通知组件</p>
+    </header>
+
+    <section class="space-y-8">
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">基本 Alert 通知</h2>
+          <p class="text-base-content/70 mb-2">
+            使用 <code>role="alert"</code> 实现无障碍通知
+          </p>
+          <div role="alert" class="alert">
+            <span>ℹ️</span>
+            <span>系统将在今晚 10 点进行维护，届时服务将暂停 2 小时。</span>
+          </div>
+          <div class="mockup-code w-full mt-4">
+            <pre><code>
+&lt;div role="alert" class="alert"&gt;
+  &lt;span&gt;ℹ️&lt;/span&gt;
+  &lt;span&gt;系统将在今晚 10 点进行维护...&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">信息 Alert</h2>
+          <p class="text-base-content/70 mb-2">
+            使用 <code>alert-info</code> 类表示信息性通知
+          </p>
+          <div role="alert" class="alert alert-info">
+            <span>ℹ️</span>
+            <span>有 12 条未读消息，点击查看。</span>
+          </div>
+          <div class="mockup-code w-full mt-4">
+            <pre><code>
+&lt;div role="alert" class="alert alert-info"&gt;
+  &lt;span&gt;ℹ️&lt;/span&gt;
+  &lt;span&gt;有 12 条未读消息...&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">成功 Alert</h2>
+          <p class="text-base-content/70 mb-2">
+            使用 <code>alert-success</code> 类表示操作成功
+          </p>
+          <div role="alert" class="alert alert-success">
+            <span>✅</span>
+            <span>您的订单已确认，订单号为 #12345。</span>
+          </div>
+          <div class="mockup-code w-full mt-4">
+            <pre><code>
+&lt;div role="alert" class="alert alert-success"&gt;
+  &lt;span&gt;✅&lt;/span&gt;
+  &lt;span&gt;您的订单已确认...&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">警告 Alert</h2>
+          <p class="text-base-content/70 mb-2">
+            使用 <code>alert-warning</code> 类表示需要用户注意
+          </p>
+          <div role="alert" class="alert alert-warning">
+            <span>⚠️</span>
+            <div>
+              <h3 class="font-bold">库存不足</h3>
+              <p>您选择的商品仅剩 3 件，建议您尽快下单。</p>
+            </div>
+          </div>
+          <div class="mockup-code w-full mt-4">
+            <pre><code>
+&lt;div role="alert" class="alert alert-warning"&gt;
+  &lt;span&gt;⚠️&lt;/span&gt;
+  &lt;div&gt;
+    &lt;h3&gt;库存不足&lt;/h3&gt;
+    &lt;p&gt;您选择的商品仅剩 3 件...&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">错误 Alert</h2>
+          <p class="text-base-content/70 mb-2">
+            使用 <code>alert-error</code> 类表示错误或失败
+          </p>
+          <div role="alert" class="alert alert-error">
+            <span>❌</span>
+            <span>保存失败：无法连接到服务器，请检查您的网络连接。</span>
+          </div>
+          <div class="mockup-code w-full mt-4">
+            <pre><code>
+&lt;div role="alert" class="alert alert-error"&gt;
+  &lt;span&gt;❌&lt;/span&gt;
+  &lt;span&gt;保存失败：无法连接到服务器...&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">Soft 样式 Alert</h2>
+          <p class="text-base-content/70 mb-2">
+            使用 <code>alert-soft</code> 类实现柔和样式
+          </p>
+          <div role="alert" class="alert alert-info alert-soft">
+            <span>ℹ️</span>
+            <span>有 12 条未读消息，点击查看。</span>
+          </div>
+          <div role="alert" class="alert alert-success alert-soft mt-2">
+            <span>✅</span>
+            <span>您的购买已确认！</span>
+          </div>
+          <div role="alert" class="alert alert-warning alert-soft mt-2">
+            <span>⚠️</span>
+            <span>警告：无效的电子邮件地址！</span>
+          </div>
+          <div role="alert" class="alert alert-error alert-soft mt-2">
+            <span>❌</span>
+            <span>错误！任务执行失败。</span>
+          </div>
+          <div class="mockup-code w-full mt-4">
+            <pre><code>
+&lt;div role="alert" class="alert alert-info alert-soft"&gt;
+  &lt;span&gt;ℹ️&lt;/span&gt;
+  &lt;span&gt;有 12 条未读消息...&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+
+      <article class="card bg-base-200 shadow-lg">
+        <header class="card-body">
+          <h2 class="card-title text-xl text-secondary">动态 Alert 示例</h2>
+          <p class="text-base-content/70 mb-2">
+            表单提交时动态显示 Alert
+          </p>
+          
+          <template id="alert-success-template">
+            <div role="alert" class="alert alert-success">
+              <span>✅</span>
+              <span>表单提交成功！我们将在 24 小时内回复您。</span>
+            </div>
+          </template>
+
+          <template id="alert-error-template">
+            <div role="alert" class="alert alert-error">
+              <span>❌</span>
+              <span>请输入有效的电子邮件地址。</span>
+            </div>
+          </template>
+
+          <form id="contact-form" class="space-y-4 mb-4">
+            <div class="form-control">
+              <label class="label" for="email">
+                <span class="label-text">电子邮件</span>
+              </label>
+              <input type="email" id="email" name="email" class="input input-bordered" placeholder="请输入电子邮件" required>
+            </div>
+            <button type="submit" class="btn btn-primary">提交</button>
+          </form>
+          <div id="form-feedback"></div>
+          <div class="mockup-code w-full mt-4">
+            <pre><code>
+&lt;template id="alert-success-template"&gt;
+  &lt;div role="alert" class="alert alert-success"&gt;
+    &lt;span&gt;✅&lt;/span&gt;
+    &lt;span&gt;表单提交成功！我们将在 24 小时内回复您。&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;form id="contact-form"&gt;
+  &lt;input type="email" id="email" required&gt;
+  &lt;button type="submit"&gt;提交&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;div id="form-feedback"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const email = document.getElementById('email').value;
+  
+  feedback.innerHTML = '';
+  
+  if (!email.includes('@')) {
+    const template = document.getElementById('alert-error-template');
+    feedback.appendChild(template.content.cloneNode(true));
+  } else {
+    const template = document.getElementById('alert-success-template');
+    feedback.appendChild(template.content.cloneNode(true));
+  }
+});
+&lt;/script&gt;</code></pre>
+          </div>
+        </header>
+      </article>
+    </section>
+
+    <footer class="mt-12 text-center text-base-content/60 text-sm">
+      <p>基于 <a href="https://www.w3.org/WAI/ARIA/apg/patterns/alert/" class="link link-primary" target="_blank">WAI-ARIA Alert Pattern</a> 规范</p>
+      <p>样式由 <a href="https://daisyui.com/components/alert/" class="link link-primary" target="_blank">daisyUI</a> 提供</p>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const feedback = document.getElementById('form-feedback');
+      const email = document.getElementById('email').value;
+      
+      feedback.innerHTML = '';
+      
+      if (!email.includes('@')) {
+        const template = document.getElementById('alert-error-template');
+        feedback.appendChild(template.content.cloneNode(true));
+      } else {
+        const template = document.getElementById('alert-success-template');
+        feedback.appendChild(template.content.cloneNode(true));
+      }
+    });
+  </script>
+</body>
+</html>
