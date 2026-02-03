@@ -158,7 +158,7 @@ Alert Pattern 的键盘交互具有特殊性。由于 Alert 是被动通知组�
 </script>
 ```
 
-## 六、最佳实践
+## 六、[最佳实践][5]
 
 ### 6.1 语义化结构与内容
 
@@ -283,8 +283,12 @@ Alert 是一种被动通知组件，它不需要用户进行任何交互操作�
 
 WAI-ARIA [Alert Pattern][0] 为我们提供了清晰的指导方针，遵循这些规范能够帮助我们创建更加包容和易用的 Web 应用。每一个正确实现的 Alert 组件，都是提升用户体验和确保信息有效传达的重要一步。
 
+文章同步于 an-Onion 的 [Github][6]。码字不易，欢迎点赞。
+
 [0]: https://www.w3.org/WAI/ARIA/apg/patterns/alert/
 [1]: https://www.w3.org/TR/wai-aria-1.2/#alert
 [2]: https://www.w3.org/TR/wai-aria-1.2/#aria-live
 [3]: https://www.w3.org/TR/wai-aria-1.2/#aria-atomic
 [4]: https://www.w3.org/WAI/ARIA/apg/practices/alert-dialog/
+[5]: https://an-onion.github.io/088.alert-pattern/alert
+[6]: https://github.com/an-Onion/an-Onion.github.io
