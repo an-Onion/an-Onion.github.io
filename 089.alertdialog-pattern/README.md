@@ -26,18 +26,61 @@ Alert Dialog 组件的设计还需要考虑几个关键因素。首先，Alert D
 
 ```html
 <!-- Alert Dialog 基本结构 -->
+<dialog
+  id="confirm-dialog"
+  role="alertdialog">
+  <form method="dialog">
+    <h2>确认删除</h2>
+    <p>您确定要删除这个文件吗？此操作无法撤销。</p>
+    <div class="actions">
+      <button value="confirm">确认删除</button>
+      <button value="cancel">取消</button>
+    </div>
+  </form>
+</dialog>
+```
+
+值得注意的是，Alert Dialog 与普通 Dialog 的主要区别在于 Alert Dialog 用于紧急或重要信息，并且通常包含确认/取消按钮。用户无法忽略 Alert Dialog，必须做出响应才能继续操作。
+
+Alert Dialog 可以通过两种方式实现：使用 `div` 配合 ARIA 属性，或使用原生 `<dialog>` 元素。
+
+**传统方式（div + ARIA）：**
+
+```html
 <div
   role="alertdialog"
-  aria-labelledby="dialog-title"
-  aria-describedby="dialog-desc">
+  aria-modal="true"
+  aria-labelledby="dialog-title">
   <h2 id="dialog-title">确认删除</h2>
-  <p id="dialog-desc">您确定要删除这个文件吗？此操作无法撤销。</p>
-  <button>确认删除</button>
+  <p>您确定要删除这个文件吗？</p>
+  <button>确认</button>
   <button>取消</button>
 </div>
 ```
 
-值得注意的是，Alert Dialog 与普通 Dialog 的主要区别在于 Alert Dialog 用于紧急或重要信息，并且通常包含确认/取消按钮。用户无法忽略 Alert Dialog，必须做出响应才能继续操作。
+这种方式需要开发者手动处理焦点管理、ESC 键关闭、背景锁定等逻辑。
+
+**推荐方式（原生 dialog）：**
+
+```html
+<dialog>
+  <form method="dialog">
+    <h2>确认删除</h2>
+    <p>您确定要删除这个文件吗？</p>
+    <button value="confirm">确认</button>
+    <button value="cancel">取消</button>
+  </form>
+</dialog>
+```
+
+HTML 原生 `<dialog>` 元素简化了实现，它提供了：
+
+- 自动焦点管理
+- 内置 ESC 键支持
+- 自动模态背景
+- 内置 ARIA 属性
+
+`<dialog>` 元素的默认 `role` 是 `dialog`，表示普通对话框。对于 Alert Dialog，需要显式设置 `role="alertdialog"` 来告诉辅助技术这是一个需要紧急处理的对话框，从而获得系统提示音等特殊处理。
 
 ## 四、键盘交互规范
 
@@ -63,33 +106,26 @@ document.addEventListener('keydown', function (e) {
 ### 5.1 删除确认对话框
 
 ```html
-<template id="confirm-dialog-template">
-  <div
-    role="alertdialog"
-    aria-modal="true"
-    aria-labelledby="dialog-title"
-    aria-describedby="dialog-message"
-    class="dialog-overlay">
-    <div
-      class="dialog-content"
-      role="document">
-      <h2 id="dialog-title">⚠️ 确认删除</h2>
-      <p id="dialog-message">您确定要删除这个文件吗？此操作无法撤销。</p>
-      <div class="dialog-actions">
-        <button
-          class="btn btn-error"
-          id="confirm-btn">
-          删除
-        </button>
-        <button
-          class="btn btn-ghost"
-          id="cancel-btn">
-          取消
-        </button>
-      </div>
+<dialog
+  id="confirm-dialog"
+  role="alertdialog">
+  <form method="dialog">
+    <h2>⚠️ 确认删除</h2>
+    <p>您确定要删除这个文件吗？此操作无法撤销。</p>
+    <div class="dialog-actions">
+      <button
+        class="btn btn-error"
+        value="confirm">
+        删除
+      </button>
+      <button
+        class="btn btn-ghost"
+        value="cancel">
+        取消
+      </button>
     </div>
-  </div>
-</template>
+  </form>
+</dialog>
 
 <button
   id="delete-btn"
@@ -97,50 +133,21 @@ document.addEventListener('keydown', function (e) {
   🗑️ 删除文件
 </button>
 
-<div id="dialog-container"></div>
-
 <script>
-  const dialogContainer = document.getElementById('dialog-container');
+  const dialog = document.getElementById('confirm-dialog');
   const deleteBtn = document.getElementById('delete-btn');
+  let previousActiveElement;
 
   deleteBtn.addEventListener('click', function () {
-    const template = document.getElementById('confirm-dialog-template');
-    dialogContainer.appendChild(template.content.cloneNode(true));
-
-    const dialog = dialogContainer.querySelector('[role="alertdialog"]');
-    const confirmBtn = dialog.querySelector('#confirm-btn');
-    const cancelBtn = dialog.querySelector('#cancel-btn');
-
-    // 保存焦点元素
-    const previousActiveElement = document.activeElement;
-
-    // 打开对话框
+    previousActiveElement = document.activeElement;
     dialog.showModal();
+  });
 
-    // 焦点管理：移动到确认按钮
-    confirmBtn.focus();
-
-    // 确认操作
-    confirmBtn.addEventListener('click', function () {
-      // 执行删除逻辑
+  dialog.addEventListener('close', function () {
+    if (dialog.returnValue === 'confirm') {
       console.log('文件已删除');
-      dialog.close();
-      dialog.remove();
-      previousActiveElement.focus();
-    });
-
-    // 取消操作
-    cancelBtn.addEventListener('click', function () {
-      dialog.close();
-      dialog.remove();
-      previousActiveElement.focus();
-    });
-
-    // ESC 键关闭
-    dialog.addEventListener('cancel', function () {
-      dialog.remove();
-      previousActiveElement.focus();
-    });
+    }
+    previousActiveElement.focus();
   });
 </script>
 ```
@@ -148,60 +155,64 @@ document.addEventListener('keydown', function (e) {
 ### 5.2 表单验证错误对话框
 
 ```html
-<template id="error-dialog-template">
-  <div
-    role="alertdialog"
-    aria-modal="true"
-    aria-labelledby="error-title"
-    aria-describedby="error-message">
-    <h2 id="error-title">❌ 表单验证失败</h2>
-    <p id="error-message">请确保所有必填字段都已填写，并且电子邮件格式正确。</p>
+<dialog
+  id="error-dialog"
+  role="alertdialog">
+  <form method="dialog">
+    <h2>❌ 表单验证失败</h2>
+    <p>请确保所有必填字段都已填写，并且电子邮件格式正确。</p>
     <button
-      id="retry-btn"
-      class="btn btn-primary">
+      class="btn btn-primary"
+      value="retry">
       重新填写
     </button>
-  </div>
-</template>
+  </form>
+</dialog>
 ```
 
 ### 5.3 离开页面确认对话框
 
 ```html
-<template id="unsaved-changes-template">
-  <div
-    role="alertdialog"
-    aria-modal="true"
-    aria-labelledby="leave-title"
-    aria-describedby="leave-message">
-    <h2 id="leave-title">⚠️ 未保存的更改</h2>
-    <p id="leave-message">您有未保存的更改，离开此页面将丢失这些更改。</p>
+<dialog
+  id="unsaved-changes-dialog"
+  role="alertdialog">
+  <form method="dialog">
+    <h2>⚠️ 未保存的更改</h2>
+    <p>您有未保存的更改，离开此页面将丢失这些更改。</p>
     <div class="dialog-actions">
       <button
-        id="save-btn"
-        class="btn btn-success">
+        class="btn btn-success"
+        value="save">
         💾 保存
       </button>
       <button
-        id="discard-btn"
-        class="btn btn-error">
+        class="btn btn-error"
+        value="discard">
         丢弃更改
       </button>
       <button
-        id="stay-btn"
-        class="btn btn-ghost">
+        class="btn btn-ghost"
+        value="stay">
         留在此页面
       </button>
     </div>
-  </div>
-</template>
+  </form>
+</dialog>
 
 <script>
-  // 监听页面离开事件
+  dialog.addEventListener('close', function () {
+    if (dialog.returnValue === 'save') {
+      console.log('保存更改');
+    } else if (dialog.returnValue === 'discard') {
+      console.log('丢弃更改');
+    }
+  });
+
   window.addEventListener('beforeunload', function (e) {
-    if (hasUnsavedChanges) {
+    if (hasUnsavedChanges && !dialog.open) {
       e.preventDefault();
       e.returnValue = '';
+      dialog.showModal();
     }
   });
 </script>
@@ -213,22 +224,38 @@ document.addEventListener('keydown', function (e) {
 
 Alert Dialog 组件应该使用语义化的 HTML 结构来构建内容。对话框应该包含清晰的标题、描述性消息和操作按钮。需要注意的是，对话框的内容应该保持简洁明了，避免包含过多复杂信息。
 
+### 6.2 dialog 元素 vs role="alertdialog"
+
+对于 Alert Dialog（警告对话框），推荐在 `<dialog>` 元素上添加 `role="alertdialog"` 属性，以明确告诉辅助技术这是一个需要紧急处理的对话框。
+
+| 特性       | `<dialog>`     | `<dialog role="alertdialog">` |
+| ---------- | -------------- | ----------------------------- |
+| 默认 role  | `dialog`       | `alertdialog`                 |
+| 屏幕阅读器 | 普通对话框处理 | 紧急/重要信息处理             |
+| 系统提示音 | 不播放         | 可能播放提示音                |
+| 焦点管理   | 浏览器自动处理 | 浏览器自动处理                |
+| ESC 键关闭 | 内置支持       | 内置支持                      |
+
 ```html
-<!-- 推荐：结构清晰的 Alert Dialog -->
-<div
-  role="alertdialog"
-  aria-labelledby="title"
-  aria-describedby="description">
-  <h2 id="title">确认操作</h2>
-  <p id="description">确定要执行此操作吗？</p>
-  <div class="actions">
-    <button>确定</button>
-    <button>取消</button>
-  </div>
-</div>
+<!-- Alert Dialog 应该设置 role="alertdialog" -->
+<dialog
+  id="confirm-dialog"
+  role="alertdialog">
+  <form method="dialog">
+    <h2>确认删除</h2>
+    <p>确定要删除吗？</p>
+    <button value="confirm">确定</button>
+    <button value="cancel">取消</button>
+  </form>
+</dialog>
+
+<script>
+  // 使用 showModal() 打开模态对话框
+  document.getElementById('confirm-dialog').showModal();
+</script>
 ```
 
-### 6.2 焦点管理
+### 6.3 焦点管理
 
 正确的焦点管理对于键盘用户和无障碍体验至关重要。打开对话框时，焦点应该移动到对话框内部或默认按钮。关闭对话框时，焦点应该返回到触发对话框的元素。
 
@@ -262,41 +289,42 @@ function closeDialog(dialog) {
 }
 ```
 
-### 6.3 避免过度使用
+### 6.4 避免过度使用
 
 Alert Dialog 会中断用户的工作流程，因此应该谨慎使用。只有在真正需要用户立即响应的情况下才使用 Alert Dialog。对于非紧急信息，应该考虑使用普通的 Alert 或 Toast 通知。
 
 ```html
 <!-- 不推荐：过度使用 Alert Dialog -->
-<div role="alertdialog">
+<dialog
+  open
+  role="alertdialog">
   <h2>提示</h2>
   <p>您的设置已保存。</p>
-  <button>确定</button>
-</div>
+  <button onclick="this.closest('dialog').close()">确定</button>
+</dialog>
 
 <!-- 推荐：使用普通 Alert -->
 <div role="alert">您的设置已保存。</div>
 ```
 
-### 6.4 屏幕阅读器兼容性
+### 6.5 屏幕阅读器兼容性
 
-确保 Alert Dialog 对屏幕阅读器用户友好。正确使用 `aria-labelledby`、`aria-describedby` 和 `aria-modal` 属性，使屏幕阅读器能够正确识别和朗读对话框内容。
+确保 `<dialog>` 对屏幕阅读器用户友好。`<dialog>` 元素内置了无障碍支持，但仍然建议对 Alert Dialog 设置 `role="alertdialog"` 来区分紧急对话框。
 
 ```html
-<!-- 屏幕阅读器友好的 Alert Dialog -->
-<div
-  role="alertdialog"
-  aria-modal="true"
-  aria-labelledby="dialog-title"
-  aria-describedby="dialog-description">
-  <h2 id="dialog-title">重要提醒</h2>
-  <p id="dialog-description">
-    您的会话将在 5 分钟后过期。
-    <span aria-live="polite">请尽快保存您的工作。</span>
-  </p>
-  <button>继续使用</button>
-  <button>退出</button>
-</div>
+<!-- 屏幕阅读器友好的 dialog -->
+<dialog
+  id="session-dialog"
+  role="alertdialog">
+  <form method="dialog">
+    <h2>重要提醒</h2>
+    <p>您的会话将在 5 分钟后过期。请尽快保存您的工作。</p>
+    <div class="actions">
+      <button value="continue">继续使用</button>
+      <button value="exit">退出</button>
+    </div>
+  </form>
+</dialog>
 ```
 
 ## 七、Alert 与 Alert Dialog 的区别
@@ -311,9 +339,9 @@ Alert Dialog 会中断用户的工作流程，因此应该谨慎使用。只有�
 
 ## 八、总结
 
-构建无障碍的 Alert Dialog 组件需要关注角色声明、焦点管理、键盘交互三个层面的细节。从 ARIA 属性角度，需要正确设置 `role="alertdialog"`、`aria-labelledby` 和 `aria-describedby`。从焦点管理角度，需要确保打开和关闭时焦点的正确移动。从用户体验角度，应该避免过度使用 Alert Dialog，只在真正需要用户响应时使用。
+构建无障碍的对话框组件需要关注元素选择、焦点管理、键盘交互三个层面的细节。从元素选择角度，推荐优先使用原生 `<dialog>` 元素，它内置了无障碍支持和焦点管理。从焦点管理角度，需要确保打开和关闭时焦点的正确移动。从用户体验角度，应该避免过度使用对话框，只在真正需要用户响应时使用。
 
-WAI-ARIA [Alert Dialog Pattern][1] 为我们提供了清晰的指导方针，遵循这些规范能够帮助我们创建更加包容和易用的 Web 应用。每一个正确实现的 Alert Dialog，都是提升用户体验和确保重要信息有效传达的重要一步。
+WAI-ARIA [Alert Dialog Pattern][1] 为我们提供了清晰的指导方针，遵循这些规范能够帮助我们创建更加包容和易用的 Web 应用。每一个正确实现的对话框，都是提升用户体验和确保重要信息有效传达的重要一步。
 
 文章同步于 an-Onion 的 [Github][2]。码字不易，欢迎点赞。
 
