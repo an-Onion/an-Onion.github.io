@@ -28,10 +28,12 @@ Alert Dialog 组件的设计还需要考虑几个关键因素。首先，Alert D
 <!-- Alert Dialog 基本结构 -->
 <dialog
   id="confirm-dialog"
-  role="alertdialog">
+  role="alertdialog"
+  aria-labelledby="dialog-title"
+  aria-describedby="dialog-desc">
   <form method="dialog">
-    <h2>确认删除</h2>
-    <p>您确定要删除这个文件吗？此操作无法撤销。</p>
+    <h2 id="dialog-title">确认删除</h2>
+    <p id="dialog-desc">您确定要删除这个文件吗？此操作无法撤销。</p>
     <div class="actions">
       <button value="confirm">确认删除</button>
       <button value="cancel">取消</button>
@@ -42,51 +44,13 @@ Alert Dialog 组件的设计还需要考虑几个关键因素。首先，Alert D
 
 值得注意的是，Alert Dialog 与普通 Dialog 的主要区别在于 Alert Dialog 用于紧急或重要信息，并且通常包含确认/取消按钮。用户无法忽略 Alert Dialog，必须做出响应才能继续操作。
 
-Alert Dialog 可以通过两种方式实现：使用 `div` 配合 ARIA 属性，或使用原生 `<dialog>` 元素。
-
-**传统方式（div + ARIA）：**
-
-```html
-<div
-  role="alertdialog"
-  aria-modal="true"
-  aria-labelledby="dialog-title">
-  <h2 id="dialog-title">确认删除</h2>
-  <p>您确定要删除这个文件吗？</p>
-  <button>确认</button>
-  <button>取消</button>
-</div>
-```
-
-这种方式需要开发者手动处理焦点管理、ESC 键关闭、背景锁定等逻辑。
-
-**推荐方式（原生 dialog）：**
-
-```html
-<dialog>
-  <form method="dialog">
-    <h2>确认删除</h2>
-    <p>您确定要删除这个文件吗？</p>
-    <button value="confirm">确认</button>
-    <button value="cancel">取消</button>
-  </form>
-</dialog>
-```
-
-HTML 原生 `<dialog>` 元素简化了实现，它提供了：
-
-- 自动焦点管理
-- 内置 ESC 键支持
-- 自动模态背景
-- 内置 ARIA 属性
-
-`<dialog>` 元素的默认 `role` 是 `dialog`，表示普通对话框。对于 Alert Dialog，需要显式设置 `role="alertdialog"` 来告诉辅助技术这是一个需要紧急处理的对话框，从而获得系统提示音等特殊处理。
-
 ## 四、键盘交互规范
 
 Alert Dialog 的键盘交互遵循模态对话框的交互模式。用户可以通过多种方式与 Alert Dialog 进行交互。
 
-`Enter` 或 `Space` 用于激活默认按钮，通常是对话框中的主要操作按钮。`Tab` 键用于在对话框内的焦点元素之间切换，焦点会循环停留在对话框内部。`Escape` 键通常用于关闭对话框，相当于点击取消按钮。
+- `Enter` 或 `Space` 用于激活默认按钮，通常是对话框中的主要操作按钮。
+- `Tab` 键用于在对话框内的焦点元素之间切换，焦点会循环停留 在对话框内部。
+- `Escape` 键通常用于关闭对话框，相当于点击取消按钮。
 
 ```javascript
 // ESC 键关闭对话框示例
@@ -101,27 +65,27 @@ document.addEventListener('keydown', function (e) {
 
 ## 五、完整示例
 
-以下是使用不同方式实现 Alert Dialog 组件的完整示例，展示了标准的 HTML 结构和 ARIA 属性应用。
-
-### 5.1 删除确认对话框
+以下是一个完整的 Alert Dialog 实现示例，展示了正确的 HTML 结构、ARIA 属性和焦点管理。
 
 ```html
 <dialog
   id="confirm-dialog"
-  role="alertdialog">
+  role="alertdialog"
+  aria-labelledby="dialog-title"
+  aria-describedby="dialog-desc">
   <form method="dialog">
-    <h2>⚠️ 确认删除</h2>
-    <p>您确定要删除这个文件吗？此操作无法撤销。</p>
+    <h2 id="dialog-title">确认删除</h2>
+    <p id="dialog-desc">您确定要删除这个文件吗？此操作无法撤销。</p>
     <div class="dialog-actions">
-      <button
-        class="btn btn-error"
-        value="confirm">
-        删除
-      </button>
       <button
         class="btn btn-ghost"
         value="cancel">
         取消
+      </button>
+      <button
+        class="btn btn-error"
+        value="confirm">
+        删除
       </button>
     </div>
   </form>
@@ -130,7 +94,7 @@ document.addEventListener('keydown', function (e) {
 <button
   id="delete-btn"
   class="btn btn-error">
-  🗑️ 删除文件
+  删除文件
 </button>
 
 <script>
@@ -152,110 +116,55 @@ document.addEventListener('keydown', function (e) {
 </script>
 ```
 
-### 5.2 表单验证错误对话框
-
-```html
-<dialog
-  id="error-dialog"
-  role="alertdialog">
-  <form method="dialog">
-    <h2>❌ 表单验证失败</h2>
-    <p>请确保所有必填字段都已填写，并且电子邮件格式正确。</p>
-    <button
-      class="btn btn-primary"
-      value="retry">
-      重新填写
-    </button>
-  </form>
-</dialog>
-```
-
-### 5.3 离开页面确认对话框
-
-```html
-<dialog
-  id="unsaved-changes-dialog"
-  role="alertdialog">
-  <form method="dialog">
-    <h2>⚠️ 未保存的更改</h2>
-    <p>您有未保存的更改，离开此页面将丢失这些更改。</p>
-    <div class="dialog-actions">
-      <button
-        class="btn btn-success"
-        value="save">
-        💾 保存
-      </button>
-      <button
-        class="btn btn-error"
-        value="discard">
-        丢弃更改
-      </button>
-      <button
-        class="btn btn-ghost"
-        value="stay">
-        留在此页面
-      </button>
-    </div>
-  </form>
-</dialog>
-
-<script>
-  dialog.addEventListener('close', function () {
-    if (dialog.returnValue === 'save') {
-      console.log('保存更改');
-    } else if (dialog.returnValue === 'discard') {
-      console.log('丢弃更改');
-    }
-  });
-
-  window.addEventListener('beforeunload', function (e) {
-    if (hasUnsavedChanges && !dialog.open) {
-      e.preventDefault();
-      e.returnValue = '';
-      dialog.showModal();
-    }
-  });
-</script>
-```
-
 ## 六、最佳实践
 
-### 6.1 语义化结构与内容
+### 6.1 实现方式对比
 
-Alert Dialog 组件应该使用语义化的 HTML 结构来构建内容。对话框应该包含清晰的标题、描述性消息和操作按钮。需要注意的是，对话框的内容应该保持简洁明了，避免包含过多复杂信息。
+Alert Dialog 可以通过两种方式实现：使用 `div` 配合 ARIA 属性，或使用原生 `<dialog>` 元素。
 
-### 6.2 dialog 元素 vs role="alertdialog"
-
-对于 Alert Dialog（警告对话框），推荐在 `<dialog>` 元素上添加 `role="alertdialog"` 属性，以明确告诉辅助技术这是一个需要紧急处理的对话框。
-
-| 特性       | `<dialog>`     | `<dialog role="alertdialog">` |
-| ---------- | -------------- | ----------------------------- |
-| 默认 role  | `dialog`       | `alertdialog`                 |
-| 屏幕阅读器 | 普通对话框处理 | 紧急/重要信息处理             |
-| 系统提示音 | 不播放         | 可能播放提示音                |
-| 焦点管理   | 浏览器自动处理 | 浏览器自动处理                |
-| ESC 键关闭 | 内置支持       | 内置支持                      |
+#### 传统方式（div + ARIA）
 
 ```html
-<!-- Alert Dialog 应该设置 role="alertdialog" -->
+<div
+  role="alertdialog"
+  aria-modal="true"
+  aria-labelledby="dialog-title"
+  aria-describedby="dialog-desc">
+  <h2 id="dialog-title">确认删除</h2>
+  <p id="dialog-desc">您确定要删除这个文件吗？</p>
+  <button>确认</button>
+  <button>取消</button>
+</div>
+```
+
+这种方式需要开发者手动处理焦点管理、ESC 键关闭、背景锁定等逻辑。
+
+#### 推荐方式（原生 dialog）
+
+```html
 <dialog
-  id="confirm-dialog"
-  role="alertdialog">
+  role="alertdialog"
+  aria-labelledby="dialog-title"
+  aria-describedby="dialog-desc">
   <form method="dialog">
-    <h2>确认删除</h2>
-    <p>确定要删除吗？</p>
-    <button value="confirm">确定</button>
+    <h2 id="dialog-title">确认删除</h2>
+    <p id="dialog-desc">您确定要删除这个文件吗？</p>
+    <button value="confirm">确认</button>
     <button value="cancel">取消</button>
   </form>
 </dialog>
-
-<script>
-  // 使用 showModal() 打开模态对话框
-  document.getElementById('confirm-dialog').showModal();
-</script>
 ```
 
-### 6.3 焦点管理
+HTML 原生 `<dialog>` 元素简化了实现，它提供了：
+
+- 自动焦点管理
+- 内置 ESC 键支持
+- 自动模态背景
+- 内置 ARIA 属性
+
+`<dialog>` 元素的默认 `role` 是 `dialog`，表示普通对话框。对于 Alert Dialog，需要显式设置 `role="alertdialog"` 来告诉辅助技术这是一个需要紧急处理的对话框，从而获得系统提示音等特殊处理。
+
+### 6.2 焦点管理
 
 正确的焦点管理对于键盘用户和无障碍体验至关重要。打开对话框时，焦点应该移动到对话框内部或默认按钮。关闭对话框时，焦点应该返回到触发对话框的元素。
 
@@ -289,7 +198,7 @@ function closeDialog(dialog) {
 }
 ```
 
-### 6.4 避免过度使用
+### 6.3 避免过度使用
 
 Alert Dialog 会中断用户的工作流程，因此应该谨慎使用。只有在真正需要用户立即响应的情况下才使用 Alert Dialog。对于非紧急信息，应该考虑使用普通的 Alert 或 Toast 通知。
 
@@ -307,7 +216,7 @@ Alert Dialog 会中断用户的工作流程，因此应该谨慎使用。只有�
 <div role="alert">您的设置已保存。</div>
 ```
 
-### 6.5 屏幕阅读器兼容性
+### 6.4 屏幕阅读器兼容性
 
 确保 `<dialog>` 对屏幕阅读器用户友好。`<dialog>` 元素内置了无障碍支持，但仍然建议对 Alert Dialog 设置 `role="alertdialog"` 来区分紧急对话框。
 

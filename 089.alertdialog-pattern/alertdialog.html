@@ -9,7 +9,7 @@
 </head>
 <body class="p-8 max-w-5xl mx-auto">
   <header class="mb-8">
-    <h1 class="text-3xl font-bold mb-4">🚨 Alert Dialog Pattern</h1>
+    <h1 class="text-3xl font-bold mb-4">Alert Dialog Pattern</h1>
     <p class="text-gray-600">使用 DaisyUI Modal 组件实现的无障碍警告对话框示例</p>
   </header>
 
@@ -18,8 +18,8 @@
     <h2 class="text-xl font-semibold mb-4">1. 删除确认对话框</h2>
     <p class="text-gray-600 mb-4">执行破坏性操作前的确认提示</p>
     <div class="flex gap-4 flex-wrap">
-      <button class="btn btn-error" onclick="confirm_dialog.showModal()">
-        🗑️ 删除文件
+      <button class="btn btn-outline btn-error" onclick="confirm_dialog.showModal()">
+        删除文件
       </button>
     </div>
   </section>
@@ -30,7 +30,7 @@
     <p class="text-gray-600 mb-4">表单提交失败时的错误提示</p>
     <div class="flex gap-4 flex-wrap">
       <button class="btn btn-primary" onclick="error_dialog.showModal()">
-        📋 提交表单
+        提交表单
       </button>
     </div>
   </section>
@@ -40,8 +40,8 @@
     <h2 class="text-xl font-semibold mb-4">3. 未保存更改确认</h2>
     <p class="text-gray-600 mb-4">离开页面时的未保存更改提醒</p>
     <div class="flex gap-4 flex-wrap">
-      <button class="btn btn-warning" onclick="unsaved_dialog.showModal()">
-        📝 模拟未保存更改
+      <button class="btn btn-primary" onclick="unsaved_dialog.showModal()">
+        模拟未保存更改
       </button>
     </div>
   </section>
@@ -51,8 +51,8 @@
     <h2 class="text-xl font-semibold mb-4">4. 会话过期提醒</h2>
     <p class="text-gray-600 mb-4">用户会话即将过期的重要提醒</p>
     <div class="flex gap-4 flex-wrap">
-      <button class="btn btn-info" onclick="session_dialog.showModal()">
-        ⏰ 模拟会话过期
+      <button class="btn btn-primary" onclick="session_dialog.showModal()">
+        模拟会话过期
       </button>
     </div>
   </section>
@@ -60,7 +60,7 @@
   <!-- Dialog 1: 删除确认 -->
   <dialog id="confirm_dialog" class="modal" role="alertdialog">
     <div class="modal-box">
-      <h3 class="text-lg font-bold text-error">⚠️ 确认删除</h3>
+      <h3 class="text-lg font-bold text-error">确认删除</h3>
       <p class="py-4">您确定要删除这个文件吗？此操作无法撤销。</p>
       <div class="modal-action">
         <form method="dialog">
@@ -74,7 +74,7 @@
   <!-- Dialog 2: 表单验证错误 -->
   <dialog id="error_dialog" class="modal" role="alertdialog">
     <div class="modal-box">
-      <h3 class="text-lg font-bold text-error">❌ 表单验证失败</h3>
+      <h3 class="text-lg font-bold text-error">表单验证失败</h3>
       <p class="py-4">请确保所有必填字段都已填写，并且电子邮件格式正确。</p>
       <div class="modal-action">
         <form method="dialog">
@@ -87,13 +87,13 @@
   <!-- Dialog 3: 未保存更改 -->
   <dialog id="unsaved_dialog" class="modal" role="alertdialog">
     <div class="modal-box">
-      <h3 class="text-lg font-bold text-warning">⚠️ 未保存的更改</h3>
+      <h3 class="text-lg font-bold">未保存的更改</h3>
       <p class="py-4">您有未保存的更改，离开此页面将丢失这些更改。</p>
       <div class="modal-action">
         <form method="dialog">
           <button class="btn btn-ghost" value="stay">留在此页面</button>
           <button class="btn btn-error" value="discard">丢弃更改</button>
-          <button class="btn btn-success" value="save">💾 保存</button>
+          <button class="btn btn-primary" value="save">保存</button>
         </form>
       </div>
     </div>
@@ -102,12 +102,12 @@
   <!-- Dialog 4: 会话过期 -->
   <dialog id="session_dialog" class="modal" role="alertdialog">
     <div class="modal-box">
-      <h3 class="text-lg font-bold text-info">⏰ 重要提醒</h3>
+      <h3 class="text-lg font-bold">重要提醒</h3>
       <p class="py-4">您的会话将在 5 分钟后过期。请尽快保存您的工作。</p>
       <div class="modal-action">
         <form method="dialog">
           <button class="btn btn-ghost" value="exit">退出</button>
-          <button class="btn btn-info" value="continue">继续使用</button>
+          <button class="btn btn-primary" value="continue">继续使用</button>
         </form>
       </div>
     </div>
