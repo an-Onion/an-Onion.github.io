@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disclosure (Show/Hide) Pattern 示例</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-base-100 min-h-screen p-8">
+  <div class="container mx-auto max-w-4xl">
+    <h1 class="text-3xl font-bold mb-8 text-center">Disclosure (Show/Hide) Pattern 示例</h1>
+
+    <!-- 示例 1: 图片描述展开 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">1. 图片描述展开 (Image Description)</h2>
+      <details class="bg-base-100 border border-base-300 rounded-lg">
+        <summary class="cursor-pointer p-4 bg-base-200 hover:bg-base-300 rounded-lg flex justify-between items-center">
+          <span>查看图片描述</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </summary>
+        <div class="p-4 border-t border-base-300">
+          <img src="https://placehold.co/300x200" alt="占位图片" class="mb-4 rounded" />
+          <p>这是一张风景图片，展示了美丽的自然风光。山峰、湖泊和树木构成了和谐的画面。</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- 示例 2: FAQ 展开收起 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">2. FAQ 展开收起 (Answers to Frequently Asked Questions)</h2>
+      
+      <details class="bg-base-100 border border-base-300 rounded-lg mb-2">
+        <summary class="cursor-pointer p-4 bg-base-200 hover:bg-base-300 rounded-lg flex justify-between items-center">
+          <span>问题一：如何注册账户？</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </summary>
+        <div class="p-4 border-t border-base-300">
+          <p>回答：点击页面右上角的"注册"按钮，填写必要信息并验证邮箱即可完成注册。</p>
+        </div>
+      </details>
+
+      <details class="bg-base-100 border border-base-300 rounded-lg">
+        <summary class="cursor-pointer p-4 bg-base-200 hover:bg-base-300 rounded-lg flex justify-between items-center">
+          <span>问题二：如何重置密码？</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </summary>
+        <div class="p-4 border-t border-base-300">
+          <p>回答：点击登录页面的"忘记密码"链接，输入注册邮箱，按照邮件中的指示重置密码。</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- 示例 3: 导航菜单展开 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">3. 导航菜单展开 (Navigation Menu)</h2>
+      <nav class="bg-base-200 rounded-lg p-2">
+        <details class="dropdown w-full">
+          <summary class="btn btn-ghost w-full justify-between">
+            菜单
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </summary>
+          <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] mt-2 w-full p-2 shadow">
+            <li><a href="#home">首页</a></li>
+            <li><a href="#about">关于我们</a></li>
+            <li><a href="#contact">联系我们</a></li>
+          </ul>
+        </details>
+      </nav>
+    </section>
+
+    <!-- 示例 4: 带顶级链接的导航菜单 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">4. 带顶级链接的导航菜单 (Navigation Menu with Top-Level Links)</h2>
+      <nav class="bg-base-200 rounded-lg p-2">
+        <details class="dropdown w-full mb-2">
+          <summary class="btn btn-ghost w-full justify-between">
+            产品
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </summary>
+          <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] mt-2 w-full p-2 shadow">
+            <li><a href="#product-a">产品 A</a></li>
+            <li><a href="#product-b">产品 B</a></li>
+          </ul>
+        </details>
+        <a class="btn btn-ghost w-full mb-2" href="#services">服务</a>
+        <a class="btn btn-ghost w-full" href="#about">关于我们</a>
+      </nav>
+    </section>
+
+    <!-- 示例 5: 展开卡片 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">5. 展开卡片 (Disclosure Card)</h2>
+      <details class="collapse bg-base-100 w-full shadow-sm border border-base-300">
+        <summary class="collapse-title font-semibold bg-base-200 hover:bg-base-300 rounded-lg flex justify-between items-center">
+          <h3 class="card-title">项目信息</h3>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </summary>
+        <div class="collapse-content card-body pt-0">
+          <p>这里是项目的详细信息...</p>
+          <ul class="mt-2 space-y-1">
+            <li class="flex">
+              <span class="font-medium w-32">开始日期：</span>
+              <span>2023年1月1日</span>
+            </li>
+            <li class="flex">
+              <span class="font-medium w-32">结束日期：</span>
+              <span>2023年12月31日</span>
+            </li>
+            <li class="flex">
+              <span class="font-medium w-32">负责人：</span>
+              <span>张三</span>
+            </li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <!-- 示例 6: 自定义按钮 + ARIA 实现 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">6. 自定义按钮 + ARIA 实现</h2>
+      <button 
+        role="button" 
+        aria-expanded="false" 
+        aria-controls="custom-disclosure"
+        class="btn btn-outline w-full justify-between"
+        onclick="toggleCustomDisclosure()"
+      >
+        <span>自定义展开收起</span>
+        <svg xmlns="http://www.w3.org/2000/svg" id="custom-arrow" class="h-5 w-5 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+      <div id="custom-disclosure" class="hidden p-4 border border-t-0 border-base-300 rounded-b-lg bg-base-100">
+        <p>这是使用按钮和 ARIA 属性的自定义实现方式。</p>
+      </div>
+    </section>
+
+    <script>
+      // 自定义展开收起功能
+      function toggleCustomDisclosure() {
+        const button = document.querySelector('[aria-controls="custom-disclosure"]');
+        const content = document.getElementById('custom-disclosure');
+        const arrow = document.getElementById('custom-arrow');
+        
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+        button.setAttribute('aria-expanded', !isExpanded);
+        content.classList.toggle('hidden');
+        arrow.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+      }
+
+      // 为所有 details 元素添加箭头旋转效果
+      document.querySelectorAll('details').forEach((detail) => {
+        detail.addEventListener('toggle', () => {
+          const svg = detail.querySelector('summary svg');
+          if (svg) {
+            svg.style.transform = detail.open ? 'rotate(180deg)' : 'rotate(0deg)';
+          }
+        });
+      });
+      
+      // 为所有 collapse 样式的 details 元素添加箭头旋转效果
+      document.querySelectorAll('.collapse').forEach((element) => {
+        if (element.tagName === 'DETAILS') {
+          element.addEventListener('toggle', () => {
+            const svg = element.querySelector('summary svg');
+            if (svg) {
+              svg.style.transform = element.open ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
+          });
+        }
+      });
+    </script>
+  </div>
+</body>
+</html>
