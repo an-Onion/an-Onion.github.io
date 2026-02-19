@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accordion Pattern - DaisyUI 实现</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        /* 自定义样式增强可访问性 */
+        .accordion-btn:focus-visible {
+            outline: 2px solid hsl(var(--p));
+            outline-offset: 2px;
+            background-color: hsl(var(--b2));
+            border-radius: var(--rounded-btn, 0.5rem);
+        }
+
+        .accordion-btn:focus {
+            outline: none;
+        }
+        
+        /* 隐藏 radio，禁用其键盘导航 */
+        .collapse input[type="radio"],
+        .collapse input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            tabindex: -1;
+        }
+        
+        /* 箭头图标旋转 */
+        .accordion-btn[aria-expanded="true"] .arrow-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* 加减图标切换 */
+        .accordion-btn[aria-expanded="true"] .plus-icon {
+            display: none;
+        }
+        .accordion-btn[aria-expanded="false"] .minus-icon {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-base-200 min-h-screen p-8">
+    <div class="max-w-3xl mx-auto space-y-12">
+        <h1 class="text-3xl font-bold text-center">Accordion Pattern - DaisyUI 实现</h1>
+        
+        <!-- 4.1 基础结构示例 -->
+        <section>
+            <h2 class="text-xl font-semibold mb-4">4.1 基础结构</h2>
+            <div class="accordion space-y-2" data-accordion="single">
+                <!-- 第一部分 -->
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="radio" name="accordion-basic" checked="checked" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="true" 
+                                aria-controls="section1" 
+                                id="accordion-header-1">
+                            <span>第一部分标题</span>
+                            <svg class="w-5 h-5 arrow-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="section1" role="region" aria-labelledby="accordion-header-1">
+                        <p>第一部分的内容...</p>
+                    </div>
+                </div>
+
+                <!-- 第二部分 -->
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="radio" name="accordion-basic" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="false" 
+                                aria-controls="section2" 
+                                id="accordion-header-2">
+                            <span>第二部分标题</span>
+                            <svg class="w-5 h-5 arrow-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="section2" role="region" aria-labelledby="accordion-header-2" hidden>
+                        <p>第二部分的内容...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4.2 单展开模式 -->
+        <section>
+            <h2 class="text-xl font-semibold mb-4">4.2 单展开模式</h2>
+            <div class="accordion space-y-2" data-accordion="single">
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="radio" name="accordion-single" checked="checked" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="true" 
+                                aria-controls="panel-single-1"
+                                aria-disabled="true">
+                            <span>始终展开的面板</span>
+                            <svg class="w-5 h-5 arrow-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="panel-single-1" role="region">
+                        <p>此面板无法折叠...</p>
+                    </div>
+                </div>
+
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="radio" name="accordion-single" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="false" 
+                                aria-controls="panel-single-2">
+                            <span>可切换的面板</span>
+                            <svg class="w-5 h-5 arrow-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="panel-single-2" role="region" hidden>
+                        <p>点击上方标题可展开此面板...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4.3 多展开模式（使用 checkbox） -->
+        <section>
+            <h2 class="text-xl font-semibold mb-4">4.3 多展开模式</h2>
+            <div class="accordion space-y-2" data-accordion="multiple">
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="checkbox" checked="checked" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="true" 
+                                aria-controls="multi-1">
+                            <span>第一个面板</span>
+                            <svg class="w-5 h-5 arrow-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="multi-1" role="region">
+                        <p>第一个面板内容...</p>
+                    </div>
+                </div>
+
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="checkbox" checked="checked" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="true" 
+                                aria-controls="multi-2">
+                            <span>第二个面板（也可同时展开）</span>
+                            <svg class="w-5 h-5 arrow-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="multi-2" role="region">
+                        <p>第二个面板内容...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4.4 使用原生 HTML details + name 实现 -->
+        <section>
+            <h2 class="text-xl font-semibold mb-4">4.4 使用原生 HTML &lt;details&gt; + name 实现</h2>
+            <div class="space-y-2">
+                <details class="collapse collapse-arrow bg-base-100 border border-base-300" name="accordion-group" open>
+                    <summary class="collapse-title font-semibold cursor-pointer">第一部分标题</summary>
+                    <div class="collapse-content text-sm">
+                        <p>第一部分的内容...</p>
+                    </div>
+                </details>
+
+                <details class="collapse collapse-arrow bg-base-100 border border-base-300" name="accordion-group">
+                    <summary class="collapse-title font-semibold cursor-pointer">第二部分标题</summary>
+                    <div class="collapse-content text-sm">
+                        <p>第二部分的内容...</p>
+                    </div>
+                </details>
+
+                <details class="collapse collapse-arrow bg-base-100 border border-base-300" name="accordion-group">
+                    <summary class="collapse-title font-semibold cursor-pointer">第三部分标题</summary>
+                    <div class="collapse-content text-sm">
+                        <p>第三部分的内容...</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- 5.1 表单分步填写 -->
+        <section>
+            <h2 class="text-xl font-semibold mb-4">5.1 表单分步填写</h2>
+            <div class="accordion space-y-2" data-accordion="single">
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="radio" name="accordion-form" checked="checked" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="true" 
+                                aria-controls="step-1">
+                            <span>步骤 1：个人信息</span>
+                            <svg class="w-5 h-5 arrow-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="step-1" role="region">
+                        <div class="space-y-2">
+                            <label class="block">
+                                <span class="label-text">姓名</span>
+                                <input type="text" class="input input-bordered w-full" />
+                            </label>
+                            <label class="block">
+                                <span class="label-text">邮箱</span>
+                                <input type="email" class="input input-bordered w-full" />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="radio" name="accordion-form" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="false" 
+                                aria-controls="step-2">
+                            <span>步骤 2：地址信息</span>
+                            <svg class="w-5 h-5 arrow-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="step-2" role="region" hidden>
+                        <div class="space-y-2">
+                            <label class="block">
+                                <span class="label-text">城市</span>
+                                <input type="text" class="input input-bordered w-full" />
+                            </label>
+                            <label class="block">
+                                <span class="label-text">邮编</span>
+                                <input type="text" class="input input-bordered w-full" />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5.2 FAQ 页面 - 带箭头图标 -->
+        <section>
+            <h2 class="text-xl font-semibold mb-4">5.2 FAQ 页面</h2>
+            <div class="accordion space-y-2" data-accordion="single">
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="radio" name="accordion-faq" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="false" 
+                                aria-controls="faq-1">
+                            <span>如何注册账户？</span>
+                            <svg class="w-5 h-5 arrow-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="faq-1" role="region" hidden>
+                        <p>点击页面右上角的"注册"按钮，填写必要信息...</p>
+                    </div>
+                </div>
+
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="radio" name="accordion-faq" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="false" 
+                                aria-controls="faq-2">
+                            <span>如何重置密码？</span>
+                            <svg class="w-5 h-5 arrow-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="faq-2" role="region" hidden>
+                        <p>点击登录页面的"忘记密码"链接...</p>
+                    </div>
+                </div>
+
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="radio" name="accordion-faq" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="false" 
+                                aria-controls="faq-3">
+                            <span>如何联系客服？</span>
+                            <svg class="w-5 h-5 arrow-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="faq-3" role="region" hidden>
+                        <p>发送邮件至 support@example.com 或拨打客服电话...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5.3 设置面板 -->
+        <section>
+            <h2 class="text-xl font-semibold mb-4">5.3 设置面板</h2>
+            <div class="accordion space-y-2" data-accordion="multiple">
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="checkbox" checked="checked" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="true" 
+                                aria-controls="settings-general">
+                            <span>通用设置</span>
+                            <svg class="w-5 h-5 arrow-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="settings-general" role="region">
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="checkbox" checked />
+                                <span>启用通知</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="checkbox" checked />
+                                <span>自动保存</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="checkbox" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="false" 
+                                aria-controls="settings-privacy">
+                            <span>隐私设置</span>
+                            <svg class="w-5 h-5 arrow-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="settings-privacy" role="region" hidden>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="checkbox" />
+                                <span>公开个人资料</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="checkbox" />
+                                <span>允许搜索</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="checkbox" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="false" 
+                                aria-controls="settings-notifications">
+                            <span>通知设置</span>
+                            <svg class="w-5 h-5 arrow-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="settings-notifications" role="region" hidden>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="checkbox" checked />
+                                <span>邮件通知</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="checkbox" />
+                                <span>短信通知</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6.3 视觉指示 - 带加减图标 -->
+        <section>
+            <h2 class="text-xl font-semibold mb-4">6.3 视觉指示 - 加减图标</h2>
+            <div class="accordion space-y-2" data-accordion="single">
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="radio" name="accordion-plus" checked="checked" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="true" 
+                                aria-controls="plus-1">
+                            <span>带加减图标的手风琴项</span>
+                            <span class="relative w-5 h-5">
+                                <svg class="w-5 h-5 plus-icon absolute" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                <svg class="w-5 h-5 minus-icon absolute" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                </svg>
+                            </span>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="plus-1" role="region">
+                        <p>折叠时显示"+"图标，展开时显示"-"图标。</p>
+                    </div>
+                </div>
+
+                <div class="collapse bg-base-100 border border-base-300">
+                    <input type="radio" name="accordion-plus" tabindex="-1" />
+                    <h3 class="collapse-title font-semibold p-0">
+                        <button class="accordion-btn w-full text-left px-4 py-3 flex items-center justify-between" 
+                                aria-expanded="false" 
+                                aria-controls="plus-2">
+                            <span>另一个带加减图标的手风琴项</span>
+                            <span class="relative w-5 h-5">
+                                <svg class="w-5 h-5 plus-icon absolute" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                <svg class="w-5 h-5 minus-icon absolute" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                </svg>
+                            </span>
+                        </button>
+                    </h3>
+                    <div class="collapse-content text-sm" id="plus-2" role="region" hidden>
+                        <p>加减图标提供了清晰的视觉指示。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 说明 -->
+        <section class="bg-base-100 p-6 rounded-lg border border-base-300">
+            <h2 class="text-xl font-semibold mb-4">可访问性说明</h2>
+            <ul class="list-disc list-inside space-y-2 text-sm">
+                <li>所有手风琴按钮都包含 <code>aria-expanded</code> 属性指示展开状态</li>
+                <li>所有手风琴按钮都包含 <code>aria-controls</code> 属性关联面板</li>
+                <li>所有面板都包含 <code>role="region"</code> 和 <code>aria-labelledby</code> 属性</li>
+                <li>使用 <code>&lt;h3&gt;</code> 标签包裹按钮，提供正确的标题层级</li>
+                <li>支持键盘导航：Tab 切换焦点，Enter/Space 展开/折叠，上下箭头在标题间导航</li>
+                <li>radio/checkbox 设置 <code>tabindex="-1"</code>，避免与按钮的键盘导航冲突</li>
+                <li>使用箭头图标和加减图标提供视觉指示</li>
+            </ul>
+        </section>
+    </div>
+
+    <script>
+        // 手风琴功能实现
+        document.querySelectorAll('.accordion').forEach(accordion => {
+            const buttons = accordion.querySelectorAll('.accordion-btn');
+            const mode = accordion.dataset.accordion; // 'single' 或 'multiple'
+            
+            buttons.forEach((button, index) => {
+                // 点击事件 - 同步 radio/checkbox 和 ARIA 状态
+                button.addEventListener('click', () => {
+                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                    const panelId = button.getAttribute('aria-controls');
+                    const panel = document.getElementById(panelId);
+                    const collapse = button.closest('.collapse');
+                    const input = collapse.querySelector('input[type="radio"], input[type="checkbox"]');
+                    
+                    // 如果按钮被禁用，不执行任何操作
+                    if (button.getAttribute('aria-disabled') === 'true') {
+                        return;
+                    }
+                    
+                    if (mode === 'single') {
+                        // 单展开模式：关闭其他所有面板
+                        buttons.forEach((btn, btnIndex) => {
+                            const btnCollapse = btn.closest('.collapse');
+                            const btnInput = btnCollapse.querySelector('input[type="radio"]');
+                            const btnPanelId = btn.getAttribute('aria-controls');
+                            const btnPanel = document.getElementById(btnPanelId);
+                            
+                            if (btn === button) {
+                                // 切换当前面板
+                                const newState = !isExpanded;
+                                btn.setAttribute('aria-expanded', newState);
+                                btnInput.checked = newState;
+                                if (newState) {
+                                    btnPanel.removeAttribute('hidden');
+                                } else {
+                                    btnPanel.setAttribute('hidden', '');
+                                }
+                            } else if (btn.getAttribute('aria-disabled') !== 'true') {
+                                // 关闭其他面板
+                                btn.setAttribute('aria-expanded', 'false');
+                                btnInput.checked = false;
+                                btnPanel.setAttribute('hidden', '');
+                            }
+                        });
+                    } else {
+                        // 多展开模式：只切换当前面板
+                        const newState = !isExpanded;
+                        button.setAttribute('aria-expanded', newState);
+                        input.checked = newState;
+                        if (newState) {
+                            panel.removeAttribute('hidden');
+                        } else {
+                            panel.setAttribute('hidden', '');
+                        }
+                    }
+                });
+                
+                // 键盘导航
+                button.addEventListener('keydown', (e) => {
+                    let targetButton = null;
+                    
+                    switch(e.key) {
+                        case 'ArrowDown':
+                            e.preventDefault();
+                            targetButton = buttons[index + 1] || buttons[0];
+                            break;
+                        case 'ArrowUp':
+                            e.preventDefault();
+                            targetButton = buttons[index - 1] || buttons[buttons.length - 1];
+                            break;
+                        case 'Home':
+                            e.preventDefault();
+                            targetButton = buttons[0];
+                            break;
+                        case 'End':
+                            e.preventDefault();
+                            targetButton = buttons[buttons.length - 1];
+                            break;
+                    }
+                    
+                    if (targetButton) {
+                        targetButton.focus();
+                    }
+                });
+            });
+        });
+
+        // 处理 details 元素的 aria-expanded
+        document.querySelectorAll('details').forEach(details => {
+            const summary = details.querySelector('summary');
+            if (summary) {
+                summary.setAttribute('aria-expanded', details.open);
+                details.addEventListener('toggle', function() {
+                    summary.setAttribute('aria-expanded', this.open);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
