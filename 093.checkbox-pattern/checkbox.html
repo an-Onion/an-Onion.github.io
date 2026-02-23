@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkbox Pattern - DaisyUI 实现示例</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-left: 1.5rem;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body class="bg-base-200 min-h-screen p-8">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-8 text-center">Checkbox Pattern 示例</h1>
+    
+    <!-- 示例 1: 双状态复选框 - 基础样式 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">1. 双状态复选框 - 基础样式</h2>
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <fieldset class="fieldset">
+            <legend class="fieldset-legend text-lg">订阅选项</legend>
+            <label class="label cursor-pointer justify-start gap-3">
+              <input type="checkbox" class="checkbox checkbox-primary" checked />
+              <span class="label-text">订阅新闻邮件</span>
+            </label>
+            <label class="label cursor-pointer justify-start gap-3">
+              <input type="checkbox" class="checkbox checkbox-secondary" />
+              <span class="label-text">接收促销信息</span>
+            </label>
+            <label class="label cursor-pointer justify-start gap-3">
+              <input type="checkbox" class="checkbox checkbox-accent" />
+              <span class="label-text">启用推送通知</span>
+            </label>
+          </fieldset>
+        </div>
+      </div>
+    </section>
+
+    <!-- 示例 2: 不同尺寸的复选框 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">2. 不同尺寸的复选框</h2>
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <div class="flex items-center gap-4 flex-wrap">
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" class="checkbox checkbox-xs checkbox-primary" checked />
+              <span class="label-text text-xs">XS</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" checked />
+              <span class="label-text text-sm">SM</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" class="checkbox checkbox-md checkbox-primary" checked />
+              <span class="label-text">MD</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" class="checkbox checkbox-lg checkbox-primary" checked />
+              <span class="label-text text-lg">LG</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" class="checkbox checkbox-xl checkbox-primary" checked />
+              <span class="label-text text-xl">XL</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 示例 3: 不同颜色的复选框 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">3. 不同颜色的复选框</h2>
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" class="checkbox checkbox-primary" checked />
+              <span class="label-text">Primary</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" class="checkbox checkbox-secondary" checked />
+              <span class="label-text">Secondary</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" class="checkbox checkbox-accent" checked />
+              <span class="label-text">Accent</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" class="checkbox checkbox-neutral" checked />
+              <span class="label-text">Neutral</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" class="checkbox checkbox-info" checked />
+              <span class="label-text">Info</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" class="checkbox checkbox-success" checked />
+              <span class="label-text">Success</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" class="checkbox checkbox-warning" checked />
+              <span class="label-text">Warning</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input type="checkbox" class="checkbox checkbox-error" checked />
+              <span class="label-text">Error</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 示例 4: 禁用状态的复选框 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">4. 禁用状态的复选框</h2>
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <div class="flex gap-8">
+            <label class="label cursor-not-allowed gap-2 opacity-50">
+              <input type="checkbox" class="checkbox checkbox-primary" disabled />
+              <span class="label-text">禁用未选中</span>
+            </label>
+            <label class="label cursor-not-allowed gap-2 opacity-50">
+              <input type="checkbox" class="checkbox checkbox-primary" disabled checked />
+              <span class="label-text">禁用已选中</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 示例 5: 三状态复选框（全选/取消全选） -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">5. 三状态复选框（全选/取消全选）</h2>
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <fieldset class="fieldset">
+            <legend class="fieldset-legend text-lg">文件权限设置</legend>
+            
+            <!-- 总控复选框 -->
+            <label class="label cursor-pointer justify-start gap-3 font-semibold border-b border-base-300 pb-2 mb-2">
+              <input 
+                type="checkbox" 
+                id="select-all"
+                class="checkbox checkbox-primary" 
+                onclick="handleSelectAll(this)" />
+              <span class="label-text">全选所有权限</span>
+            </label>
+            
+            <!-- 子复选框组 -->
+            <div class="checkbox-group">
+              <label class="label cursor-pointer justify-start gap-3">
+                <input 
+                  type="checkbox" 
+                  name="permission"
+                  value="read"
+                  class="checkbox checkbox-success child-checkbox"
+                  onchange="updateSelectAllState()" />
+                <span class="label-text">读取权限</span>
+              </label>
+              <label class="label cursor-pointer justify-start gap-3">
+                <input 
+                  type="checkbox" 
+                  name="permission"
+                  value="write"
+                  class="checkbox checkbox-warning child-checkbox"
+                  onchange="updateSelectAllState()" />
+                <span class="label-text">写入权限</span>
+              </label>
+              <label class="label cursor-pointer justify-start gap-3">
+                <input 
+                  type="checkbox" 
+                  name="permission"
+                  value="delete"
+                  class="checkbox checkbox-error child-checkbox"
+                  onchange="updateSelectAllState()" />
+                <span class="label-text">删除权限</span>
+              </label>
+              <label class="label cursor-pointer justify-start gap-3">
+                <input 
+                  type="checkbox" 
+                  name="permission"
+                  value="execute"
+                  class="checkbox checkbox-info child-checkbox"
+                  onchange="updateSelectAllState()" />
+                <span class="label-text">执行权限</span>
+              </label>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </section>
+
+    <!-- 示例 6: 表单选项 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">6. 表单选项 - 兴趣爱好</h2>
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <fieldset class="fieldset bg-base-100 border-base-300 rounded-box border p-4">
+            <legend class="fieldset-legend">选择你的兴趣爱好</legend>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="label cursor-pointer justify-start gap-3">
+                <input type="checkbox" name="hobby" value="reading" class="checkbox checkbox-primary" />
+                <span class="label-text">📚 阅读</span>
+              </label>
+              <label class="label cursor-pointer justify-start gap-3">
+                <input type="checkbox" name="hobby" value="sports" class="checkbox checkbox-success" />
+                <span class="label-text">⚽ 运动</span>
+              </label>
+              <label class="label cursor-pointer justify-start gap-3">
+                <input type="checkbox" name="hobby" value="music" class="checkbox checkbox-secondary" />
+                <span class="label-text">🎵 音乐</span>
+              </label>
+              <label class="label cursor-pointer justify-start gap-3">
+                <input type="checkbox" name="hobby" value="travel" class="checkbox checkbox-accent" />
+                <span class="label-text">✈️ 旅行</span>
+              </label>
+              <label class="label cursor-pointer justify-start gap-3">
+                <input type="checkbox" name="hobby" value="gaming" class="checkbox checkbox-info" />
+                <span class="label-text">🎮 游戏</span>
+              </label>
+              <label class="label cursor-pointer justify-start gap-3">
+                <input type="checkbox" name="hobby" value="cooking" class="checkbox checkbox-warning" />
+                <span class="label-text">🍳 烹饪</span>
+              </label>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </section>
+
+    <!-- 示例 7: 安装程序选项 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">7. 安装程序选项</h2>
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <fieldset class="fieldset">
+            <legend class="fieldset-legend text-lg">选择安装组件</legend>
+            
+            <label class="label cursor-pointer justify-start gap-3">
+              <input 
+                type="checkbox" 
+                id="select-all-components"
+                class="checkbox checkbox-primary"
+                onclick="handleComponentsSelectAll(this)" />
+              <span class="label-text font-semibold">安装所有组件</span>
+            </label>
+            
+            <div class="checkbox-group">
+              <label class="label cursor-pointer justify-start gap-3">
+                <input 
+                  type="checkbox" 
+                  name="component"
+                  value="core"
+                  class="checkbox checkbox-error component-checkbox"
+                  checked 
+                  disabled />
+                <span class="label-text">核心程序（必需）</span>
+              </label>
+              <label class="label cursor-pointer justify-start gap-3">
+                <input 
+                  type="checkbox" 
+                  name="component"
+                  value="docs"
+                  class="checkbox checkbox-info component-checkbox"
+                  onchange="updateComponentsState()" />
+                <span class="label-text">帮助文档</span>
+              </label>
+              <label class="label cursor-pointer justify-start gap-3">
+                <input 
+                  type="checkbox" 
+                  name="component"
+                  value="plugins"
+                  class="checkbox checkbox-success component-checkbox"
+                  onchange="updateComponentsState()" />
+                <span class="label-text">插件包</span>
+              </label>
+              <label class="label cursor-pointer justify-start gap-3">
+                <input 
+                  type="checkbox" 
+                  name="component"
+                  value="shortcuts"
+                  class="checkbox checkbox-warning component-checkbox"
+                  onchange="updateComponentsState()" />
+                <span class="label-text">桌面快捷方式</span>
+              </label>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </section>
+
+    <!-- 示例 8: 表格行选择 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">8. 表格行选择</h2>
+      <div class="card bg-base-100 shadow-sm overflow-x-auto">
+        <div class="card-body">
+          <table class="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th class="w-16">
+                  <input 
+                    type="checkbox" 
+                    id="select-all-rows"
+                    class="checkbox checkbox-primary"
+                    aria-label="选择所有行"
+                    onclick="handleSelectAllRows(this)" />
+                </th>
+                <th>姓名</th>
+                <th>邮箱</th>
+                <th>状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input 
+                    type="checkbox" 
+                    class="checkbox checkbox-primary row-checkbox"
+                    aria-label="选择张三"
+                    onchange="updateSelectAllRowsState()" />
+                </td>
+                <td>张三</td>
+                <td>zhangsan@example.com</td>
+                <td><span class="badge badge-success">活跃</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <input 
+                    type="checkbox" 
+                    class="checkbox checkbox-primary row-checkbox"
+                    aria-label="选择李四"
+                    onchange="updateSelectAllRowsState()" />
+                </td>
+                <td>李四</td>
+                <td>lisi@example.com</td>
+                <td><span class="badge badge-warning">待审核</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <input 
+                    type="checkbox" 
+                    class="checkbox checkbox-primary row-checkbox"
+                    aria-label="选择王五"
+                    onchange="updateSelectAllRowsState()" />
+                </td>
+                <td>王五</td>
+                <td>wangwu@example.com</td>
+                <td><span class="badge badge-error">禁用</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <input 
+                    type="checkbox" 
+                    class="checkbox checkbox-primary row-checkbox"
+                    aria-label="选择赵六"
+                    onchange="updateSelectAllRowsState()" />
+                </td>
+                <td>赵六</td>
+                <td>zhaoliu@example.com</td>
+                <td><span class="badge badge-success">活跃</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 示例 9: Indeterminate 状态展示 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">9. Indeterminate（部分选中）状态</h2>
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <div class="flex flex-col gap-4">
+            <label class="label cursor-pointer justify-start gap-3">
+              <input 
+                type="checkbox" 
+                id="indeterminate-checkbox"
+                class="checkbox checkbox-primary" />
+              <span class="label-text">部分选中状态（通过 JavaScript 设置）</span>
+            </label>
+            <button 
+              class="btn btn-sm btn-outline btn-primary w-fit"
+              onclick="setIndeterminate()">
+              设置为部分选中状态
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 示例 10: 自定义颜色 -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">10. 自定义颜色</h2>
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <div class="flex flex-wrap gap-4">
+            <label class="label cursor-pointer gap-2">
+              <input 
+                type="checkbox" 
+                checked
+                class="checkbox border-indigo-600 bg-indigo-500 checked:border-orange-500 checked:bg-orange-400 checked:text-orange-800" />
+              <span class="label-text">自定义颜色 1</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input 
+                type="checkbox" 
+                checked
+                class="checkbox border-pink-500 bg-pink-400 checked:border-purple-600 checked:bg-purple-500 checked:text-white" />
+              <span class="label-text">自定义颜色 2</span>
+            </label>
+            <label class="label cursor-pointer gap-2">
+              <input 
+                type="checkbox" 
+                checked
+                class="checkbox border-teal-500 bg-teal-400 checked:border-cyan-600 checked:bg-cyan-500 checked:text-white" />
+              <span class="label-text">自定义颜色 3</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // 示例 5: 三状态复选框 - 权限设置
+    function handleSelectAll(checkbox) {
+      const childCheckboxes = document.querySelectorAll('.child-checkbox');
+      childCheckboxes.forEach(child => {
+        child.checked = checkbox.checked;
+      });
+    }
+
+    function updateSelectAllState() {
+      const selectAllCheckbox = document.getElementById('select-all');
+      const childCheckboxes = document.querySelectorAll('.child-checkbox');
+      const checkedCount = document.querySelectorAll('.child-checkbox:checked').length;
+      const totalCount = childCheckboxes.length;
+
+      if (checkedCount === 0) {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = false;
+      } else if (checkedCount === totalCount) {
+        selectAllCheckbox.checked = true;
+        selectAllCheckbox.indeterminate = false;
+      } else {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = true;
+      }
+    }
+
+    // 示例 7: 安装程序选项
+    function handleComponentsSelectAll(checkbox) {
+      const componentCheckboxes = document.querySelectorAll('.component-checkbox:not([disabled])');
+      componentCheckboxes.forEach(child => {
+        child.checked = checkbox.checked;
+      });
+    }
+
+    function updateComponentsState() {
+      const selectAllCheckbox = document.getElementById('select-all-components');
+      const componentCheckboxes = document.querySelectorAll('.component-checkbox:not([disabled])');
+      const checkedCount = document.querySelectorAll('.component-checkbox:not([disabled]):checked').length;
+      const totalCount = componentCheckboxes.length;
+
+      if (checkedCount === 0) {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = false;
+      } else if (checkedCount === totalCount) {
+        selectAllCheckbox.checked = true;
+        selectAllCheckbox.indeterminate = false;
+      } else {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = true;
+      }
+    }
+
+    // 示例 8: 表格行选择
+    function handleSelectAllRows(checkbox) {
+      const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+      rowCheckboxes.forEach(row => {
+        row.checked = checkbox.checked;
+      });
+    }
+
+    function updateSelectAllRowsState() {
+      const selectAllCheckbox = document.getElementById('select-all-rows');
+      const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+      const checkedCount = document.querySelectorAll('.row-checkbox:checked').length;
+      const totalCount = rowCheckboxes.length;
+
+      if (checkedCount === 0) {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = false;
+      } else if (checkedCount === totalCount) {
+        selectAllCheckbox.checked = true;
+        selectAllCheckbox.indeterminate = false;
+      } else {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = true;
+      }
+    }
+
+    // 示例 9: 设置 indeterminate 状态
+    function setIndeterminate() {
+      const checkbox = document.getElementById('indeterminate-checkbox');
+      checkbox.indeterminate = true;
+    }
+  </script>
+</body>
+</html>
