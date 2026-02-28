@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Pattern - DaisyUI 实现</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-base-200 min-h-screen py-10">
+    <div class="container mx-auto max-w-4xl px-4">
+        <h1 class="text-4xl font-bold text-center mb-10 text-base-content">Radio Pattern - DaisyUI 实现</h1>
+        
+        <!-- 示例 1: 基础单选按钮 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">1. 基础单选按钮</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">选择性别</legend>
+                        <label class="label cursor-pointer justify-start gap-3">
+                            <input type="radio" name="gender" value="male" class="radio radio-primary" checked />
+                            <span class="label-text">男</span>
+                        </label>
+                        <label class="label cursor-pointer justify-start gap-3">
+                            <input type="radio" name="gender" value="female" class="radio radio-primary" />
+                            <span class="label-text">女</span>
+                        </label>
+                        <label class="label cursor-pointer justify-start gap-3">
+                            <input type="radio" name="gender" value="other" class="radio radio-primary" />
+                            <span class="label-text">其他</span>
+                        </label>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 2: 不同颜色的单选按钮 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">2. 不同颜色的单选按钮</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">主题色选择</legend>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <label class="label cursor-pointer justify-start gap-2">
+                                <input type="radio" name="theme-color" value="primary" class="radio radio-primary" checked />
+                                <span class="label-text">Primary</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-2">
+                                <input type="radio" name="theme-color" value="secondary" class="radio radio-secondary" />
+                                <span class="label-text">Secondary</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-2">
+                                <input type="radio" name="theme-color" value="accent" class="radio radio-accent" />
+                                <span class="label-text">Accent</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-2">
+                                <input type="radio" name="theme-color" value="neutral" class="radio radio-neutral" />
+                                <span class="label-text">Neutral</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-2">
+                                <input type="radio" name="theme-color" value="info" class="radio radio-info" />
+                                <span class="label-text">Info</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-2">
+                                <input type="radio" name="theme-color" value="success" class="radio radio-success" />
+                                <span class="label-text">Success</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-2">
+                                <input type="radio" name="theme-color" value="warning" class="radio radio-warning" />
+                                <span class="label-text">Warning</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-2">
+                                <input type="radio" name="theme-color" value="error" class="radio radio-error" />
+                                <span class="label-text">Error</span>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 3: 不同尺寸的单选按钮 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">3. 不同尺寸的单选按钮</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">尺寸选择</legend>
+                        <div class="flex flex-wrap items-center gap-6">
+                            <label class="label cursor-pointer justify-start gap-2">
+                                <input type="radio" name="size-xs" class="radio radio-xs radio-primary" checked />
+                                <span class="label-text text-xs">XS</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-2">
+                                <input type="radio" name="size-sm" class="radio radio-sm radio-primary" checked />
+                                <span class="label-text text-sm">SM</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-2">
+                                <input type="radio" name="size-md" class="radio radio-md radio-primary" checked />
+                                <span class="label-text">MD</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-2">
+                                <input type="radio" name="size-lg" class="radio radio-lg radio-primary" checked />
+                                <span class="label-text text-lg">LG</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-2">
+                                <input type="radio" name="size-xl" class="radio radio-xl radio-primary" checked />
+                                <span class="label-text text-xl">XL</span>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 4: 禁用状态 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">4. 禁用状态的单选按钮</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">配送方式</legend>
+                        <label class="label cursor-pointer justify-start gap-3">
+                            <input type="radio" name="shipping" value="standard" class="radio radio-primary" checked />
+                            <span class="label-text">标准配送（3-5天）</span>
+                        </label>
+                        <label class="label cursor-pointer justify-start gap-3">
+                            <input type="radio" name="shipping" value="express" class="radio radio-primary" />
+                            <span class="label-text">快速配送（1-2天）</span>
+                        </label>
+                        <label class="label cursor-pointer justify-start gap-3 opacity-50 cursor-not-allowed">
+                            <input type="radio" name="shipping" value="same-day" class="radio radio-primary" disabled />
+                            <span class="label-text">当日达（当前区域不可用）</span>
+                        </label>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 5: 水平布局的单选按钮 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">5. 水平布局 - 评分选择</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">请评分</legend>
+                        <div class="flex flex-wrap gap-4">
+                            <label class="label cursor-pointer gap-2">
+                                <input type="radio" name="rating" value="1" class="radio radio-warning" />
+                                <span class="label-text">1 星</span>
+                            </label>
+                            <label class="label cursor-pointer gap-2">
+                                <input type="radio" name="rating" value="2" class="radio radio-warning" />
+                                <span class="label-text">2 星</span>
+                            </label>
+                            <label class="label cursor-pointer gap-2">
+                                <input type="radio" name="rating" value="3" class="radio radio-warning" checked />
+                                <span class="label-text">3 星</span>
+                            </label>
+                            <label class="label cursor-pointer gap-2">
+                                <input type="radio" name="rating" value="4" class="radio radio-warning" />
+                                <span class="label-text">4 星</span>
+                            </label>
+                            <label class="label cursor-pointer gap-2">
+                                <input type="radio" name="rating" value="5" class="radio radio-warning" />
+                                <span class="label-text">5 星</span>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 6: 带描述的选项卡片 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">6. 带描述的选项 - 套餐选择</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">选择套餐</legend>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- 基础版 -->
+                            <label class="cursor-pointer">
+                                <input type="radio" name="plan" value="basic" class="peer sr-only" checked />
+                                <div class="card bg-base-200 border-2 border-transparent peer-checked:border-primary peer-checked:bg-primary/10 transition-all hover:bg-base-300">
+                                    <div class="card-body p-4">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <input type="radio" class="radio radio-primary" checked disabled />
+                                            <h3 class="card-title text-lg">基础版</h3>
+                                        </div>
+                                        <p class="text-2xl font-bold text-primary">¥29<span class="text-sm text-base-content/60">/月</span></p>
+                                        <p class="text-sm text-base-content/70">适合个人用户</p>
+                                        <ul class="text-sm mt-2 space-y-1">
+                                            <li>✓ 基础功能</li>
+                                            <li>✓ 5GB 存储</li>
+                                            <li>✓ 邮件支持</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <!-- 专业版 -->
+                            <label class="cursor-pointer">
+                                <input type="radio" name="plan" value="pro" class="peer sr-only" />
+                                <div class="card bg-base-200 border-2 border-transparent peer-checked:border-secondary peer-checked:bg-secondary/10 transition-all hover:bg-base-300">
+                                    <div class="card-body p-4">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <input type="radio" class="radio radio-secondary" disabled />
+                                            <h3 class="card-title text-lg">专业版</h3>
+                                        </div>
+                                        <p class="text-2xl font-bold text-secondary">¥99<span class="text-sm text-base-content/60">/月</span></p>
+                                        <p class="text-sm text-base-content/70">适合小型团队</p>
+                                        <ul class="text-sm mt-2 space-y-1">
+                                            <li>✓ 全部功能</li>
+                                            <li>✓ 50GB 存储</li>
+                                            <li>✓ 优先支持</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <!-- 企业版 -->
+                            <label class="cursor-pointer">
+                                <input type="radio" name="plan" value="enterprise" class="peer sr-only" />
+                                <div class="card bg-base-200 border-2 border-transparent peer-checked:border-accent peer-checked:bg-accent/10 transition-all hover:bg-base-300">
+                                    <div class="card-body p-4">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <input type="radio" class="radio radio-accent" disabled />
+                                            <h3 class="card-title text-lg">企业版</h3>
+                                        </div>
+                                        <p class="text-2xl font-bold text-accent">¥299<span class="text-sm text-base-content/60">/月</span></p>
+                                        <p class="text-sm text-base-content/70">适合大型企业</p>
+                                        <ul class="text-sm mt-2 space-y-1">
+                                            <li>✓ 定制功能</li>
+                                            <li>✓ 无限存储</li>
+                                            <li>✓ 专属客服</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 7: 支付方式选择 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">7. 支付方式选择</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">选择支付方式</legend>
+                        
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-4 p-4 border rounded-lg cursor-pointer hover:bg-base-200 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                                <input type="radio" name="payment" value="alipay" class="radio radio-primary" checked />
+                                <div class="flex items-center gap-3 flex-1">
+                                    <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-xs">支付宝</div>
+                                    <div>
+                                        <p class="font-medium">支付宝</p>
+                                        <p class="text-sm text-base-content/60">推荐使用，支持花呗</p>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center gap-4 p-4 border rounded-lg cursor-pointer hover:bg-base-200 transition-colors has-[:checked]:border-success has-[:checked]:bg-success/5">
+                                <input type="radio" name="payment" value="wechat" class="radio radio-success" />
+                                <div class="flex items-center gap-3 flex-1">
+                                    <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center text-white font-bold text-xs">微信</div>
+                                    <div>
+                                        <p class="font-medium">微信支付</p>
+                                        <p class="text-sm text-base-content/60">亿万用户的选择</p>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center gap-4 p-4 border rounded-lg cursor-pointer hover:bg-base-200 transition-colors has-[:checked]:border-info has-[:checked]:bg-info/5">
+                                <input type="radio" name="payment" value="card" class="radio radio-info" />
+                                <div class="flex items-center gap-3 flex-1">
+                                    <div class="w-10 h-10 bg-info rounded-lg flex items-center justify-center text-white font-bold text-xs">银行卡</div>
+                                    <div>
+                                        <p class="font-medium">银行卡支付</p>
+                                        <p class="text-sm text-base-content/60">支持储蓄卡/信用卡</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 8: 主题切换 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">8. 主题切换</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">选择主题</legend>
+                        <div class="flex flex-wrap gap-4">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="theme" value="light" class="peer sr-only" checked onchange="document.documentElement.setAttribute('data-theme', 'light')" />
+                                <div class="flex flex-col items-center gap-2 p-4 rounded-lg border-2 border-transparent peer-checked:border-primary hover:bg-base-200 transition-all">
+                                    <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-300 shadow-sm"></div>
+                                    <span class="text-sm font-medium">浅色</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="theme" value="dark" class="peer sr-only" onchange="document.documentElement.setAttribute('data-theme', 'dark')" />
+                                <div class="flex flex-col items-center gap-2 p-4 rounded-lg border-2 border-transparent peer-checked:border-primary hover:bg-base-200 transition-all">
+                                    <div class="w-12 h-12 rounded-full bg-gray-800 border-2 border-gray-600 shadow-sm"></div>
+                                    <span class="text-sm font-medium">深色</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="theme" value="cupcake" class="peer sr-only" onchange="document.documentElement.setAttribute('data-theme', 'cupcake')" />
+                                <div class="flex flex-col items-center gap-2 p-4 rounded-lg border-2 border-transparent peer-checked:border-primary hover:bg-base-200 transition-all">
+                                    <div class="w-12 h-12 rounded-full bg-pink-200 border-2 border-pink-400 shadow-sm"></div>
+                                    <span class="text-sm font-medium">Cupcake</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="theme" value="bumblebee" class="peer sr-only" onchange="document.documentElement.setAttribute('data-theme', 'bumblebee')" />
+                                <div class="flex flex-col items-center gap-2 p-4 rounded-lg border-2 border-transparent peer-checked:border-primary hover:bg-base-200 transition-all">
+                                    <div class="w-12 h-12 rounded-full bg-yellow-400 border-2 border-yellow-600 shadow-sm"></div>
+                                    <span class="text-sm font-medium">Bumblebee</span>
+                                </div>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 9: 配送方式选择（带详细信息） -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">9. 配送方式选择</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">选择配送方式</legend>
+                        
+                        <div class="space-y-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="delivery" value="standard" class="peer sr-only" checked />
+                                <div class="flex items-center justify-between p-4 border rounded-lg peer-checked:border-success peer-checked:bg-success/5 hover:bg-base-200 transition-all">
+                                    <div class="flex items-center gap-4">
+                                        <input type="radio" class="radio radio-success" checked disabled />
+                                        <div>
+                                            <p class="font-medium">标准配送</p>
+                                            <p class="text-sm text-base-content/60">预计 3-5 个工作日送达</p>
+                                        </div>
+                                    </div>
+                                    <span class="badge badge-success">免费</span>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="radio" name="delivery" value="express" class="peer sr-only" />
+                                <div class="flex items-center justify-between p-4 border rounded-lg peer-checked:border-warning peer-checked:bg-warning/5 hover:bg-base-200 transition-all">
+                                    <div class="flex items-center gap-4">
+                                        <input type="radio" class="radio radio-warning" disabled />
+                                        <div>
+                                            <p class="font-medium">快速配送</p>
+                                            <p class="text-sm text-base-content/60">预计 1-2 个工作日送达</p>
+                                        </div>
+                                    </div>
+                                    <span class="badge badge-warning">¥15</span>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="radio" name="delivery" value="same-day" class="peer sr-only" />
+                                <div class="flex items-center justify-between p-4 border rounded-lg peer-checked:border-error peer-checked:bg-error/5 hover:bg-base-200 transition-all">
+                                    <div class="flex items-center gap-4">
+                                        <input type="radio" class="radio radio-error" disabled />
+                                        <div>
+                                            <p class="font-medium">当日达</p>
+                                            <p class="text-sm text-base-content/60">今日下单，今日送达（限市区）</p>
+                                        </div>
+                                    </div>
+                                    <span class="badge badge-error">¥30</span>
+                                </div>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 10: 按钮式单选组 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">10. 按钮式单选组</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">选择尺寸</legend>
+                        <div class="join">
+                            <input class="join-item btn" type="radio" name="size-btn" value="xs" aria-label="XS" />
+                            <input class="join-item btn" type="radio" name="size-btn" value="s" aria-label="S" />
+                            <input class="join-item btn" type="radio" name="size-btn" value="m" aria-label="M" checked />
+                            <input class="join-item btn" type="radio" name="size-btn" value="l" aria-label="L" />
+                            <input class="join-item btn" type="radio" name="size-btn" value="xl" aria-label="XL" />
+                            <input class="join-item btn" type="radio" name="size-btn" value="xxl" aria-label="XXL" />
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="fieldset mt-6">
+                        <legend class="fieldset-legend text-lg">选择颜色</legend>
+                        <div class="join">
+                            <input class="join-item btn" type="radio" name="color-btn" value="red" aria-label="红色" style="background-color: #ef4444; color: white;" />
+                            <input class="join-item btn" type="radio" name="color-btn" value="orange" aria-label="橙色" style="background-color: #f97316; color: white;" />
+                            <input class="join-item btn" type="radio" name="color-btn" value="yellow" aria-label="黄色" style="background-color: #eab308; color: black;" />
+                            <input class="join-item btn" type="radio" name="color-btn" value="green" aria-label="绿色" style="background-color: #22c55e; color: white;" />
+                            <input class="join-item btn" type="radio" name="color-btn" value="blue" aria-label="蓝色" style="background-color: #3b82f6; color: white;" checked />
+                            <input class="join-item btn" type="radio" name="color-btn" value="purple" aria-label="紫色" style="background-color: #a855f7; color: white;" />
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 键盘交互说明 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">键盘交互说明</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <div class="overflow-x-auto">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>按键</th>
+                                    <th>功能</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><kbd class="kbd kbd-sm">Tab</kbd></td>
+                                    <td>将焦点移动到单选按钮组</td>
+                                </tr>
+                                <tr>
+                                    <td><kbd class="kbd kbd-sm">Space</kbd></td>
+                                    <td>选中当前获得焦点的单选按钮</td>
+                                </tr>
+                                <tr>
+                                    <td><kbd class="kbd kbd-sm">↑</kbd> <kbd class="kbd kbd-sm">←</kbd></td>
+                                    <td>移动到上一个选项并选中</td>
+                                </tr>
+                                <tr>
+                                    <td><kbd class="kbd kbd-sm">↓</kbd> <kbd class="kbd kbd-sm">→</kbd></td>
+                                    <td>移动到下一个选项并选中</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
