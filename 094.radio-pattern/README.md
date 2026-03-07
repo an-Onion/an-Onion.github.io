@@ -1,4 +1,4 @@
-# Radio Pattern 详解：构建无障碍单选按钮组件
+# Radio Group Pattern 详解：构建无障碍单选按钮组件
 
 单选按钮（Radio Button）是表单中用于从一组互斥选项中选择单个项目的控件。本文基于 [W3C WAI-ARIA Radio Pattern][0] 规范，详解如何构建无障碍的单选按钮组件。
 

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Switch Pattern - DaisyUI Toggle 实现</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-base-200 min-h-screen py-10">
+    <div class="container mx-auto max-w-4xl px-4">
+        <h1 class="text-4xl font-bold text-center mb-10 text-base-content">Switch Pattern - DaisyUI Toggle 实现</h1>
+        
+        <!-- 示例 1: 基础 Toggle -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">1. 基础 Toggle</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">通知设置</legend>
+                        
+                        <label class="label cursor-pointer justify-between py-3 border-b border-base-300">
+                            <span class="label-text text-base">开启通知</span>
+                            <input type="checkbox" class="toggle" />
+                        </label>
+                        
+                        <label class="label cursor-pointer justify-between py-3">
+                            <span class="label-text text-base">邮件提醒</span>
+                            <input type="checkbox" class="toggle" checked />
+                        </label>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 2: 不同颜色的 Toggle -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">2. 不同颜色的 Toggle</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">主题色选择</legend>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label class="label cursor-pointer justify-between">
+                                <span class="label-text">Primary（主要色）</span>
+                                <input type="checkbox" class="toggle toggle-primary" checked />
+                            </label>
+                            <label class="label cursor-pointer justify-between">
+                                <span class="label-text">Secondary（次要色）</span>
+                                <input type="checkbox" class="toggle toggle-secondary" checked />
+                            </label>
+                            <label class="label cursor-pointer justify-between">
+                                <span class="label-text">Accent（强调色）</span>
+                                <input type="checkbox" class="toggle toggle-accent" checked />
+                            </label>
+                            <label class="label cursor-pointer justify-between">
+                                <span class="label-text">Neutral（中性色）</span>
+                                <input type="checkbox" class="toggle toggle-neutral" checked />
+                            </label>
+                            <label class="label cursor-pointer justify-between">
+                                <span class="label-text">Info（信息色）</span>
+                                <input type="checkbox" class="toggle toggle-info" checked />
+                            </label>
+                            <label class="label cursor-pointer justify-between">
+                                <span class="label-text">Success（成功色）</span>
+                                <input type="checkbox" class="toggle toggle-success" checked />
+                            </label>
+                            <label class="label cursor-pointer justify-between">
+                                <span class="label-text">Warning（警告色）</span>
+                                <input type="checkbox" class="toggle toggle-warning" checked />
+                            </label>
+                            <label class="label cursor-pointer justify-between">
+                                <span class="label-text">Error（错误色）</span>
+                                <input type="checkbox" class="toggle toggle-error" checked />
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 3: 不同尺寸的 Toggle -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">3. 不同尺寸的 Toggle</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">尺寸选择</legend>
+                        <div class="flex flex-wrap items-center gap-8">
+                            <label class="label cursor-pointer justify-start gap-3">
+                                <input type="checkbox" class="toggle toggle-xs toggle-primary" checked />
+                                <span class="label-text text-xs">XS（超小）</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-3">
+                                <input type="checkbox" class="toggle toggle-sm toggle-primary" checked />
+                                <span class="label-text text-sm">SM（小）</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-3">
+                                <input type="checkbox" class="toggle toggle-md toggle-primary" checked />
+                                <span class="label-text">MD（中）</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-3">
+                                <input type="checkbox" class="toggle toggle-lg toggle-primary" checked />
+                                <span class="label-text text-lg">LG（大）</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-3">
+                                <input type="checkbox" class="toggle toggle-xl toggle-primary" checked />
+                                <span class="label-text text-xl">XL（超大）</span>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 4: 禁用状态 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">4. 禁用状态的 Toggle</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">功能设置</legend>
+                        
+                        <label class="label cursor-pointer justify-between py-3 opacity-50 cursor-not-allowed">
+                            <span class="label-text">高级功能（未开通）</span>
+                            <input type="checkbox" class="toggle toggle-primary" disabled />
+                        </label>
+                        
+                        <label class="label cursor-pointer justify-between py-3 opacity-50 cursor-not-allowed">
+                            <span class="label-text">实验性功能（已启用且锁定）</span>
+                            <input type="checkbox" class="toggle toggle-primary" checked disabled />
+                        </label>
+                        
+                        <label class="label cursor-pointer justify-between py-3">
+                            <span class="label-text">基础功能（可用）</span>
+                            <input type="checkbox" class="toggle toggle-primary" checked />
+                        </label>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 5: 系统设置面板 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">5. 系统设置面板</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">系统设置</legend>
+                        
+                        <div class="space-y-1">
+                            <label class="flex items-center justify-between p-4 bg-base-200 rounded-lg cursor-pointer hover:bg-base-300 transition-colors">
+                                <div class="flex items-center gap-4">
+                                    <span class="text-2xl">🔔</span>
+                                    <div>
+                                        <p class="font-medium">推送通知</p>
+                                        <p class="text-sm text-base-content/60">接收应用推送消息</p>
+                                    </div>
+                                </div>
+                                <input type="checkbox" class="toggle toggle-primary" checked />
+                            </label>
+                            
+                            <label class="flex items-center justify-between p-4 bg-base-200 rounded-lg cursor-pointer hover:bg-base-300 transition-colors">
+                                <div class="flex items-center gap-4">
+                                    <span class="text-2xl">📧</span>
+                                    <div>
+                                        <p class="font-medium">邮件通知</p>
+                                        <p class="text-sm text-base-content/60">接收每日摘要邮件</p>
+                                    </div>
+                                </div>
+                                <input type="checkbox" class="toggle toggle-primary" />
+                            </label>
+                            
+                            <label class="flex items-center justify-between p-4 bg-base-200 rounded-lg cursor-pointer hover:bg-base-300 transition-colors">
+                                <div class="flex items-center gap-4">
+                                    <span class="text-2xl">💬</span>
+                                    <div>
+                                        <p class="font-medium">短信通知</p>
+                                        <p class="text-sm text-base-content/60">接收重要提醒短信</p>
+                                    </div>
+                                </div>
+                                <input type="checkbox" class="toggle toggle-primary" checked />
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 6: 暗黑模式与主题切换 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">6. 暗黑模式与主题切换</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">外观设置</legend>
+                        
+                        <label class="flex items-center justify-between p-4 bg-base-200 rounded-lg cursor-pointer hover:bg-base-300 transition-colors mb-3">
+                            <div class="flex items-center gap-4">
+                                <span class="text-2xl">🌙</span>
+                                <div>
+                                    <p class="font-medium">暗黑模式</p>
+                                    <p class="text-sm text-base-content/60">使用深色主题保护眼睛</p>
+                                </div>
+                            </div>
+                            <input type="checkbox" class="toggle toggle-secondary" onchange="toggleDarkMode(this)" />
+                        </label>
+                        
+                        <label class="flex items-center justify-between p-4 bg-base-200 rounded-lg cursor-pointer hover:bg-base-300 transition-colors">
+                            <div class="flex items-center gap-4">
+                                <span class="text-2xl">🔒</span>
+                                <div>
+                                    <p class="font-medium">自动锁定</p>
+                                    <p class="text-sm text-base-content/60">闲置 5 分钟后自动锁定</p>
+                                </div>
+                            </div>
+                            <input type="checkbox" class="toggle toggle-secondary" checked />
+                        </label>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 7: 隐私设置 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">7. 隐私设置</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">隐私控制</legend>
+                        
+                        <div class="space-y-1">
+                            <label class="flex items-center justify-between p-4 border-b border-base-300 cursor-pointer">
+                                <div>
+                                    <p class="font-medium">公开个人资料</p>
+                                    <p class="text-sm text-base-content/60">允许其他用户查看您的资料</p>
+                                </div>
+                                <input type="checkbox" class="toggle toggle-accent" />
+                            </label>
+                            
+                            <label class="flex items-center justify-between p-4 border-b border-base-300 cursor-pointer">
+                                <div>
+                                    <p class="font-medium">显示在线状态</p>
+                                    <p class="text-sm text-base-content/60">让好友知道您在线</p>
+                                </div>
+                                <input type="checkbox" class="toggle toggle-accent" checked />
+                            </label>
+                            
+                            <label class="flex items-center justify-between p-4 border-b border-base-300 cursor-pointer">
+                                <div>
+                                    <p class="font-medium">允许搜索到我</p>
+                                    <p class="text-sm text-base-content/60">通过用户名搜索可以找到您</p>
+                                </div>
+                                <input type="checkbox" class="toggle toggle-accent" checked />
+                            </label>
+                            
+                            <label class="flex items-center justify-between p-4 cursor-pointer">
+                                <div>
+                                    <p class="font-medium">分享活动状态</p>
+                                    <p class="text-sm text-base-content/60">允许好友看到您的活动</p>
+                                </div>
+                                <input type="checkbox" class="toggle toggle-accent" />
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 8: 功能开关卡片 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">8. 功能开关卡片</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">实验室功能</legend>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label class="card bg-base-200 cursor-pointer hover:bg-base-300 transition-colors border-2 border-transparent has-[:checked]:border-success has-[:checked]:bg-success/10">
+                                <div class="card-body p-4">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-2xl">⚡</span>
+                                        <input type="checkbox" class="toggle toggle-success" checked />
+                                    </div>
+                                    <h3 class="card-title text-base">极速模式</h3>
+                                    <p class="text-sm text-base-content/60">提升应用响应速度</p>
+                                </div>
+                            </label>
+                            
+                            <label class="card bg-base-200 cursor-pointer hover:bg-base-300 transition-colors border-2 border-transparent has-[:checked]:border-info has-[:checked]:bg-info/10">
+                                <div class="card-body p-4">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-2xl">📊</span>
+                                        <input type="checkbox" class="toggle toggle-info" />
+                                    </div>
+                                    <h3 class="card-title text-base">数据分析</h3>
+                                    <p class="text-sm text-base-content/60">收集使用数据优化体验</p>
+                                </div>
+                            </label>
+                            
+                            <label class="card bg-base-200 cursor-pointer hover:bg-base-300 transition-colors border-2 border-transparent has-[:checked]:border-warning has-[:checked]:bg-warning/10">
+                                <div class="card-body p-4">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-2xl">🧪</span>
+                                        <input type="checkbox" class="toggle toggle-warning" />
+                                    </div>
+                                    <h3 class="card-title text-base">Beta 功能</h3>
+                                    <p class="text-sm text-base-content/60">提前体验新功能</p>
+                                </div>
+                            </label>
+                            
+                            <label class="card bg-base-200 cursor-pointer hover:bg-base-300 transition-colors border-2 border-transparent has-[:checked]:border-error has-[:checked]:bg-error/10">
+                                <div class="card-body p-4">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-2xl">🔧</span>
+                                        <input type="checkbox" class="toggle toggle-error" />
+                                    </div>
+                                    <h3 class="card-title text-base">开发者模式</h3>
+                                    <p class="text-sm text-base-content/60">启用高级调试选项</p>
+                                </div>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 9: 网络设置 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">9. 网络设置</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">网络控制</legend>
+                        
+                        <label class="flex items-center justify-between p-4 bg-base-200 rounded-lg cursor-pointer hover:bg-base-300 transition-colors mb-3">
+                            <div class="flex items-center gap-4">
+                                <span class="text-2xl">✈️</span>
+                                <div>
+                                    <p class="font-medium">飞行模式</p>
+                                    <p class="text-sm text-base-content/60">关闭所有无线连接</p>
+                                </div>
+                            </div>
+                            <input type="checkbox" class="toggle toggle-error" />
+                        </label>
+                        
+                        <label class="flex items-center justify-between p-4 bg-base-200 rounded-lg cursor-pointer hover:bg-base-300 transition-colors mb-3">
+                            <div class="flex items-center gap-4">
+                                <span class="text-2xl">📶</span>
+                                <div>
+                                    <p class="font-medium">WiFi</p>
+                                    <p class="text-sm text-base-content/60">连接到无线网络</p>
+                                </div>
+                            </div>
+                            <input type="checkbox" class="toggle toggle-success" checked />
+                        </label>
+                        
+                        <label class="flex items-center justify-between p-4 bg-base-200 rounded-lg cursor-pointer hover:bg-base-300 transition-colors">
+                            <div class="flex items-center gap-4">
+                                <span class="text-2xl">📡</span>
+                                <div>
+                                    <p class="font-medium">蓝牙</p>
+                                    <p class="text-sm text-base-content/60">连接蓝牙设备</p>
+                                </div>
+                            </div>
+                            <input type="checkbox" class="toggle toggle-info" checked />
+                        </label>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 示例 10: 带状态的 Toggle -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">10. 带状态指示的 Toggle</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend text-lg">服务状态</legend>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-4 bg-base-200 rounded-lg">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-3 h-3 rounded-full bg-success animate-pulse"></div>
+                                    <div>
+                                        <p class="font-medium">API 服务</p>
+                                        <p class="text-sm text-base-content/60">运行正常</p>
+                                    </div>
+                                </div>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" class="toggle toggle-success" checked />
+                                </label>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-base-200 rounded-lg">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-3 h-3 rounded-full bg-error"></div>
+                                    <div>
+                                        <p class="font-medium">备份服务</p>
+                                        <p class="text-sm text-base-content/60">已停止</p>
+                                    </div>
+                                </div>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" class="toggle toggle-error" />
+                                </label>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-base-200 rounded-lg">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-3 h-3 rounded-full bg-warning animate-pulse"></div>
+                                    <div>
+                                        <p class="font-medium">监控服务</p>
+                                        <p class="text-sm text-base-content/60">维护中</p>
+                                    </div>
+                                </div>
+                                <label class="cursor-pointer opacity-50 cursor-not-allowed">
+                                    <input type="checkbox" class="toggle toggle-warning" checked disabled />
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </section>
+
+        <!-- 键盘交互说明 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">键盘交互说明</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <div class="overflow-x-auto">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>按键</th>
+                                    <th>功能</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><kbd class="kbd kbd-sm">Tab</kbd></td>
+                                    <td>将焦点移动到开关</td>
+                                </tr>
+                                <tr>
+                                    <td><kbd class="kbd kbd-sm">Space</kbd></td>
+                                    <td>切换开关状态（开 ↔ 关）</td>
+                                </tr>
+                                <tr>
+                                    <td><kbd class="kbd kbd-sm">Enter</kbd></td>
+                                    <td>某些实现中也支持切换开关状态</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 暗黑模式切换
+        function toggleDarkMode(checkbox) {
+            if (checkbox.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        }
+    </script>
+</body>
+</html>
