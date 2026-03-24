@@ -179,11 +179,11 @@ Tab List 容器具有 [`role="tablist"`][4]：
 
 ### 3.4 激活操作
 
-| 按键           | 功能                                 |
-| -------------- | ------------------------------------ |
-| Space / Enter  | 激活当前聚焦的标签（手动激活模式下） |
-| Shift + F10    | 如果标签有关联的弹出菜单，打开菜单   |
-| Delete（可选） | 如果允许删除，删除当前标签及其面板   |
+| 按键                                            | 功能                                 |
+| ----------------------------------------------- | ------------------------------------ |
+| Space / Enter                                   | 激活当前聚焦的标签（手动激活模式下） |
+| Shift + F10（Windows）<br>Control + 点击（Mac） | 如果标签有关联的弹出菜单，打开菜单   |
+| Delete（可选）                                  | 如果允许删除，删除当前标签及其面板   |
 
 ### 3.5 自动激活说明
 
@@ -191,9 +191,9 @@ Tab List 容器具有 [`role="tablist"`][4]：
 - 自动激活时，方向键移动焦点会立即激活对应标签
 - 如果面板加载有延迟，使用手动激活避免阻碍导航
 
-## 四、实现方式
+## 四、实现方式与样式要点
 
-### 4.1 基础 Tabs 结构
+### 4.1 基础 HTML 结构
 
 ```html
 <div class="tabs">
@@ -265,234 +265,44 @@ Tab List 容器具有 [`role="tablist"`][4]：
 </div>
 ```
 
-### 4.2 基础 CSS 样式
+### 4.2 样式实现注意事项
 
-```css
-/* Tab List */
-[role='tablist'] {
-  display: flex;
-  border-bottom: 2px solid #e5e7eb;
-  gap: 4px;
-}
+#### 4.2.1 激活状态样式
 
-[role='tablist'][aria-orientation='vertical'] {
-  flex-direction: column;
-  border-bottom: none;
-  border-right: 2px solid #e5e7eb;
-}
+激活的标签需要有明显的视觉区分：
 
-/* Tab */
-[role='tab'] {
-  padding: 12px 20px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-size: 16px;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
-}
+- **下划线/边框**：使用边框颜色变化指示激活状态
+- **背景色**：激活标签使用不同的背景色
+- **文字样式**：加粗或改变颜色增强对比
 
-[role='tab'][aria-selected='true'] {
-  color: #005a9c;
-  border-bottom-color: #005a9c;
-  font-weight: 500;
-}
+#### 4.2.2 焦点状态样式
 
-[role='tab']:hover {
-  background: #f3f4f6;
-}
+确保键盘用户可以清楚看到当前焦点位置：
 
-[role='tab']:focus {
-  outline: 2px solid #005a9c;
-  outline-offset: -2px;
-}
+- 使用 `outline` 或 `box-shadow` 创建焦点环
+- 焦点环颜色与背景有足够对比度
+- 避免使用 `outline: none` 而不提供替代样式
 
-/* Vertical Tab */
-[role='tablist'][aria-orientation='vertical'] [role='tab'] {
-  border-bottom: none;
-  border-right: 2px solid transparent;
-  margin-bottom: 0;
-  margin-right: -2px;
-  text-align: left;
-}
+#### 4.2.3 面板显示/隐藏
 
-[role='tablist'][aria-orientation='vertical']
-  [role='tab'][aria-selected='true'] {
-  border-right-color: #005a9c;
-  border-bottom-color: transparent;
-}
+- 未激活的面板应使用 `hidden` 属性或 `display: none` 完全隐藏
+- 避免使用 `visibility: hidden` 或 `opacity: 0`，这会让内容仍可被屏幕阅读器访问
 
-/* Tab Panel */
-[role='tabpanel'] {
-  padding: 20px;
-  border: 1px solid #e5e7eb;
-  border-top: none;
-}
+#### 4.2.4 垂直标签页样式
 
-[role='tabpanel'][hidden] {
-  display: none;
-}
-```
+垂直布局时需要注意：
 
-### 4.3 JavaScript 实现（手动激活模式）
+- 标签列表使用 `flex-direction: column`
+- 激活指示器从底部边框改为右侧边框
+- 确保足够的点击区域（最小 44x44px）
 
-```javascript
-class Tabs {
-  constructor(element) {
-    this.tablist = element.querySelector('[role="tablist"]');
-    this.tabs = Array.from(this.tablist.querySelectorAll('[role="tab"]'));
-    this.panels = Array.from(element.querySelectorAll('[role="tabpanel"]'));
+#### 4.2.5 响应式设计
 
-    this.init();
-  }
+移动端适配建议：
 
-  init() {
-    // 绑定标签点击事件
-    this.tabs.forEach((tab) => {
-      tab.addEventListener('click', () => this.selectTab(tab));
-      tab.addEventListener('keydown', (e) => this.handleKeydown(e));
-    });
-  }
-
-  selectTab(selectedTab) {
-    // 更新所有标签状态
-    this.tabs.forEach((tab) => {
-      const isSelected = tab === selectedTab;
-      tab.setAttribute('aria-selected', isSelected);
-      tab.setAttribute('tabindex', isSelected ? '0' : '-1');
-    });
-
-    // 更新所有面板状态
-    this.panels.forEach((panel) => {
-      const isControlled =
-        panel.id === selectedTab.getAttribute('aria-controls');
-      if (isControlled) {
-        panel.removeAttribute('hidden');
-      } else {
-        panel.setAttribute('hidden', '');
-      }
-    });
-  }
-
-  handleKeydown(event) {
-    const currentIndex = this.tabs.indexOf(document.activeElement);
-    let newIndex;
-
-    switch (event.key) {
-      case 'ArrowLeft':
-      case 'ArrowUp':
-        event.preventDefault();
-        newIndex = currentIndex - 1;
-        if (newIndex < 0) newIndex = this.tabs.length - 1;
-        this.tabs[newIndex].focus();
-        break;
-
-      case 'ArrowRight':
-      case 'ArrowDown':
-        event.preventDefault();
-        newIndex = currentIndex + 1;
-        if (newIndex >= this.tabs.length) newIndex = 0;
-        this.tabs[newIndex].focus();
-        break;
-
-      case 'Home':
-        event.preventDefault();
-        this.tabs[0].focus();
-        break;
-
-      case 'End':
-        event.preventDefault();
-        this.tabs[this.tabs.length - 1].focus();
-        break;
-
-      case 'Enter':
-      case ' ':
-        event.preventDefault();
-        this.selectTab(document.activeElement);
-        break;
-    }
-  }
-}
-
-// 初始化所有标签页
-document.querySelectorAll('.tabs').forEach((tabs) => {
-  new Tabs(tabs);
-});
-```
-
-### 4.4 JavaScript 实现（自动激活模式）
-
-```javascript
-class TabsAutomatic {
-  constructor(element) {
-    this.tablist = element.querySelector('[role="tablist"]');
-    this.tabs = Array.from(this.tablist.querySelectorAll('[role="tab"]'));
-    this.panels = Array.from(element.querySelectorAll('[role="tabpanel"]'));
-
-    this.init();
-  }
-
-  init() {
-    this.tabs.forEach((tab) => {
-      tab.addEventListener('keydown', (e) => this.handleKeydown(e));
-
-      // 自动激活：焦点变化时立即激活
-      tab.addEventListener('focus', () => this.selectTab(tab));
-    });
-  }
-
-  selectTab(selectedTab) {
-    this.tabs.forEach((tab) => {
-      const isSelected = tab === selectedTab;
-      tab.setAttribute('aria-selected', isSelected);
-      tab.setAttribute('tabindex', isSelected ? '0' : '-1');
-    });
-
-    this.panels.forEach((panel) => {
-      const isControlled =
-        panel.id === selectedTab.getAttribute('aria-controls');
-      if (isControlled) {
-        panel.removeAttribute('hidden');
-      } else {
-        panel.setAttribute('hidden', '');
-      }
-    });
-  }
-
-  handleKeydown(event) {
-    const currentIndex = this.tabs.indexOf(document.activeElement);
-    let newIndex;
-
-    switch (event.key) {
-      case 'ArrowLeft':
-      case 'ArrowUp':
-        event.preventDefault();
-        newIndex = currentIndex - 1;
-        if (newIndex < 0) newIndex = this.tabs.length - 1;
-        this.tabs[newIndex].focus(); // 焦点移动会自动触发激活
-        break;
-
-      case 'ArrowRight':
-      case 'ArrowDown':
-        event.preventDefault();
-        newIndex = currentIndex + 1;
-        if (newIndex >= this.tabs.length) newIndex = 0;
-        this.tabs[newIndex].focus();
-        break;
-
-      case 'Home':
-        event.preventDefault();
-        this.tabs[0].focus();
-        break;
-
-      case 'End':
-        event.preventDefault();
-        this.tabs[this.tabs.length - 1].focus();
-        break;
-    }
-  }
-}
-```
+- 小屏幕下标签可以换行或使用水平滚动
+- 考虑将水平标签页切换为垂直布局
+- 调整标签内边距和字体大小
 
 ## 五、常见应用场景
 
