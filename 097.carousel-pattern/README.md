@@ -23,6 +23,35 @@ Carousel（也称为幻灯片或图片轮播器）具有以下特征：
 | **Previous Slide Control** | 显示上一张幻灯片的控件（通常为箭头样式） |
 | **Slide Picker Controls**  | 选择特定幻灯片的控件组（通常为圆点样式） |
 
+```plain
+┌─────────────────────────────────────────────────────────────┐
+│  Carousel (role="region" + aria-roledescription)            │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │                                                     │    │
+│  │              ┌─────────────────┐                    │    │
+│  │              │    Slide 1      │                    │    │
+│  │              │  ┌───────────┐  │                    │    │
+│  │              │  │           │  │                    │    │
+│  │              │  │  Image /  │  │  <-- Current       │    │
+│  │              │  │  Content  │  │      Slide         │    │
+│  │              │  │           │  │                    │    │
+│  │              │  └───────────┘  │                    │    │
+│  │              └─────────────────┘                    │    │
+│  │                                                     │    │
+│  │  ┌─────────────────────────────────────────────┐    │    │
+│  │  │  Slide 2 (hidden)    │   Slide 3 (hidden)   │    │    │
+│  │  └─────────────────────────────────────────────┘    │    │
+│  │                                                     │    │
+│  └─────────────────────────────────────────────────────┘    │
+│                                                             │
+│     <-- Prev        o O O        Next -->                   │
+│           (Slide Picker / Dots Navigation)                  │
+│                                                             │
+│                    [ Pause/Play ]                           │
+└─────────────────────────────────────────────────────────────┘
+```
+
 ### 1.3 无障碍挑战
 
 轮播组件如果没有正确实现，会对无障碍体验造成严重影响：
@@ -98,6 +127,8 @@ Carousel（也称为幻灯片或图片轮播器）具有以下特征：
 
 #### 上一张/下一张按钮
 
+使用 [`aria-controls`][6] 属性指向被控制的幻灯片容器 ID，让辅助技术用户了解按钮会影响哪个区域的内容：
+
 ```html
 <button
   aria-label="上一张"
@@ -113,6 +144,8 @@ Carousel（也称为幻灯片或图片轮播器）具有以下特征：
 
 #### 轮播控制按钮（停止/启动）
 
+使用 [`aria-pressed`][10] 表示按钮的按下状态，`false` 表示轮播正在运行，点击后会停止：
+
 ```html
 <button
   aria-label="停止轮播"
@@ -123,6 +156,8 @@ Carousel（也称为幻灯片或图片轮播器）具有以下特征：
 ```
 
 #### 幻灯片选择器（圆点导航）
+
+幻灯片选择器使用 [`role="tab"`][11] 模式，每个圆点按钮都是一个 tab，通过 [`aria-selected`][12] 表示当前选中的幻灯片：
 
 ```html
 <div
@@ -288,251 +323,24 @@ Carousel（也称为幻灯片或图片轮播器）具有以下特征：
 </section>
 ```
 
-### 5.2 基础 CSS 样式
+### 5.2 关键实现要点
 
-```css
-.carousel {
-  position: relative;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-}
+**幻灯片可见性管理：**
 
-.carousel-slides {
-  position: relative;
-  overflow: hidden;
-  height: 400px;
-}
+- 当前显示的幻灯片：`aria-hidden="false"`
+- 隐藏的幻灯片：`aria-hidden="true"`
+- 使用 CSS 控制显示/隐藏（如 `opacity`、`display` 或 `visibility`）
 
-.slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
+**自动轮播控制：**
 
-.slide.active {
-  opacity: 1;
-}
+- 键盘焦点进入轮播区域时，必须停止自动轮播
+- 鼠标悬停在轮播上时，必须停止自动轮播
+- 提供停止/启动按钮，让用户控制自动轮播
 
-/* 旋转控制按钮 */
-.rotation-control {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 10;
-  padding: 8px 12px;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+**幻灯片选择器状态：**
 
-/* 导航按钮 */
-.prev-btn,
-.next-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 16px;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-}
-
-.prev-btn {
-  left: 10px;
-}
-
-.next-btn {
-  right: 10px;
-}
-
-.prev-btn:hover,
-.next-btn:hover,
-.rotation-control:hover {
-  background: rgba(0, 0, 0, 0.8);
-}
-
-.prev-btn:focus,
-.next-btn:focus,
-.rotation-control:focus {
-  outline: 2px solid #005a9c;
-  outline-offset: 2px;
-}
-
-/* 幻灯片选择器 */
-.slide-picker {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-.slide-picker button {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid #ccc;
-  background: transparent;
-  cursor: pointer;
-}
-
-.slide-picker button[aria-selected='true'] {
-  background: #005a9c;
-  border-color: #005a9c;
-}
-
-.slide-picker button:focus {
-  outline: 2px solid #005a9c;
-  outline-offset: 2px;
-}
-```
-
-### 5.3 JavaScript 实现
-
-```javascript
-class Carousel {
-  constructor(element) {
-    this.carousel = element;
-    this.slides = element.querySelectorAll('.slide');
-    this.prevBtn = element.querySelector('.prev-btn');
-    this.nextBtn = element.querySelector('.next-btn');
-    this.rotationControl = element.querySelector('.rotation-control');
-    this.slidePicker = element.querySelector('.slide-picker');
-
-    this.currentSlide = 0;
-    this.isAutoRotating = false;
-    this.autoRotateInterval = null;
-    this.autoRotateDelay = 5000; // 5秒
-
-    this.init();
-  }
-
-  init() {
-    // 绑定按钮事件
-    this.prevBtn.addEventListener('click', () => this.prevSlide());
-    this.nextBtn.addEventListener('click', () => this.nextSlide());
-
-    // 绑定旋转控制
-    if (this.rotationControl) {
-      this.rotationControl.addEventListener('click', () =>
-        this.toggleRotation(),
-      );
-    }
-
-    // 绑定幻灯片选择器
-    if (this.slidePicker) {
-      const pickerButtons = this.slidePicker.querySelectorAll('button');
-      pickerButtons.forEach((btn, index) => {
-        btn.addEventListener('click', () => this.goToSlide(index));
-      });
-    }
-
-    // 键盘焦点管理
-    this.carousel.addEventListener('focusin', () => this.stopAutoRotate());
-
-    // 鼠标悬停管理
-    this.carousel.addEventListener('mouseenter', () => this.stopAutoRotate());
-
-    // 启动自动轮播（如果启用）
-    this.startAutoRotate();
-  }
-
-  showSlide(index) {
-    // 隐藏所有幻灯片
-    this.slides.forEach((slide, i) => {
-      slide.classList.remove('active');
-      slide.setAttribute('aria-hidden', 'true');
-
-      // 更新幻灯片选择器
-      if (this.slidePicker) {
-        const pickerBtn = this.slidePicker.querySelectorAll('button')[i];
-        if (pickerBtn) {
-          pickerBtn.setAttribute('aria-selected', 'false');
-        }
-      }
-    });
-
-    // 显示当前幻灯片
-    this.slides[index].classList.add('active');
-    this.slides[index].setAttribute('aria-hidden', 'false');
-
-    // 更新幻灯片选择器
-    if (this.slidePicker) {
-      const pickerBtn = this.slidePicker.querySelectorAll('button')[index];
-      if (pickerBtn) {
-        pickerBtn.setAttribute('aria-selected', 'true');
-      }
-    }
-
-    this.currentSlide = index;
-  }
-
-  nextSlide() {
-    const next = (this.currentSlide + 1) % this.slides.length;
-    this.showSlide(next);
-  }
-
-  prevSlide() {
-    const prev =
-      (this.currentSlide - 1 + this.slides.length) % this.slides.length;
-    this.showSlide(prev);
-  }
-
-  goToSlide(index) {
-    this.showSlide(index);
-  }
-
-  startAutoRotate() {
-    if (this.autoRotateInterval) return;
-
-    this.isAutoRotating = true;
-    if (this.rotationControl) {
-      this.rotationControl.setAttribute('aria-label', '停止轮播');
-      this.rotationControl.setAttribute('aria-pressed', 'false');
-      this.rotationControl.textContent = '⏸';
-    }
-
-    this.autoRotateInterval = setInterval(() => {
-      this.nextSlide();
-    }, this.autoRotateDelay);
-  }
-
-  stopAutoRotate() {
-    if (!this.autoRotateInterval) return;
-
-    clearInterval(this.autoRotateInterval);
-    this.autoRotateInterval = null;
-    this.isAutoRotating = false;
-
-    if (this.rotationControl) {
-      this.rotationControl.setAttribute('aria-label', '启动轮播');
-      this.rotationControl.setAttribute('aria-pressed', 'true');
-      this.rotationControl.textContent = '▶';
-    }
-  }
-
-  toggleRotation() {
-    if (this.isAutoRotating) {
-      this.stopAutoRotate();
-    } else {
-      this.startAutoRotate();
-    }
-  }
-}
-
-// 初始化所有轮播
-document.querySelectorAll('.carousel').forEach((carousel) => {
-  new Carousel(carousel);
-});
-```
+- 当前幻灯片对应的按钮：`aria-selected="true"`
+- 其他按钮：`aria-selected="false"`
 
 ## 六、常见应用场景
 
@@ -663,33 +471,11 @@ document.querySelectorAll('.carousel').forEach((carousel) => {
 
 ### 7.6 移动端触摸支持
 
-```javascript
-// 添加触摸滑动支持
-let touchStartX = 0;
-let touchEndX = 0;
+移动端应支持触摸滑动切换幻灯片：
 
-this.carousel.addEventListener('touchstart', (e) => {
-  touchStartX = e.changedTouches[0].screenX;
-});
-
-this.carousel.addEventListener('touchend', (e) => {
-  touchEndX = e.changedTouches[0].screenX;
-  this.handleSwipe();
-});
-
-handleSwipe() {
-  const swipeThreshold = 50;
-  const diff = touchStartX - touchEndX;
-
-  if (Math.abs(diff) > swipeThreshold) {
-    if (diff > 0) {
-      this.nextSlide(); // 向左滑动，显示下一张
-    } else {
-      this.prevSlide(); // 向右滑动，显示上一张
-    }
-  }
-}
-```
+- 向左滑动 → 显示下一张
+- 向右滑动 → 显示上一张
+- 需要设置滑动阈值（如 50px），避免误触
 
 ## 八、总结
 
@@ -715,3 +501,6 @@ handleSwipe() {
 [7]: https://www.w3.org/TR/wai-aria-1.2/#region
 [8]: https://www.w3.org/TR/wai-aria-1.2/#aria-roledescription
 [9]: https://www.w3.org/TR/wai-aria-1.2/#aria-hidden
+[10]: https://www.w3.org/TR/wai-aria-1.2/#aria-pressed
+[11]: https://www.w3.org/TR/wai-aria-1.2/#tab
+[12]: https://www.w3.org/TR/wai-aria-1.2/#aria-selected
