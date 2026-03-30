@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carousel Pattern - DaisyUI 实现</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        /* Carousel 基础样式 */
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .carousel-item {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+        }
+        
+        /* 幻灯片容器 */
+        .carousel-slides {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            position: relative;
+        }
+        
+        /* 隐藏非活动幻灯片 */
+        .slide[aria-hidden="true"] {
+            pointer-events: none;
+        }
+        
+        /* 幻灯片选择器 */
+        .slide-picker button {
+            transition: all 0.3s ease;
+        }
+        
+        .slide-picker button[aria-selected="true"] {
+            background-color: currentColor;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body class="bg-base-200 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 class="text-3xl font-bold text-center mb-8">Carousel Pattern 示例 - DaisyUI</h1>
+        
+        <!-- 示例 1: 基础轮播（自动轮播） -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">1. 基础轮播（带自动轮播控制）</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <!-- Carousel 区域 -->
+                    <section 
+                        class="carousel relative rounded-box bg-neutral"
+                        role="region" 
+                        aria-roledescription="carousel"
+                        aria-label="产品展示"
+                        id="carousel-1">
+                        
+                        <!-- 停止/启动自动轮播按钮 -->
+                        <button 
+                            class="btn btn-circle btn-sm absolute top-4 right-4 z-20"
+                            aria-label="停止轮播"
+                            aria-pressed="false"
+                            aria-controls="carousel-1-slides"
+                            onclick="toggleRotation('carousel-1')">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </button>
+                        
+                        <!-- 幻灯片容器 -->
+                        <div 
+                            id="carousel-1-slides"
+                            class="carousel-slides relative h-80 w-full">
+                            
+                            <!-- Slide 1 -->
+                            <div 
+                                role="group"
+                                aria-roledescription="slide"
+                                aria-label="第 1 张，共 3 张"
+                                aria-hidden="false"
+                                class="slide active"
+                                id="slide-1-1">
+                                <img 
+                                    src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp" 
+                                    class="w-full h-full object-cover rounded-box"
+                                    alt="产品图片 1" />
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                                    <h3 class="text-white text-xl font-bold">产品标题 1</h3>
+                                    <p class="text-white/80">产品描述信息...</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Slide 2 -->
+                            <div 
+                                role="group"
+                                aria-roledescription="slide"
+                                aria-label="第 2 张，共 3 张"
+                                aria-hidden="true"
+                                class="slide"
+                                id="slide-1-2">
+                                <img 
+                                    src="https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.webp" 
+                                    class="w-full h-full object-cover rounded-box"
+                                    alt="产品图片 2" />
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                                    <h3 class="text-white text-xl font-bold">产品标题 2</h3>
+                                    <p class="text-white/80">产品描述信息...</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Slide 3 -->
+                            <div 
+                                role="group"
+                                aria-roledescription="slide"
+                                aria-label="第 3 张，共 3 张"
+                                aria-hidden="true"
+                                class="slide"
+                                id="slide-1-3">
+                                <img 
+                                    src="https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.webp" 
+                                    class="w-full h-full object-cover rounded-box"
+                                    alt="产品图片 3" />
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                                    <h3 class="text-white text-xl font-bold">产品标题 3</h3>
+                                    <p class="text-white/80">产品描述信息...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 上一张/下一张按钮 -->
+                        <button 
+                            class="btn btn-circle absolute left-4 top-1/2 -translate-y-1/2 z-20"
+                            aria-label="上一张"
+                            aria-controls="carousel-1-slides"
+                            onclick="prevSlide('carousel-1')">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button 
+                            class="btn btn-circle absolute right-4 top-1/2 -translate-y-1/2 z-20"
+                            aria-label="下一张"
+                            aria-controls="carousel-1-slides"
+                            onclick="nextSlide('carousel-1')">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                        
+                        <!-- 幻灯片选择器（圆点导航） -->
+                        <div 
+                            class="slide-picker absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2"
+                            role="tablist"
+                            aria-label="幻灯片选择">
+                            <button 
+                                role="tab"
+                                class="w-3 h-3 rounded-full border-2 border-white bg-transparent"
+                                aria-label="第 1 张"
+                                aria-selected="true"
+                                aria-controls="slide-1-1"
+                                onclick="goToSlide('carousel-1', 0)"></button>
+                            <button 
+                                role="tab"
+                                class="w-3 h-3 rounded-full border-2 border-white bg-transparent"
+                                aria-label="第 2 张"
+                                aria-selected="false"
+                                aria-controls="slide-1-2"
+                                onclick="goToSlide('carousel-1', 1)"></button>
+                            <button 
+                                role="tab"
+                                class="w-3 h-3 rounded-full border-2 border-white bg-transparent"
+                                aria-label="第 3 张"
+                                aria-selected="false"
+                                aria-controls="slide-1-3"
+                                onclick="goToSlide('carousel-1', 2)"></button>
+                        </div>
+                    </section>
+                    
+                    <div class="mt-4 text-sm text-base-content/70">
+                        <p>✓ 支持自动轮播（5秒间隔）</p>
+                        <p>✓ 鼠标悬停或键盘焦点时自动停止</p>
+                        <p>✓ 完整的 ARIA 属性支持</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 示例 2: DaisyUI 原生 Carousel（横向滚动） -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">2. DaisyUI 原生 Carousel（横向滚动）</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <div class="carousel carousel-center bg-neutral rounded-box max-w-full space-x-4 p-4">
+                        <div class="carousel-item">
+                            <img
+                                src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
+                                class="rounded-box w-80 h-60 object-cover" 
+                                alt="图片 1" />
+                        </div>
+                        <div class="carousel-item">
+                            <img
+                                src="https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.webp"
+                                class="rounded-box w-80 h-60 object-cover" 
+                                alt="图片 2" />
+                        </div>
+                        <div class="carousel-item">
+                            <img
+                                src="https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.webp"
+                                class="rounded-box w-80 h-60 object-cover" 
+                                alt="图片 3" />
+                        </div>
+                        <div class="carousel-item">
+                            <img
+                                src="https://img.daisyui.com/images/stock/photo-1494253109108-2e30c049369b.webp"
+                                class="rounded-box w-80 h-60 object-cover" 
+                                alt="图片 4" />
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-base-content/70">
+                        <p>使用 DaisyUI 原生 <code>carousel</code>、<code>carousel-center</code>、<code>carousel-item</code> 类</p>
+                        <p>支持触摸滑动和鼠标拖拽滚动</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 示例 3: 客户评价轮播 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">3. 客户评价轮播</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <section 
+                        class="carousel relative rounded-box bg-primary/10"
+                        role="region" 
+                        aria-roledescription="carousel"
+                        aria-label="客户评价"
+                        id="carousel-2">
+                        
+                        <!-- 幻灯片容器 -->
+                        <div 
+                            id="carousel-2-slides"
+                            class="carousel-slides relative h-64 w-full">
+                            
+                            <!-- Slide 1 -->
+                            <div 
+                                role="group"
+                                aria-roledescription="slide"
+                                aria-label="第 1 张，共 3 张"
+                                aria-hidden="false"
+                                class="slide active flex flex-col items-center justify-center text-center p-8"
+                                id="slide-2-1">
+                                <div class="text-6xl mb-4">💬</div>
+                                <blockquote class="text-xl italic mb-4">
+                                    "这个产品改变了我的工作方式，效率提升了很多！"
+                                </blockquote>
+                                <footer class="text-base-content/70">
+                                    — <cite>张三，某公司员工</cite>
+                                </footer>
+                            </div>
+                            
+                            <!-- Slide 2 -->
+                            <div 
+                                role="group"
+                                aria-roledescription="slide"
+                                aria-label="第 2 张，共 3 张"
+                                aria-hidden="true"
+                                class="slide flex flex-col items-center justify-center text-center p-8"
+                                id="slide-2-2">
+                                <div class="text-6xl mb-4">⭐</div>
+                                <blockquote class="text-xl italic mb-4">
+                                    "客服非常专业，响应迅速，解决问题很及时。"
+                                </blockquote>
+                                <footer class="text-base-content/70">
+                                    — <cite>李四，自由职业者</cite>
+                                </footer>
+                            </div>
+                            
+                            <!-- Slide 3 -->
+                            <div 
+                                role="group"
+                                aria-roledescription="slide"
+                                aria-label="第 3 张，共 3 张"
+                                aria-hidden="true"
+                                class="slide flex flex-col items-center justify-center text-center p-8"
+                                id="slide-2-3">
+                                <div class="text-6xl mb-4">🚀</div>
+                                <blockquote class="text-xl italic mb-4">
+                                    "界面设计简洁美观，功能强大且易于使用。"
+                                </blockquote>
+                                <footer class="text-base-content/70">
+                                    — <cite>王五，产品经理</cite>
+                                </footer>
+                            </div>
+                        </div>
+                        
+                        <!-- 导航按钮 -->
+                        <button 
+                            class="btn btn-circle btn-outline absolute left-4 top-1/2 -translate-y-1/2 z-20"
+                            aria-label="上一张"
+                            aria-controls="carousel-2-slides"
+                            onclick="prevSlide('carousel-2')">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button 
+                            class="btn btn-circle btn-outline absolute right-4 top-1/2 -translate-y-1/2 z-20"
+                            aria-label="下一张"
+                            aria-controls="carousel-2-slides"
+                            onclick="nextSlide('carousel-2')">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                        
+                        <!-- 幻灯片选择器 -->
+                        <div 
+                            class="slide-picker absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2"
+                            role="tablist"
+                            aria-label="幻灯片选择">
+                            <button 
+                                role="tab"
+                                class="w-3 h-3 rounded-full border-2 border-primary bg-transparent"
+                                aria-label="第 1 张"
+                                aria-selected="true"
+                                aria-controls="slide-2-1"
+                                onclick="goToSlide('carousel-2', 0)"></button>
+                            <button 
+                                role="tab"
+                                class="w-3 h-3 rounded-full border-2 border-primary bg-transparent"
+                                aria-label="第 2 张"
+                                aria-selected="false"
+                                aria-controls="slide-2-2"
+                                onclick="goToSlide('carousel-2', 1)"></button>
+                            <button 
+                                role="tab"
+                                class="w-3 h-3 rounded-full border-2 border-primary bg-transparent"
+                                aria-label="第 3 张"
+                                aria-selected="false"
+                                aria-controls="slide-2-3"
+                                onclick="goToSlide('carousel-2', 2)"></button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ARIA 属性说明 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4">ARIA 属性说明</h2>
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <div class="overflow-x-auto">
+                        <table class="table table-zebra">
+                            <thead>
+                                <tr>
+                                    <th>元素</th>
+                                    <th>ARIA 属性</th>
+                                    <th>说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Carousel 容器</td>
+                                    <td><code>role="region"</code>, <code>aria-roledescription="carousel"</code></td>
+                                    <td>标记为地标区域，提供轮播的角色描述</td>
+                                </tr>
+                                <tr>
+                                    <td>幻灯片</td>
+                                    <td><code>role="group"</code>, <code>aria-roledescription="slide"</code>, <code>aria-hidden</code></td>
+                                    <td>标记为幻灯片组，控制可见性</td>
+                                </tr>
+                                <tr>
+                                    <td>导航按钮</td>
+                                    <td><code>aria-label</code>, <code>aria-controls</code></td>
+                                    <td>提供按钮标签，指向被控制的幻灯片容器</td>
+                                </tr>
+                                <tr>
+                                    <td>幻灯片选择器</td>
+                                    <td><code>role="tablist"</code>, <code>role="tab"</code>, <code>aria-selected</code></td>
+                                    <td>使用 Tab 模式，标记当前选中的幻灯片</td>
+                                </tr>
+                                <tr>
+                                    <td>轮播控制</td>
+                                    <td><code>aria-label</code>, <code>aria-pressed</code></td>
+                                    <td>标记按钮状态和当前轮播状态</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // Carousel 管理器
+        const carousels = {};
+        
+        // 初始化轮播
+        function initCarousel(id) {
+            const carousel = document.getElementById(id);
+            const slides = carousel.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            
+            carousels[id] = {
+                currentSlide: 0,
+                totalSlides: totalSlides,
+                isAutoRotating: true,
+                autoRotateInterval: null,
+                autoRotateDelay: 5000
+            };
+            
+            // 绑定焦点事件 - 键盘焦点进入时停止自动轮播
+            carousel.addEventListener('focusin', () => stopAutoRotate(id));
+            
+            // 绑定鼠标悬停事件 - 悬停时停止自动轮播
+            carousel.addEventListener('mouseenter', () => stopAutoRotate(id));
+            carousel.addEventListener('mouseleave', () => {
+                if (carousels[id].isAutoRotating) {
+                    startAutoRotate(id);
+                }
+            });
+            
+            // 启动自动轮播
+            startAutoRotate(id);
+        }
+        
+        // 显示指定幻灯片
+        function showSlide(id, index) {
+            const carousel = document.getElementById(id);
+            const slides = carousel.querySelectorAll('.slide');
+            const pickerButtons = carousel.querySelectorAll('[role="tab"]');
+            const data = carousels[id];
+            
+            // 隐藏所有幻灯片
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                slide.setAttribute('aria-hidden', 'true');
+                
+                // 更新幻灯片选择器
+                if (pickerButtons[i]) {
+                    pickerButtons[i].setAttribute('aria-selected', 'false');
+                    pickerButtons[i].classList.remove('bg-primary', 'bg-white');
+                    pickerButtons[i].classList.add('bg-transparent');
+                }
+            });
+            
+            // 显示当前幻灯片
+            slides[index].classList.add('active');
+            slides[index].setAttribute('aria-hidden', 'false');
+            
+            // 更新幻灯片选择器
+            if (pickerButtons[index]) {
+                pickerButtons[index].setAttribute('aria-selected', 'true');
+                pickerButtons[index].classList.remove('bg-transparent');
+                // 根据轮播类型设置颜色
+                if (id === 'carousel-1') {
+                    pickerButtons[index].classList.add('bg-white');
+                } else {
+                    pickerButtons[index].classList.add('bg-primary');
+                }
+            }
+            
+            data.currentSlide = index;
+        }
+        
+        // 下一张
+        function nextSlide(id) {
+            const data = carousels[id];
+            const next = (data.currentSlide + 1) % data.totalSlides;
+            showSlide(id, next);
+        }
+        
+        // 上一张
+        function prevSlide(id) {
+            const data = carousels[id];
+            const prev = (data.currentSlide - 1 + data.totalSlides) % data.totalSlides;
+            showSlide(id, prev);
+        }
+        
+        // 跳转到指定幻灯片
+        function goToSlide(id, index) {
+            showSlide(id, index);
+        }
+        
+        // 启动自动轮播
+        function startAutoRotate(id) {
+            const data = carousels[id];
+            if (data.autoRotateInterval) return;
+            
+            data.isAutoRotating = true;
+            const btn = document.querySelector(`#${id} [aria-label="停止轮播"], #${id} [aria-label="启动轮播"]`);
+            if (btn) {
+                btn.setAttribute('aria-label', '停止轮播');
+                btn.setAttribute('aria-pressed', 'false');
+            }
+            
+            data.autoRotateInterval = setInterval(() => {
+                nextSlide(id);
+            }, data.autoRotateDelay);
+        }
+        
+        // 停止自动轮播
+        function stopAutoRotate(id) {
+            const data = carousels[id];
+            if (!data.autoRotateInterval) return;
+            
+            clearInterval(data.autoRotateInterval);
+            data.autoRotateInterval = null;
+            data.isAutoRotating = false;
+            
+            const btn = document.querySelector(`#${id} [aria-label="停止轮播"], #${id} [aria-label="启动轮播"]`);
+            if (btn) {
+                btn.setAttribute('aria-label', '启动轮播');
+                btn.setAttribute('aria-pressed', 'true');
+            }
+        }
+        
+        // 切换轮播状态
+        function toggleRotation(id) {
+            const data = carousels[id];
+            if (data.isAutoRotating) {
+                stopAutoRotate(id);
+            } else {
+                startAutoRotate(id);
+            }
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initCarousel('carousel-1');
+            initCarousel('carousel-2');
+        });
+    </script>
+</body>
+</html>
