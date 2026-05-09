@@ -533,8 +533,8 @@ spinbutton.addEventListener('blur', () => {
 构建无障碍的 Spinbutton 组件需要关注：
 
 1. **正确的角色**：使用 `role="spinbutton"`
-2. **必需的属性**：[`aria-valuenow`][3]、[ `aria-valuemin`][4]、[ `aria-valuemax`][5]、[ `aria-label`][6]
-3. **可选属性**：[`aria-valuetext`][7]、[ `aria-invalid`][8]
+2. **必需的属性**：[`aria-valuenow`][3]、[`aria-valuemin`][4]、[`aria-valuemax`][5]、[`aria-label`][6]
+3. **可选属性**：[`aria-valuetext`][7]、[`aria-invalid`][8]
 4. **完整的键盘支持**：方向键调整、Page Up/Down 大步长、Home/End 快捷键
 5. **直接编辑支持**：允许用户直接输入值
 6. **输入验证**：阻止无效字符，修正超出范围的值
