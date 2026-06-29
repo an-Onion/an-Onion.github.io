@@ -112,3 +112,4 @@ Hello 大家好，我是 an Onion，这是我的个人网站，很高兴你来�
 - [103. Toolbar Pattern](./103.toolbar-pattern)
 - [104. Slider Pattern](./104.slider-pattern)
 - [105. Menu Button Pattern](./105.menu-button-pattern)
+- [106. Stream SSE](./106.stream-sse)
