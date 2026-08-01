@@ -466,7 +466,7 @@ Menu Button 是一个看似简单但实现精细的组件。核心要点：
 - [shadcn/ui DropdownMenu][4]
 - [Ariakit Menu][5]
 
-文章同步于 an-Onion 的 [Github][11]。码字不易，欢迎点赞。
+文章同步于 an-Onion 的 [Github][14]。码字不易，欢迎点赞。
 
 [0]: https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/
 [1]: https://www.w3.org/WAI/ARIA/apg/patterns/menubar/
@@ -482,3 +482,4 @@ Menu Button 是一个看似简单但实现精细的组件。核心要点：
 [11]: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-label
 [12]: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-disabled
 [13]: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-checked
+[14]: https://github.com/an-Onion/an-Onion.github.io

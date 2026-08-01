@@ -1,4 +1,4 @@
-# Stream & SSE 101 —— Web 端实时接收 AI Agent 终端输出
+# Agentic 前端开发之 Stream & SSE 101 —— Web 端实时接收 AI Agent 终端输出
 
 ## 前言
 
@@ -114,7 +114,7 @@ data: {"text": "Hello"}
 │                                                                     │
 │  ┌───────────────┐   POST /api/agent/run   ┌──────────────────────┐ │
 │  │   UI Layer    │ ───────────────────────► │ fetch + Readable    │ │
-│  │ (React / Vue) │                          │ Stream (SSE parser) │ │
+│  │   (React)     │                          │ Stream (SSE parser) │ │
 │  └───────────────┘                          └──────────┬──────────┘ │
 │          │                                             │            │
 │          │ render chunk by chunk                       │ HTTP       │
@@ -372,9 +372,9 @@ await fetchEventSource('/api/agent/run', {
 
 微软这个库的好处是：支持 POST、支持自动重连、支持自定义 headers，比原生 `EventSource` 好用很多。
 
-## 前端终端渲染
+## 前端渲染方案
 
-拿到流式数据后，怎么渲染成终端效果？Claude Code 的输出包含 ANSI 转义序列（颜色、光标移动、进度条等），不是纯文本，所以渲染方案的选择很关键。
+拿到流式数据后，怎么渲染？Claude Code 的输出包含 ANSI 转义序列（颜色、光标移动、进度条等），不是纯文本，所以渲染方案的选择很关键。
 
 ### 方案一：xterm.js（推荐）
 
@@ -463,9 +463,9 @@ function appendToTerminal(text) {
 
 > **结论**：渲染 Claude Code 输出，首选 xterm.js。它的 ANSI 兼容性最好，能完整还原终端体验。如果只是展示简单的彩色日志，ansi_up 够用。
 
-### 方案三：流式 Markdown 渲染（适用于对话式 AI 输出）
+## 流式 Markdown 渲染（适用于对话式 AI 输出）
 
-Claude Code 的输出除了终端流，很多时候也包含 Markdown 格式的内容（代码块、文件 diff、列表等）。如果前端不是做纯终端展示，而是类似 ChatGPT 的对话式 UI，就需要一个能处理流式 Markdown 的渲染器。
+如果前端不是做纯终端展示，而是类似 ChatGPT 的对话式 UI，就需要一个能处理流式 Markdown 的渲染器。Claude Code 的输出除了终端流，很多时候也包含 Markdown 格式的内容（代码块、文件 diff、列表等）。
 
 传统的 `react-markdown` 无法处理 AI 流式输出中的未闭合代码块、不完整的表格等问题——而 [**Streamdown**](https://github.com/vercel/streamdown)（Vercel 出品，5k+ stars）就是专门解决这个痛点的：
 
@@ -516,8 +516,6 @@ Streamdown 的核心优势：
 - 插件化架构，按需引入，tree-shakeable
 - 内置安全加固（rehype-harden），防止 XSS
 
-**Vue 生态：** 可以使用 [vue3-streamdown](https://www.npmjs.com/package/vue3-streamdown)，是 Streamdown 的 Vue 3 移植版，API 基本一致。
-
 **代码高亮库对比（Streamdown 内置 Shiki，以下为独立使用场景参考）：**
 
 | 库                               | 包体积 | 语言支持 | 特点                           |
@@ -525,7 +523,7 @@ Streamdown 的核心优势：
 | [Shiki](https://shiki.style/)    | ~500KB |   100+   | VS Code 同款语法高亮，效果最好 |
 | [Prism.js](https://prismjs.com/) | ~20KB  |   270+   | 轻量，插件丰富                 |
 
-### 常用 UI 组件总结
+## 常用 UI 组件总结
 
 | 场景           | 推荐方案                                                                   | 代表项目                      |
 | :------------- | :------------------------------------------------------------------------- | :---------------------------- |
@@ -611,14 +609,7 @@ HTTP/1.1 下，浏览器对同一域名的并发连接数有限制（通常 6 �
 - 升级到 HTTP/2（多路复用，不受此限制）
 - 或者用 WebSocket 替代
 
-### 3. 断线重连
-
-原生 `EventSource` 自带重连能力，但 `fetch + ReadableStream` 没有。如果 Agent 执行时间长，网络抖动导致断连，需要自己做重连逻辑。一般做法是：
-
-- 服务端给每个事件带 `id`
-- 客户端断连后用最后一个 `id` 重连，服务端从断点继续推送
-
-### 4. 大输出内存问题
+### 3. 大输出内存问题
 
 AI Agent 有时会输出大量内容（比如读整个文件）。前端如果一直往 DOM 里追加，页面会越来越卡。建议：
 
@@ -632,6 +623,11 @@ AI Agent 有时会输出大量内容（比如读整个文件）。前端如果�
 | 只需 GET 的 SSE                 | 原生 `EventSource`                                          |
 | 需要 POST 的 SSE（如 AI Agent） | `fetch + ReadableStream` 或 `@microsoft/fetch-event-source` |
 | 需要双向通信                    | WebSocket                                                   |
-| 需要完整终端体验                | xterm.js + SSE/WebSocket                                    |
+| 需要完整终端体验                | xterm.js                                                    |
+| 对话式 AI 输出（流式 Markdown） | Streamdown                                                  |
 
 Stream + SSE 这套方案在 AI Agent 场景下非常好用：轻量、单向、自动重连、兼容性好。相比 WebSocket 的复杂握手和双向通信，SSE 就是为"服务端推数据"这个场景量身定做的。
+
+文章同步于 an-Onion 的 [Github][0]。码字不易，欢迎点赞。
+
+[0]: https://github.com/an-Onion/an-Onion.github.io
