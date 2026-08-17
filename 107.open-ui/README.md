@@ -490,6 +490,8 @@ export function useOpenUIStream() {
 
 Renderer 是 Open UI 的核心——它接收 DSL 文本，解析成 AST，然后映射到实际的 React 组件：
 
+{% raw %}
+
 ```jsx
 // UIGenerator.jsx
 import { Renderer } from '@openui/react';
@@ -565,6 +567,8 @@ export default function UIGenerator() {
 }
 ```
 
+{% endraw %}
+
 ### 3. 组件库定义
 
 Renderer 需要一个组件库（library）来映射 DSL 中的组件名到实际的 React 组件：
@@ -610,6 +614,8 @@ export const library = createLibrary({
 
 自定义组件示例：
 
+{% raw %}
+
 ```jsx
 // MyCardHeader.jsx
 export function MyCardHeader({ title }) {
@@ -626,6 +632,8 @@ export function MyCardHeader({ title }) {
   );
 }
 ```
+
+{% endraw %}
 
 ## 组件映射机制
 
@@ -663,6 +671,8 @@ Tool Provider 是 Open UI 的另一个核心概念——它告诉 Renderer 怎�
 
 直接传一个异步函数对象：
 
+{% raw %}
+
 ```javascript
 <Renderer
   toolProvider={{
@@ -682,6 +692,8 @@ Tool Provider 是 Open UI 的另一个核心概念——它告诉 Renderer 怎�
   library={library}
 />
 ```
+
+{% endraw %}
 
 ### 方式二：MCP Client（复杂场景）
 

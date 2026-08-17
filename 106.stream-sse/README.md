@@ -473,6 +473,8 @@ function appendToTerminal(text) {
 npm install streamdown @streamdown/code @streamdown/math @streamdown/mermaid @streamdown/cjk
 ```
 
+{% raw %}
+
 ```jsx
 import { useChat } from '@ai-sdk/react';
 import { Streamdown } from 'streamdown';
@@ -507,6 +509,8 @@ export default function Chat() {
   );
 }
 ```
+
+{% endraw %}
 
 Streamdown 的核心优势：
 

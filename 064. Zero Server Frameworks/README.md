@@ -59,7 +59,7 @@ zero
   module.exports = {
     data() {
       return {
-        message: "About Vue",
+        message: 'About Vue',
       };
     },
   };
@@ -84,7 +84,7 @@ Zero 能识别所有主流框架的扩展名，并处理好相关依赖，最后
 
 Zero 应用就是基于文件目录的路由系统：
 
-- 在开发环境下，只要在特定目录下新建相关文件，zero 会根据**_路劲+文件名_**（不包括扩展名）自动建立对应路由（由于加载依赖，速度上有点慢）
+- 在开发环境下，只要在特定目录下新建相关文件，zero 会根据***路劲+文件名***（不包括扩展名）自动建立对应路由（由于加载依赖，速度上有点慢）
 - 生成环境需要提前 build 一下（`zero build`），接着 zero 便会在 `.zero` 目录下生成特定的静态资源，并根据文件目录建立路由表
 
 ![route][4]
@@ -95,7 +95,7 @@ Zero 应用就是基于文件目录的路由系统：
 
 ```javascript
 export default (req, res) => {
-  res.send({ message: "Hello from API." });
+  res.send({ message: 'Hello from API.' });
 };
 ```
 
@@ -106,11 +106,11 @@ API 依旧是基于路劲的路由，我们打开`localhost:3000/api/hello`，�
 接着再看一下如何调用这些 API。上文提到 Zero 支持服务端渲染（SSR），我们还是以 React 为例看一下使用方法。Zero 原生支持了 React SSR 框架 next.js；它提供了一个 `getInitialProps` 的方法获取 API 数据，并在服务端渲染后返回页面资源。我们新建一个 `hello.jsx` 文件使用后端渲染技术：
 
 ```javascript
-import React from "react";
+import React from 'react';
 
 export default class extends React.Component {
   static async getInitialProps() {
-    return fetch("/api/hello")
+    return fetch('/api/hello')
       .then((res) => res.json())
       .then((json) => ({ message: json.message }));
   }
@@ -130,7 +130,7 @@ export default class extends React.Component {
 除此之外，Zero 还提供了动态路由机制；当然还是基于文件系统的路径，只是动态动态路由表对应的是 `$` 符开头的文件。举个例子，新建一个 react 页面——`/user/$name.jsx`；再次利用 next.js 的`getInitialProps` 获取 url 的参数 name：
 
 ```javascript
-import React from "react";
+import React from 'react';
 
 export default class extends React.Component {
   static async getInitialProps({ url }) {

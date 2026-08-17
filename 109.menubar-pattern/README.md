@@ -438,6 +438,40 @@ Menu/Menubar 的键盘交互是所有 ARIA Pattern 中最复杂的之一，因�
 | **漫游 DOM 焦点**           | 每次导航把 `focus()` 移到目标菜单项             | 实现直观，兼容性最好           | 焦点频繁移动可能触发额外滚动           |
 | **`aria-activedescendant`** | 容器持有 DOM 焦点，通过属性指向当前"活动菜单项" | 避免焦点移动开销，适合复杂容器 | 需保证容器有 `tabindex` 且 id 引用正确 |
 
+### 4.5 纯 HTML 实现：Popover API 的边界
+
+HTML Popover API（`popover` 属性 + `popovertarget`）是 2023 年新增的原生能力，许多 UI 库（如 [daisyUI Megamenu](https://daisyui.com/components/megamenu/)）已采用：
+
+```html
+<!-- daisyUI 风格：纯 HTML Popover API -->
+<button popovertarget="file-menu">File</button>
+<div
+  id="file-menu"
+  popover>
+  <ul>
+    <li><a href="/new">New</a></li>
+    <li><a href="/open">Open</a></li>
+  </ul>
+</div>
+```
+
+Popover API 提供的能力：
+
+| 能力                              | 支持                   | Menu Pattern 要求 |
+| --------------------------------- | ---------------------- | ----------------- |
+| 触发/显隐                         | ✅ 声明式              | 无要求            |
+| Esc 关闭                          | ✅ 内置                | ✅ 必须           |
+| 点击外部关闭                      | ✅ light dismiss       | 未明确要求        |
+| `role="menubar"` / `role="menu"`  | ❌ 缺失                | ✅ 必须           |
+| `role="menuitem"`                 | ❌ 用 `<button>`/`<a>` | ✅ 必须           |
+| 方向键导航                        | ❌ 不支持              | ✅ 必须           |
+| `aria-haspopup` / `aria-expanded` | ❌ 未设置              | ✅ 父项必须       |
+
+**结论**：Popover API 方案**部分符合标准**。是否可接受取决于用途：
+
+- **导航型菜单**（如网站 Megamenu，内容是链接）：Popover API 可接受。W3C 不强制导航菜单使用 Menu Pattern，用 `<nav>` + `<ul>` + `<a>` 也能实现可访问的导航
+- **应用型菜单**（如编辑器 File/Edit/View，内容是命令+快捷键）：**不符合标准**。缺少方向键导航和 ARIA 菜单语义，屏幕阅读器用户无法获得"菜单"的心智模型
+
 ## 五、最佳实践与常见错误
 
 ### 5.1 子菜单 DOM 结构错误
