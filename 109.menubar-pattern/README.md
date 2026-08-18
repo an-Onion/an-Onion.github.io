@@ -116,16 +116,7 @@ Menu（菜单）与 Menubar（菜单栏）是桌面应用中最经典的交互�
 | --------------------- | ------ | -------------------------------- |
 | [`aria-disabled`][10] | `true` | 禁用状态（仍可聚焦，但不可激活） |
 
-### 2.4 焦点管理属性
-
-规范提供两种焦点管理方案：
-
-| 方案                        | 实现方式                                                                                 |
-| --------------------------- | ---------------------------------------------------------------------------------------- |
-| **`aria-activedescendant`** | 容器设 `tabindex="-1"` 或 `0`，通过 [`aria-activedescendant`][14] 指向当前焦点项 ID      |
-| **漫游焦点**                | Menubar 首项设 `tabindex="0"`，其余项设 `tabindex="-1"`；Menu 内所有项设 `tabindex="-1"` |
-
-### 2.5 分组与分隔
+### 2.4 分组与分隔
 
 `menuitemradio` 同组内只能有一项选中。规范要求用 `separator` 分隔不同组：
 
@@ -151,7 +142,7 @@ Menu（菜单）与 Menubar（菜单栏）是桌面应用中最经典的交互�
 
 Separator 的 [`aria-orientation`][13] 应与其视觉方向一致（水平分隔线设 `horizontal`，垂直设 `vertical`）。
 
-### 2.6 非 DOM 子元素
+### 2.5 非 DOM 子元素
 
 如果使用 [`aria-owns`][15] 将非 DOM 子元素纳入菜单，这些元素会按引用顺序排列在 DOM 子元素之后。焦点管理脚本需确保视觉焦点顺序与辅助技术的阅读顺序一致。
 
@@ -440,10 +431,9 @@ Menu/Menubar 的键盘交互是所有 ARIA Pattern 中最复杂的之一，因�
 
 ### 4.5 纯 HTML 实现：Popover API 的边界
 
-HTML Popover API（`popover` 属性 + `popovertarget`）是 2023 年新增的原生能力，许多 UI 库（如 [daisyUI Megamenu](https://daisyui.com/components/megamenu/)）已采用：
+HTML Popover API（`popover` 属性 + `popovertarget`）是 2023 年新增的原生能力，许多 UI 库（如 [daisyUI Megamenu][18]）已采用：
 
 ```html
-<!-- daisyUI 风格：纯 HTML Popover API -->
 <button popovertarget="file-menu">File</button>
 <div
   id="file-menu"
@@ -572,7 +562,7 @@ Menu/Menubar 是复合组件（Composite Widget），Tab 键只用于进入/离�
 - 从 Menu Button 打开的菜单 → 焦点回到触发按钮
 - 通过快捷键（如 `Shift + F10`）打开的上下文菜单 → 焦点回到调用上下文（如编辑器）
 
-## 六、导航菜单栏的特殊约定
+### 5.8 导航菜单栏的特殊约定
 
 规范指出，导航型 Menubar 可能存在一种特殊设计：`menuitem` **既执行导航又打开子菜单**。在这种实现中：
 
@@ -581,7 +571,7 @@ Menu/Menubar 是复合组件（Composite Widget），Tab 键只用于进入/离�
 
 > 规范建议尽量避免这种设计，因为它打破了菜单项的常规交互预期。但如果确实需要，务必在可见说明中告知用户"按向下箭头查看更多选项"。
 
-## 七、Agentic 时代 Menubar 的定位
+## 六、Agentic 时代 Menubar 的定位
 
 有趣的是，当前 AI 原生应用（如 ChatGPT、Claude）几乎**不使用 Menubar**。原因有三：
 
@@ -593,7 +583,7 @@ Menu/Menubar 是复合组件（Composite Widget），Tab 键只用于进入/离�
 
 所以这篇博客的定位是**基础设施**：不是"AI 应用现在常用 Menubar"，而是"AI 应用复杂化后会需要 Menubar"。Agentic 时代的 Menubar 会以动态生成的形式出现——LLM 根据当前上下文生成菜单项，而非开发者在代码里写死。
 
-## 八、总结
+## 七、总结
 
 构建无障碍的 Menu/Menubar 组件需要关注：
 
@@ -627,3 +617,4 @@ Menu/Menubar 是复合组件（Composite Widget），Tab 键只用于进入/离�
 [15]: https://www.w3.org/TR/wai-aria-1.2/#aria-owns
 [16]: https://github.com/an-Onion/an-Onion.github.io
 [17]: https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/
+[18]: https://daisyui.com/components/megamenu/
